@@ -1,9 +1,9 @@
-const express = require('express')
-const path = require('path')
+import express from 'express'
+import path from 'path'
 const router = express.Router()
 
 router.get('/', (req, res) => {
   res.send('admin')
 })
 
-module.exports = router
+export default router
