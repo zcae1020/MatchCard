@@ -1,3 +1,7 @@
+/**
+ * root router
+ */
+
 import express from 'express'
 import indexRouter from './routes/index.js'
 import adminRouter from './routes/admin.js'
