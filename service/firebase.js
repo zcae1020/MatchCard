@@ -5,9 +5,10 @@
 import express from 'express'
 import path from 'path'
 import {fileURLToPath} from 'url';
-import db from '../firebase/config.js'
-
+import {db} from '../firebase/config.js'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
+import { get } from 'http';
 
 const router = express.Router()
 
@@ -23,6 +24,24 @@ router.get('/', async(req, res) => {
     console.error("Error adding document: ", e);
   }
   res.send('firestore');
+})
+
+router.get('/auth', async(req, res) => {
+  const auth = getAuth();
+  createUserWithEmailAndPassword(auth, "email@example.com", "fjdsfa")
+  .then((userCredential) => {
+    // Signed in
+    const user = userCredential.user;
+    console.log("auth", userCredential);
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+
+  res.send('auth');
 })
 
 export default router

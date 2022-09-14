@@ -1,0 +1,4 @@
+class card{
+    id
+    imgUrl
+}
