@@ -1,11 +1,9 @@
-import users from './users.js'
-
-class user extends users{
+class user{
     constructor(id, password, name){ 
-        super(id, password, name)
-        this.win=0
-        this.loss=0
-        this.draw=0
+        this.id=id
+        this.password=password
+        this.name=name
+        this.group=""
     }
 }
 

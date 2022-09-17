@@ -1,6 +1,8 @@
 class gameBoard{
+    id
     time
     cards
     turn
-    teamscore
+    teamscore = {}
+    userId={}
 }

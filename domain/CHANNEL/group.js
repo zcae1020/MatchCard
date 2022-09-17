@@ -1,4 +1,0 @@
-class group{
-    admin
-    channel
-}
