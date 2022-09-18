@@ -1,15 +1,19 @@
 /**
- * user가 바뀔때:
- * SignUp, login
+ * signup: data를 database에 넣는다
  */
 
-export function signUp(){
+export function signUp(data){
+  if(data.isAdmin){
+    playerRef = firebase.database().ref(`user/admin/${data.uid}`);
+  }
+  else {
 
+  }
 }
 
 
 /**
- * auth가 달라지면 database를 그 auth를 추가한다.
+ * login: auth가 달라지면 database를 그 auth를 추가한다.
  */
 export function login() {
   firebase.auth().onAuthStateChanged((user) => {
