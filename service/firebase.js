@@ -5,12 +5,14 @@
 import express from 'express'
 import path from 'path'
 import {fileURLToPath} from 'url';
-import {db} from '../firebase/config.js'
+import {firebase, app} from '../firebase/config.js'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
 import { get } from 'http';
 
 const router = express.Router()
+const db = getDatabase(app);
 
 router.get('/', async(req, res) => {
   try {

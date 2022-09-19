@@ -1,8 +1,9 @@
 //import firebase from "firebase/app";
 //import "firebase/firestore";
-import { initializeApp } from 'firebase/app';
+import * as firebase from 'firebase/app';
 import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
+import { getAuth } from 'firebase/auth';
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -15,9 +16,11 @@ const firebaseConfig = {
   appId: "1:1033059561332:web:6b9ceeda90b293c2884621",
   measurementId: "G-RQF3WJ5WL9",
   databaseURL: "https://match-card-dcd2e-default-rtdb.asia-southeast1.firebasedatabase.app"
-};
+}
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-export const database = getDatabase(app);
+export * as firebase from 'firebase/app' 
+export const app = firebase.initializeApp(firebaseConfig);
+// const db = getFirestore(app);
+// export const auth = getAuth(app);
+// export const db = getDatabase(app);
