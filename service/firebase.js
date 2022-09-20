@@ -5,7 +5,7 @@
 import express from 'express'
 import path from 'path'
 import {fileURLToPath} from 'url';
-import {firebase, app} from '../firebase/config.js'
+import { app } from '../firebase/config.js'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
