@@ -13,5 +13,4 @@ var app = express()
 app.use('/', signupRouter)
 app.use('/admin', adminRouter)
 
-
 app.listen(5000)
