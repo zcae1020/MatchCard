@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import styles from '../css/Login.module.css';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import app from '../firebase';
 
 const auth = getAuth(app);
 
-function Login() {
+function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const signin = async () => {
-    const result = await signInWithEmailAndPassword(auth, email, password);
+  const signup = async () => {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
     console.log(result);
   };
 
@@ -27,7 +26,7 @@ function Login() {
 
   const onClick = (e) => {
     e.preventDefault();
-    signin();
+    signup();
   };
 
   return (
@@ -57,16 +56,12 @@ function Login() {
             onChange={onChange}
           />
           <button className={styles.box_login_button} onClick={onClick}>
-            login
+            sign up
           </button>
         </Box>
-
-        <p>
-          <Link to={'SignUp'}>signup</Link>
-        </p>
       </div>
     </div>
   );
 }
 
-export default Login;
+export default SignUp;
