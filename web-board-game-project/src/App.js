@@ -1,5 +1,6 @@
 import React from 'react';
-import Login from './Login.js';
+import Login from './Router/Login.js';
+import app from './firebase.js';
 
 function App() {
   return (
