@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import styles from '../css/Login.module.css';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
 import app from '../firebase';
 
 const auth = getAuth(app);
@@ -10,18 +14,25 @@ const auth = getAuth(app);
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState('');
 
   const signup = async () => {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    console.log(result);
+    await createUserWithEmailAndPassword(auth, email, password);
+    updateProfile(auth.currentUser, {
+      displayName: userName,
+    });
+    console.log(auth.currentUser);
+    console.log(userName);
   };
 
   const onChange = (e) => {
     if (e.target.id === 'textfield-id') setEmail(e.target.value);
+    else if (e.target.id === 'textfield-userName') setUserName(e.target.value);
     else setPassword(e.target.value);
 
     console.log(email);
     console.log(password);
+    console.log(userName);
   };
 
   const onClick = (e) => {
@@ -53,6 +64,12 @@ function SignUp() {
             label="PASSWORD"
             variant="standard"
             type="password"
+            onChange={onChange}
+          />
+          <TextField
+            id="textfield-userName"
+            label="USERNAME"
+            variant="standard"
             onChange={onChange}
           />
           <button className={styles.box_login_button} onClick={onClick}>

@@ -11,9 +11,11 @@ const auth = getAuth(app);
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [token, setToken] = useState();
 
   const signin = async () => {
     const result = await signInWithEmailAndPassword(auth, email, password);
+    console.log(auth.currentUser.getIdToken());
     console.log(result);
   };
 
