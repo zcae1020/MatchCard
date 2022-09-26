@@ -9,7 +9,7 @@ import * as firebase from "../../config/firebase-config.js";
 auth.getAuth()
   .getUsers([
     { uid: 'uid1' },
-    { email: 'user2@example.com' },
+    { email: 'user2213@example.com' },
     { phoneNumber: '+15555550003' },
     { providerId: 'google.com', providerUid: 'google_uid4' },
   ])
