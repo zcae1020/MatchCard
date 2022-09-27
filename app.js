@@ -4,8 +4,8 @@
 import express from 'express'
 import indexRouter from './routes/index.js'
 import adminRouter from './routes/admin.js'
-import loginRouter from './controller/auth/login.js'
-import signupRouter from './controller/auth/signup.js'
+import {getAdminChannel, getPlayerChannel} from './controller/auth/login.js'
+//import {getAdminChannel, getPlayerChannel} from './controller/auth/signup.js'
 import cors from 'cors'
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -20,8 +20,8 @@ const io = new Server(httpServer, {
 });
 
 const onConnection = (socket) => {
-    socket.on("login:admin", createOrder);
-    socket.on("login:player", readOrder);
+    socket.on("login:admin", getAdminChannel);
+    socket.on("login:player", getPlayerChannel);
   
     socket.on("user:update-password", updatePassword);
 }

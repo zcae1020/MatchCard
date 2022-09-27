@@ -11,31 +11,10 @@ import * as firebase from "../../config/firebase-config.js";
 
 export const router = express.Router();
 
-export const getAdminChannel = function(io) {
-    
+export const getAdminChannel = function(userId) {
+
 }   
 
-export const getPlayerChannel = function(io) {
+export const getPlayerChannel = function(userId) {
     
 }
-
-router.get('/', (req, res)=>{
-    app.use(decodeToken);
-    
-    res.send("fjsaksa");
-
-    getAuth()
-        .getUserByEmail(req.headers.email)
-        .then((userRecord) => {
-            // See the UserRecord reference doc for the contents of userRecord.
-            console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
-
-
-            //group에 맞는 channel send
-
-
-        })
-        .catch((error) => {
-            console.log('Error fetching user data:', error);
-        });
-})
