@@ -1,3 +1,5 @@
+import * as db from "firebase-admin/database"
+
 class channelManager {
     crateChannel(name, maxRoom, maxTeam){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용
 
