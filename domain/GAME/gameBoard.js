@@ -6,37 +6,34 @@ function getRandomInt(min, max) {
 
 export class gameBoard{
     time = 2 // 1인당 제한시간 2초
-    cardNum = 32
+    row = 4
+    col = 8
     cards = [] //4x8 카드 묶음
     turn = 0 // 현재 턴을 가진 team num
     teamscore = [] //팀별 점수
 
-    constructor(){
-        this.generateCards(4,8);
-    }
-
-    constructor(time, cardNum){
-        this.time = time;
-        this.cardNum = cardNum;
-
-        this.generateCards(4,8);
+    constructor(maxTeam){
+        for(let i=0;i<maxTeam;i++)
+            this.teamscore.push(0);
+        this.generateCards(this.row, this.col);
     }
 
     generateCards(row, col){
+        let cardNum=  row*col;
         let cid = [];
 
-        for(i=0;i<this.cardNum;i++){
+        for(let i=0;i<cardNum/2;i++){
             cid.push(i);
             cid.push(i);
         }
 
-        for(i=0;i<row;i++){
+        for(let i=0;i<row;i++){
             let a=[];
 
-            for(j=0;j<col;j++){
+            for(let j=0;j<col;j++){
                 let num = getRandomInt(0,cid.length);
-                cid.splice(num, 1);
                 a.push(cid[num]);
+                cid.splice(num, 1);
             }
              
             this.cards.push(a);

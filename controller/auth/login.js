@@ -4,17 +4,31 @@
 
 import express from 'express'
 import { decodeToken } from '../../middleware/index.js';
-import { app } from '../../app.js';
 import * as auth from 'firebase-admin/auth';
-import * as db from 'firebase-admin/database';
+import {getDatabase} from 'firebase-admin/database';
 import * as firebase from "../../config/firebase-config.js";
+import {CM} from "../channel/channelManager.js";
 
 export const router = express.Router();
 
-export const getAdminChannel = function(userId) {
+const db = getDatabase();
+const userRef = db.ref('user');
 
-}   
-
-export const getPlayerChannel = function(userId) {
+export const login = (io, socket) => {
+    const getAdminChannel = (adminId) => {
+        socket.emit("login:admin", CM.getChannels(adminId));
+    }   
     
+    const getPlayerChannel = (playerId) => { 
+        const playerRef = userRef.child('player');
+        playerRef.on('value', (snapshot) => {
+            console.log(snapshot.val());
+          }, (errorObject) => {
+            console.log('The read failed: ' + errorObject.name);
+          });
+        socket.emit("login:player", CM.getChannels(adminId));
+    }
+
+    socket.on("login:admin", getAdminChannel);
+    socket.on("login:player", getPlayerChannel);
 }

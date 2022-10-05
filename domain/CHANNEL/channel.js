@@ -1,5 +1,4 @@
-import { room } from "./room";
-import { roomManager } from "../../controller/channel/roomManager";
+import { room } from "./room.js";
 
 export class channel {
     constructor(id, name, maxRoom, maxTeam){ 
@@ -12,7 +11,7 @@ export class channel {
     initRoom(maxRoom, maxTeam){
         this.room = [];
 
-        for(i=0;i<maxRoom;i++){
+        for(let i=0;i<maxRoom;i++){
             this.room[i] = new room(i, maxTeam);            
         }
     }

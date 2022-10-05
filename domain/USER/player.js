@@ -6,9 +6,7 @@ class player extends user{
         this.win=0
         this.loss=0
         this.draw=0
-        this.channelId=''
-        this.roomId=''
-        this.team=-1
+        this.adminId=""
     }
 }
 

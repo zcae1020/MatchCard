@@ -2,9 +2,9 @@
  * root router
  */
 import express from 'express'
-import indexRouter from './routes/index.js'
-import adminRouter from './routes/admin.js'
-import {getAdminChannel, getPlayerChannel} from './controller/auth/login.js'
+import {login} from './controller/auth/login.js'
+import {CM} from './controller/channel/channelManager.js';
+//import {getAdminChannel, getPlayerChannel} from './controller/auth/login.js'
 //import {getAdminChannel, getPlayerChannel} from './controller/auth/signup.js'
 import cors from 'cors'
 import { createServer } from "http";
@@ -19,9 +19,12 @@ const io = new Server(httpServer, {
       }
 });
 
+io.use(CM);
+
 const onConnection = (socket) => {
-    socket.on("login:admin", getAdminChannel);
-    socket.on("login:player", getPlayerChannel);
+    login(io,socket);
+    // socket.on("login:admin", getAdminChannel);
+    // socket.on("login:player", getPlayerChannel);
   
     socket.on("user:update-password", updatePassword);
 }
