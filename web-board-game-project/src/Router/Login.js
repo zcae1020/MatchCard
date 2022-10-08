@@ -15,7 +15,10 @@ function Login() {
 
   const signin = async () => {
     const result = await signInWithEmailAndPassword(auth, email, password);
-    console.log(auth.currentUser.getIdToken());
+    const a = auth.currentUser.getIdTokenResult();
+
+    console.log(a['result']);
+
     console.log(result);
   };
 
