@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import styles from '../css/Login.module.css';
@@ -11,21 +11,19 @@ const auth = getAuth(app);
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [token, setToken] = useState();
+  const navigate = useNavigate();
 
   const signin = async () => {
     const result = await signInWithEmailAndPassword(auth, email, password);
-    const a = auth.currentUser.getIdTokenResult();
 
-    console.log(a['result']);
-
-    console.log(result);
+    console.log(result.user.accessToken);
+    console.log(result.user.displayName);
+    navigate('/Channel');
   };
 
   const onChange = (e) => {
     if (e.target.id === 'textfield-id') setEmail(e.target.value);
     else setPassword(e.target.value);
-
     console.log(email);
     console.log(password);
   };

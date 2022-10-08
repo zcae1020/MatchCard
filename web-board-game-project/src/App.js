@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './Router/Login.js';
 import SignUp from './Router/SignUp';
-import app from './firebase.js';
+import Channel from './Router/Channel';
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/" element={<Login />} />
+        <Route path="/Channel" element={<Channel />} />
       </Routes>
     </BrowserRouter>
   );
