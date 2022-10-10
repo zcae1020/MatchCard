@@ -1,6 +1,5 @@
 export class team{
-    constructor(id){
-        this.id=id;
+    constructor(){
         this.user=[];
     }
 }

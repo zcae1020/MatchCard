@@ -64,8 +64,7 @@ class channelManager {
 
 export const CM = new channelManager();
 
-CM.getChannelById("aaa").then((channel)=>{
-  console.log("channel=\n");
+CM.getChannelById(CM.createChannel("alalal", 4,0).id).then((channel)=>{
   console.log(channel["room"][0]["gameboard"]);
 }).catch((error)=>{
   console.log(1, error.msg);

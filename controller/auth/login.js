@@ -16,7 +16,9 @@ const userRef = db.ref('user');
 
 export const login = (io, socket) => {
     const getAdminChannel = (adminId) => {
-        socket.emit("login:admin", CM.getChannels(adminId));
+        socket.emit("login:admin", (name)=>{
+          console.log(name);
+        });
     }   
     
     const getPlayerChannel = (playerId) => { 

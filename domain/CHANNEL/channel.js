@@ -4,15 +4,16 @@ export class channel {
     constructor(id, name, maxRoom, maxTeam){ 
         this.id=id;
         this.name=name;
-        this.initRoom(maxRoom, maxTeam);
+        this.maxRoom=maxRoom;
+        this.maxTeam=maxTeam;
+        this.initRoom();
     }
 
     //clear room
-    initRoom(maxRoom, maxTeam){
+    initRoom(){
         this.room = [];
 
-        for(let i=0;i<maxRoom;i++){
-            this.room[i] = new room(i, maxTeam);            
-        }
+        for(let i=0;i<this.maxRoom;i++)
+            this.room[i] = new room(this.maxTeam);            
     }
 }
