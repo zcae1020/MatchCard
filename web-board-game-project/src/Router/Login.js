@@ -5,20 +5,38 @@ import TextField from '@mui/material/TextField';
 import styles from '../css/Login.module.css';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import app from '../firebase';
+import { style } from '@mui/system';
 
 const auth = getAuth(app);
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const signin = async () => {
-    const result = await signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        console.log(result.user.accessToken);
+        console.log(result.user.displayName);
+        navigate('/Channel');
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case 'auth/wrong-password':
+            setErrorMessage('*비밀번호가 일치하지 않습니다.');
+            break;
+          case 'auth/invalid-email':
+            setErrorMessage('*잘못된 이메일 주소입니다');
+            break;
+          case 'auth/user-not-found':
+            setErrorMessage('*가입되지 않은 이메일입니다.');
+            break;
+        }
 
-    console.log(result.user.accessToken);
-    console.log(result.user.displayName);
-    navigate('/Channel');
+        console.log(error);
+      });
   };
 
   const onChange = (e) => {
@@ -48,7 +66,7 @@ function Login() {
         >
           <TextField
             id="textfield-id"
-            label="ID"
+            label="E-MAIL"
             variant="standard"
             onChange={onChange}
           />
@@ -63,9 +81,9 @@ function Login() {
             login
           </button>
         </Box>
-
+        <p className={styles.errorMessage}>{errorMessage}</p>
         <p>
-          <Link to={'SignUp'}>signup</Link>
+          <Link to={'/SignUp'}>signup</Link>
         </p>
       </div>
     </div>

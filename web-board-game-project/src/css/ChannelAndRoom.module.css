@@ -17,10 +17,10 @@ div {
   border-style: solid;
   border-width: 2pt;
   border-radius: 10px;
-  padding: 15pt 20pt;
+  padding: 15px 20px;
   margin: 0px 15px;
 }
 
 .channel_num {
-  font-size: 100px;
+  font-size: 20px;
 }
