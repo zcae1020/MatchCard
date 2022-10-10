@@ -1,0 +1,26 @@
+div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 35px;
+}
+
+.channel_row {
+  flex-direction: row;
+}
+
+.channel_span {
+  width: 470px;
+  height: 80px;
+  border-style: solid;
+  border-width: 2pt;
+  border-radius: 10px;
+  padding: 15pt 20pt;
+  margin: 0px 15px;
+}
+
+.channel_num {
+  font-size: 100px;
+}
