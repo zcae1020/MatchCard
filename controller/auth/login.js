@@ -2,23 +2,28 @@
  * 로그인시 jwt 토큰 인식 및 인식확인 후 channel data
  */
 
-import express from 'express'
 import { decodeToken } from '../../middleware/index.js';
 import * as auth from 'firebase-admin/auth';
 import {getDatabase} from 'firebase-admin/database';
-import * as firebase from "../../config/firebase-config.js";
-import {CM} from "../channel/channelManager.js";
-
-export const router = express.Router();
+import {CM} from "../../service/CHANNEL/channelManager.js";
 
 const db = getDatabase();
 const userRef = db.ref('user');
 
 export const login = (io, socket) => {
-    const getAdminChannel = (adminId) => {
-        socket.emit("login:admin", (name)=>{
-          console.log(name);
-        });
+    const getAdminChannel = async (adminId) => {
+
+      CM.getChannels(adminId).then(cs=>{
+        socket.emit("login:admin", cs);
+      }).catch(e=>{
+        console.log(e.msg);
+      })
+
+      // CM.getChannels(adminId).then(c=>{
+      //   socket.emit("login:admin", c);
+      // }).catch(e=>{
+      //   console.log(e);
+      // })
     }   
     
     const getPlayerChannel = (playerId) => { 

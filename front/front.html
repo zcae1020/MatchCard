@@ -7,7 +7,14 @@
 <body>
   <div class="container">
     <form id="form">
-      <input id="1">
+      <br><p>1</p>
+      <input id="name">
+      <br><p>2</p>
+      <input id="maxRoom">
+      <br><p>3</p>
+      <input id="maxTeam">
+      <br><p>4</p>
+      <input id="adminId">
       <button>submit</button>
     </form>
   </div>
@@ -16,15 +23,28 @@
     let socket = io();
 
     let form = document.getElementById('form');
-    let i1 = document.getElementById('1');
+    let name = document.getElementById('name');
+    let maxRoom = document.getElementById('maxRoom');
+    let maxTeam = document.getElementById('maxTeam');
+    let adminId= document.getElementById('adminId');
 
     form.addEventListener("submit",(e)=>{
       e.preventDefault();
 
-      if(i1.value){
-        socket.emit("new_message", i1.value);
-      }
-      i1.value = '';
+      //socket.emit("channel:create", name.value, maxRoom.value, maxTeam.value, adminId.value);
+      socket.emit("login:admin", name.value);
+
+      name.value = '';
+      maxRoom.value = '';
+      maxTeam.value = '';
+      adminId.value = '';
+    })
+
+    socket.on("channel:create",(c)=>{
+      console.log(c);
+    })
+    socket.on("login:admin",(c)=>{
+      console.log(c);
     })
   </script>
 </body>

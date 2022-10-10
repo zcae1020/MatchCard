@@ -2,8 +2,8 @@
  * root router
  */
 import express from 'express'
-import {login} from './controller/auth/login.js'
-import {CM} from './controller/channel/channelManager.js';
+import {login} from './controller/AUTH/login.js'
+import { crudChannel } from './controller/CHANNEL/crudChannel.js';
 //import {getAdminChannel, getPlayerChannel} from './controller/auth/login.js'
 //import {getAdminChannel, getPlayerChannel} from './controller/auth/signup.js'
 import cors from 'cors'
@@ -29,8 +29,6 @@ app.get('/', function(req, res) {
     )
 })
 
-//io.use(CM);
-
 const onConnection = (socket) => {
     console.log("new connection");
     socket.on("disconnect",()=>{
@@ -40,6 +38,7 @@ const onConnection = (socket) => {
         console.log("new message ", msg);
     })
     login(io,socket);
+    crudChannel(io,socket);
     // socket.on("login:admin", getAdminChannel);
     // socket.on("login:player", getPlayerChannel);
   
