@@ -3,6 +3,7 @@ import {channel} from "../../domain/CHANNEL/channel.js";
 
 const db = getDatabase();
 const channelRef = db.ref('channel');
+const adminRef = db.ref('user/admin');
 
 class channelManager {
   createChannel(name, maxRoom, maxTeam, adminId){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용
@@ -13,22 +14,26 @@ class channelManager {
       maxTeam:maxTeam
     });
 
-    db.ref(`user/admin/${adminId}/channel`).push().set({channelId:newPostRef.key});
+    //todo: gameManage firebase에 추가
+
+    adminRef.child(`/${adminId}/channel`).push().set({channelId:newPostRef.key});
 
     return new channel(newPostRef.key, name, maxRoom, maxTeam);
   }
 
   getChannelById(channelId){ //firebase에서 id로 channel 가져오기
     return new Promise((resolve, reject)=>{
-      channelRef.on('value', (snapshot)=>  {
-        const snapVal = snapshot.val();
+      channelRef.child(`/${channelId}`).on('value', (snapshot)=>  {
+        resolve(snapshot.val());
 
-        Object.keys(snapVal).forEach((cid)=>{
-          if(cid==channelId)
-            resolve(new channel(cid, snapVal[cid]["name"], snapVal[cid]["maxRoom"], snapVal[cid]["maxTeam"]));
-        })
+        // const snapVal = snapshot.val();
 
-        reject(new Error());
+        // Object.keys(snapVal).forEach((cid)=>{
+        //   if(cid==channelId)
+        //     resolve(new channel(cid, snapVal[cid]["name"], snapVal[cid]["maxRoom"], snapVal[cid]["maxTeam"]));
+        // })
+
+        // reject(new Error());
 
       }, (errorObject)=>{
         console.log('The read failed: ' + errorObject.name);
@@ -43,7 +48,7 @@ class channelManager {
 
   getChannels(adminId){ // admin이 관리하는 channel들 가져오기
     return new Promise((resolve, reject)=>{
-      db.ref(`user/admin/${adminId}/channel`).on('value', async (snapshot)=>{
+      adminRef.child(`/${adminId}/channel`).on('value', async (snapshot)=>{
         let ret = [];
         let cids = snapshot.val();
 

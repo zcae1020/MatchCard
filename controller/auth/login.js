@@ -12,27 +12,20 @@ const userRef = db.ref('user');
 
 export const login = (io, socket) => {
     const getAdminChannel = async (adminId) => {
-
       CM.getChannels(adminId).then(cs=>{
         socket.emit("login:admin", cs);
       }).catch(e=>{
         console.log(e.msg);
       })
-
-      // CM.getChannels(adminId).then(c=>{
-      //   socket.emit("login:admin", c);
-      // }).catch(e=>{
-      //   console.log(e);
-      // })
     }   
     
     const getPlayerChannel = (playerId) => { 
         const playerRef = userRef.child('player');
         playerRef.on('value', (snapshot) => {
-            console.log(snapshot.val());
-          }, (errorObject) => {
-            console.log('The read failed: ' + errorObject.name);
-          });
+          console.log(snapshot.val());
+        }, (errorObject) => {
+          console.log('The read failed: ' + errorObject.name);
+        });
         socket.emit("login:player", CM.getChannels(adminId));
     }
 

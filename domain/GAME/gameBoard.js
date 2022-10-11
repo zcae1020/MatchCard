@@ -9,12 +9,8 @@ export class gameBoard{
     row = 4
     col = 8
     cards = [] //4x8 카드 묶음
-    turn = 0 // 현재 턴을 가진 team num
-    teamscore = [] //팀별 점수
 
-    constructor(maxTeam){
-        for(let i=0;i<maxTeam;i++)
-            this.teamscore.push(0);
+    constructor(){
         this.generateCards(this.row, this.col);
     }
 

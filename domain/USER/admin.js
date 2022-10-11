@@ -1,7 +1,7 @@
 import users from './user.js'
 
 class admin extends users{
-    constructor(id, password, name){
+    constructor(id, password, name, channels, users){
         super(id, password, name)
         this.channels = [];
         this.users = [];

@@ -4,8 +4,6 @@
 import express from 'express'
 import {login} from './controller/AUTH/login.js'
 import { crudChannel } from './controller/CHANNEL/crudChannel.js';
-//import {getAdminChannel, getPlayerChannel} from './controller/auth/login.js'
-//import {getAdminChannel, getPlayerChannel} from './controller/auth/signup.js'
 import cors from 'cors'
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -20,7 +18,7 @@ const io = new Server(httpServer, {
         origin: "https://example.com",
         allowedHeaders: ["my-custom-header"],
         credentials: true
-      }
+    }
 });
 
 app.get('/', function(req, res) {

@@ -1,4 +1,5 @@
-import { gameBoard } from "../GAME/gameBoard.js";
+//import { gameBoard } from "../GAME/gameBoard.js";
+import { gameManager } from "../../service/GAME/gameManager.js";
 import { team } from "./team.js";
 
 export class room{
@@ -6,15 +7,32 @@ export class room{
         this.state=0; //0: ready, 1: play
         this.userCnt=0; //user 수
         this.maxTeam = maxTeam;
-        this.gameboard = new gameBoard(maxTeam);
-        this.initTeam() // class team
+        this.gameManager = new gameManager(maxTeam);
     }
 
     //clear team
     initTeam(){
-        this.team = [];
+        this.teams = [];
 
         for(let i=0;i<this.maxTeam;i++)
-            this.team[i] = new team();         
+            this.teams[i] = new team();         
+    }
+
+    //user visit room
+    visitRoom(){
+        findOptimalTeam();
+    }
+
+    startGame(){
+
+    }
+
+    //return: 팀원수를 맞추기 위해 들어가야할 팀, 인원이 다 똑같다면 팀 num 작은순
+    findOptimalTeam(){
+
+    }
+
+    moveTeam(){
+
     }
 }
