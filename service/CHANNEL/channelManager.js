@@ -15,6 +15,7 @@ class channelManager {
     });
 
     //todo: gameManage firebase에 추가
+    //todo: group으로 나눠서 channel 생성
 
     adminRef.child(`/${adminId}/channel`).push().set({channelId:newPostRef.key});
 

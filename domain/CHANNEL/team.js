@@ -1,5 +1,5 @@
 export class team{
     constructor(){
-        this.user=[];
+        this.users=[];
     }
 }
