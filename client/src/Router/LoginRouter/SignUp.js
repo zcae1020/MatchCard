@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import styles from '../css/Login.module.css';
+import styles from '../../css/Login.module.css';
 import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth';
-import app from '../firebase';
+import app from '../../firebase';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -21,6 +21,7 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [repeatedPassword, setRepeatedPassword] = useState('');
   const [userName, setUserName] = useState('');
+  const [group, setGroup] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [userType, setUserType] = React.useState('player');
 
@@ -58,6 +59,7 @@ function SignUp() {
     if (e.target.id === 'textfield-id') setEmail(e.target.value);
     else if (e.target.id === 'textfield-userName') setUserName(e.target.value);
     else if (e.target.id === 'textfield-password') setPassword(e.target.value);
+    else if (e.target.id === 'textfield-group') setGroup(e.target.value);
     else setRepeatedPassword(e.target.value);
 
     console.log(email);
@@ -132,6 +134,12 @@ function SignUp() {
             label="REPEAT PASSWORD"
             variant="standard"
             type="password"
+            onChange={onChange}
+          />
+          <TextField
+            id="textfield-group"
+            label="GROUP"
+            variant="standard"
             onChange={onChange}
           />
           <button className={styles.box_login_button} onClick={onClick}>

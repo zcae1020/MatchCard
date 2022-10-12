@@ -2,35 +2,33 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import styles from '../css/Login.module.css';
+import styles from '../../css/Login.module.css';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import app from '../firebase';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
+import app from '../../firebase';
 
 const auth = getAuth(app);
 
-function Login() {
+function Login({ userType }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [userType, setUserType] = React.useState('player');
-
-  const handleChange = (event) => {
-    setUserType(event.target.value);
-  };
 
   const navigate = useNavigate();
 
   const signin = async () => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
+        console.log(result);
         console.log(result.user.accessToken);
         console.log(result.user.displayName);
         console.log(result.user.uid);
-        navigate('/Channel');
+        console.log(userType);
+
+        if (userType === 'admin') {
+          navigate('/SignUp');
+        } else {
+          navigate('/Channel');
+        }
       })
       .catch((error) => {
         switch (error.code) {
@@ -63,7 +61,6 @@ function Login() {
 
   return (
     <div>
-      <h1>Match Card Game</h1>
       <div className={styles.div_login}>
         <Box
           className={styles.div_box_login}
@@ -74,28 +71,6 @@ function Login() {
           noValidate
           autoComplete="off"
         >
-          <FormControl>
-            <RadioGroup
-              row
-              name="controlled-radio-buttons-group"
-              value={userType}
-              onChange={handleChange}
-              className={styles.radio_userType}
-            >
-              <FormControlLabel
-                value="player"
-                control={<Radio />}
-                label="Player"
-                labelPlacement="top"
-              />
-              <FormControlLabel
-                value="admin"
-                control={<Radio />}
-                label="Admin"
-                labelPlacement="top"
-              />
-            </RadioGroup>
-          </FormControl>
           <TextField
             id="textfield-id"
             label="E-MAIL"
