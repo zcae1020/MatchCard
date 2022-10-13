@@ -8,27 +8,40 @@ import app from '../../firebase';
 
 const auth = getAuth(app);
 
-function Login({ userType }) {
+function Login({ userType, socket }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [accessToken, setAccessToken] = useState('');
+  const [uid, setUid] = useState('');
 
   const navigate = useNavigate();
 
+  const setPromise = (token, uid) => {
+    return new Promise((res, rej) => {
+      setAccessToken(token);
+      setUid(uid);
+      res();
+    });
+  };
+
   const signin = async () => {
     await signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
+      .then(async (result) => {
         console.log(result);
         console.log(result.user.accessToken);
         console.log(result.user.displayName);
         console.log(result.user.uid);
         console.log(userType);
-
-        if (userType === 'admin') {
-          navigate('/SignUp');
-        } else {
-          navigate('/Channel');
-        }
+        await setPromise(result.user.accessToken, result.user.uid).then(() => {
+          if (userType === 'admin') {
+            socket.emit('admin login', { accessToken, uid });
+            navigate('/SignUp');
+          } else {
+            socket.emit('player login', { accessToken, uid });
+            navigate('/Channel');
+          }
+        });
       })
       .catch((error) => {
         switch (error.code) {

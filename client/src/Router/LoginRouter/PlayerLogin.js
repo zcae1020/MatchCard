@@ -1,11 +1,11 @@
 import React from 'react';
 import Login from './Login';
 
-function PlayerLogin() {
+function PlayerLogin({ socket }) {
   return (
     <React.Fragment>
       <h1>Match Card Game</h1>
-      <Login />
+      <Login socket={socket} />
     </React.Fragment>
   );
 }
