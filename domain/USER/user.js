@@ -4,7 +4,7 @@ class user{
         this.id=id
         this.password=password
         this.name=name
-        this.group=""
+        this.groupId=""
     }
 }
 

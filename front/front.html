@@ -14,7 +14,7 @@
       <br><p>3</p>
       <input id="maxTeam">
       <br><p>4</p>
-      <input id="adminId">
+      <input id="uid">
       <button>submit</button>
     </form>
   </div>
@@ -26,13 +26,13 @@
     let name = document.getElementById('name');
     let maxRoom = document.getElementById('maxRoom');
     let maxTeam = document.getElementById('maxTeam');
-    let adminId= document.getElementById('adminId');
+    let adminId= document.getElementById('uid');
 
     form.addEventListener("submit",(e)=>{
       e.preventDefault();
 
-      //socket.emit("channel:create", name.value, maxRoom.value, maxTeam.value, adminId.value);
-      socket.emit("login:admin", name.value);
+      socket.emit("channel:create", uid.value, name.value, maxRoom.value, maxTeam.value);
+      //socket.emit("channel:read", name.value);
 
       name.value = '';
       maxRoom.value = '';
@@ -41,6 +41,9 @@
     })
 
     socket.on("channel:create",(c)=>{
+      console.log(c);
+    })
+    socket.on("channel:read",(c)=>{
       console.log(c);
     })
     socket.on("login:admin",(c)=>{

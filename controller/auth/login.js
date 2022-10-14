@@ -20,8 +20,9 @@ export const login = (io, socket) => {
     }   
     
     const getPlayerChannel = (playerId) => { 
-        const playerRef = userRef.child('player');
+        const playerRef = userRef.child(`/player/${playerId}`);
         playerRef.on('value', (snapshot) => {
+          
           console.log(snapshot.val());
         }, (errorObject) => {
           console.log('The read failed: ' + errorObject.name);

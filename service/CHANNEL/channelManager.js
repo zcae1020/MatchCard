@@ -3,39 +3,30 @@ import {channel} from "../../domain/CHANNEL/channel.js";
 
 const db = getDatabase();
 const channelRef = db.ref('channel');
-const adminRef = db.ref('user/admin');
+const userRef = db.ref('user');
+const groupRef = db.ref('group');
 
 class channelManager {
-  createChannel(name, maxRoom, maxTeam, adminId){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용
+  createChannel(uid, name, maxRoom, maxTeam){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용
     const newPostRef = channelRef.push();
-    newPostRef.set({
-      name:name,
-      maxRoom:maxRoom,
-      maxTeam:maxTeam
-    });
+    const ret = new channel(newPostRef.key, name, maxRoom, maxTeam);
+    newPostRef.set(JSON.parse(JSON.stringify(ret)));
 
-    //todo: gameManage firebase에 추가
-    //todo: group으로 나눠서 channel 생성
+    
+    userRef.child(`${uid}/groupId`).on('value',(snapshot)=>{
+      let groupId = snapshot.val();
+      groupRef.child(`${groupId}/channels`).push().set({channelId:newPostRef.key});
+    },(e)=>{
+      console.log(e);
+    })
 
-    adminRef.child(`/${adminId}/channel`).push().set({channelId:newPostRef.key});
-
-    return new channel(newPostRef.key, name, maxRoom, maxTeam);
+    return ret;
   }
 
   getChannelById(channelId){ //firebase에서 id로 channel 가져오기
     return new Promise((resolve, reject)=>{
       channelRef.child(`/${channelId}`).on('value', (snapshot)=>  {
         resolve(snapshot.val());
-
-        // const snapVal = snapshot.val();
-
-        // Object.keys(snapVal).forEach((cid)=>{
-        //   if(cid==channelId)
-        //     resolve(new channel(cid, snapVal[cid]["name"], snapVal[cid]["maxRoom"], snapVal[cid]["maxTeam"]));
-        // })
-
-        // reject(new Error());
-
       }, (errorObject)=>{
         console.log('The read failed: ' + errorObject.name);
         reject(new Error());
@@ -44,20 +35,13 @@ class channelManager {
   }
 
   getChannelByName(channelName){ //firebase에서 name으로 channel 가져오기
-
+    //필요할때 구현
   }
 
-  getChannels(adminId){ // admin이 관리하는 channel들 가져오기
+  getChannelIdInGroup(groupId){ // group이 관리하는 channelId들 가져오기
     return new Promise((resolve, reject)=>{
-      adminRef.child(`/${adminId}/channel`).on('value', async (snapshot)=>{
-        let ret = [];
-        let cids = snapshot.val();
-
-        for(let idx in cids){
-          ret.push(await CM.getChannelById(cids[idx]["channelId"]));
-        }
-
-        resolve(ret);
+      groupRef.child(`/${groupId}/channels`).on('value', async (snapshot)=>{
+        resolve(snapshot.val());
       }, (errorObject)=>{
         console.log('The read failed: ' + errorObject.name);
         reject(new Error());
@@ -70,14 +54,6 @@ class channelManager {
   }
 
   deleteChannelByName(channelName){ //firebase에서 name로 channel 지우기
-
-  }
-
-  createRooms(room, team){
-
-  }
-
-  deleteRooms(){
 
   }
 }

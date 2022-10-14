@@ -1,5 +1,5 @@
 //import { gameBoard } from "../GAME/gameBoard.js";
-import { gameManager } from "../../service/GAME/gameManager.js";
+import { gameManager } from "../GAME/gameManager.js";
 import { team } from "./team.js";
 
 export class room{
@@ -7,6 +7,7 @@ export class room{
         this.state=0; //0: ready, 1: play
         this.userCnt=0; //user 수
         this.maxTeam = maxTeam;
+        this.initTeam();
         this.gameManager = new gameManager(maxTeam);
     }
 
@@ -15,7 +16,7 @@ export class room{
         this.teams = [];
 
         for(let i=0;i<this.maxTeam;i++)
-            this.teams[i] = new team();         
+            this.teams[i] = new team();
     }
 
     //user visit room

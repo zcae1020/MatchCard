@@ -15,17 +15,17 @@ const db = getDatabase();
 const userRef = db.ref('user');
  
 export const crudChannel = (io, socket) => {
-    const createChannel = (name, maxRoom, maxTeam, adminId) => {
-        socket.emit("channel:create", CM.createChannel(name, maxRoom, maxTeam, adminId));
+    const createChannel = (uid, name, maxRoom, maxTeam) => {
+        socket.emit("channel:create", CM.createChannel(uid, name, maxRoom, maxTeam));
     }   
      
-    const readChannel = (id, name) => {
+    const readChannel = (id) => {
         let c = null;
 
-        if(id) c = CM.getChannelById(id);
-        else if(name) c = CM.deleteChannelByName(name);
+        //if(id) c = CM.getChannelById(id);
+        //else if(name) c = CM.getChannelByName(name);
 
-        socket.emit("channel:read", c);
+        CM.getChannelById(id).then(c=>socket.emit("channel:read", c)).catch(e=>console.log(e));
     }
 
     const updateChannel = (name, maxRoom, maxTeam, channelId) => { 

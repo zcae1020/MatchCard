@@ -1,6 +1,9 @@
 export class group{
-    groupId="";
-    name="";
     channels=[];
     users=[];
+
+    constructor(groupId, name){
+        this.groupId = groupId;
+        this.name = name;
+    }
 }

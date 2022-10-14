@@ -48,11 +48,3 @@ io.on("connection", onConnection);
 httpServer.listen(3000, ()=>{
     console.log('start server');
 });
-
-// export const app = express()
-
-// app.use('/', signupRouter)
-// app.use('/admin', adminRouter)
-// app.use('/login', loginRouter)
-
-// app.listen(5000)
