@@ -31,8 +31,8 @@
     form.addEventListener("submit",(e)=>{
       e.preventDefault();
 
-      socket.emit("channel:create", uid.value, name.value, maxRoom.value, maxTeam.value);
-      //socket.emit("channel:read", name.value);
+      //socket.emit("channel:create", uid.value, name.value, maxRoom.value, maxTeam.value);
+      socket.emit("channel:read", name.value);
 
       name.value = '';
       maxRoom.value = '';
@@ -44,7 +44,7 @@
       console.log(c);
     })
     socket.on("channel:read",(c)=>{
-      console.log(c);
+      console.log(c, c["alalalal"]);
     })
     socket.on("login:admin",(c)=>{
       console.log(c);
