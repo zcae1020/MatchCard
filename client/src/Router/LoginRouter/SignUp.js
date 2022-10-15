@@ -66,6 +66,7 @@ function SignUp() {
     console.log(password);
     console.log(repeatedPassword);
     console.log(userName);
+    console.log(group);
   };
 
   const onClick = (e) => {

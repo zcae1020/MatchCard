@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -17,31 +17,28 @@ function Login({ userType, socket }) {
 
   const navigate = useNavigate();
 
-  const setPromise = (token, uid) => {
-    return new Promise((res, rej) => {
-      setAccessToken(token);
-      setUid(uid);
-      res();
-    });
-  };
+  useEffect(() => {
+    if (accessToken === '' || uid === '') {
+      return;
+    } else if (userType === 'admin') {
+      socket.emit('admin login', { accessToken, uid });
+      navigate('/SignUp');
+    } else {
+      socket.emit('player login', { accessToken, uid });
+      navigate('/Channel');
+    }
+  }, [accessToken, uid]);
 
   const signin = async () => {
     await signInWithEmailAndPassword(auth, email, password)
-      .then(async (result) => {
+      .then((result) => {
         console.log(result);
         console.log(result.user.accessToken);
         console.log(result.user.displayName);
         console.log(result.user.uid);
         console.log(userType);
-        await setPromise(result.user.accessToken, result.user.uid).then(() => {
-          if (userType === 'admin') {
-            socket.emit('admin login', { accessToken, uid });
-            navigate('/SignUp');
-          } else {
-            socket.emit('player login', { accessToken, uid });
-            navigate('/Channel');
-          }
-        });
+        setAccessToken(result.user.accessToken);
+        setUid(result.user.uid);
       })
       .catch((error) => {
         switch (error.code) {

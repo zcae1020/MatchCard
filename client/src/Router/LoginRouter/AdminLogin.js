@@ -1,7 +1,7 @@
 import React from 'react';
 import Login from './Login';
 
-function AdminLogin() {
+function AdminLogin({ socket }) {
   const userType = 'admin';
   return (
     <React.Fragment>

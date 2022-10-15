@@ -25,7 +25,7 @@ function App() {
           path="/"
           element={connection ? <PlayerLogin socket={socket} /> : <Loading />}
         />
-        <Route path="/AdminLogin" element={<AdminLogin />} />
+        <Route path="/AdminLogin" element={<AdminLogin socket={socket} />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route element={<AuthLayout />}>
           <Route path="/Channel" element={<Channel />} />
