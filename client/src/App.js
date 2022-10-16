@@ -7,6 +7,7 @@ import Channel from './Router/Channel';
 import AuthLayout from './Router/AuthLayout.js';
 import AdminLogin from './Router/LoginRouter/AdminLogin.js';
 import io from 'socket.io-client';
+import Admin from './Router/Admin';
 
 const socket = io.connect('http://localhost:3001');
 function App() {
@@ -26,9 +27,10 @@ function App() {
           element={connection ? <PlayerLogin socket={socket} /> : <Loading />}
         />
         <Route path="/AdminLogin" element={<AdminLogin socket={socket} />} />
-        <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/SignUp" element={<SignUp socket={socket} />} />
         <Route element={<AuthLayout />}>
           <Route path="/Channel" element={<Channel />} />
+          <Route path="/Admin" element={<Admin socket={socket} />} />
         </Route>
       </Routes>
     </BrowserRouter>

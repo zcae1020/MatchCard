@@ -6,7 +6,7 @@ function AdminLogin({ socket }) {
   return (
     <React.Fragment>
       <h1>Match Card Game - Admin</h1>
-      <Login userType={userType} />
+      <Login userType={userType} socket={socket} />
     </React.Fragment>
   );
 }

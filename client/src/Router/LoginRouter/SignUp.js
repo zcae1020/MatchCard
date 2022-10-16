@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -16,20 +16,34 @@ import FormControl from '@mui/material/FormControl';
 
 const auth = getAuth(app);
 
-function SignUp() {
+function SignUp({ socket }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatedPassword, setRepeatedPassword] = useState('');
+  const [accessToken, setAccessToken] = useState('');
+  const [uid, setUid] = useState('');
   const [userName, setUserName] = useState('');
   const [group, setGroup] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [userType, setUserType] = React.useState('player');
 
+  const navigate = useNavigate();
+
   const handleChange = (event) => {
     setUserType(event.target.value);
   };
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (accessToken === '' || uid === '' || group === '') {
+      return;
+    } else if (userType === 'admin') {
+      socket.emit('admin signup', { accessToken, uid, group });
+      navigate('/Admin');
+    } else {
+      socket.emit('player signup', { accessToken, uid, group });
+      navigate('/Channel');
+    }
+  }, [accessToken, uid]);
 
   const signup = async () => {
     try {
@@ -38,8 +52,8 @@ function SignUp() {
         displayName: userName,
       });
       console.log(auth.currentUser);
-      console.log(userName);
-      navigate('/Channel');
+      setAccessToken(auth.currentUser.accessToken);
+      setUid(auth.currentUser.uid);
     } catch (error) {
       switch (error.code) {
         case 'auth/weak-password':
@@ -61,10 +75,8 @@ function SignUp() {
     else if (e.target.id === 'textfield-password') setPassword(e.target.value);
     else if (e.target.id === 'textfield-group') setGroup(e.target.value);
     else setRepeatedPassword(e.target.value);
-
     console.log(email);
     console.log(password);
-    console.log(repeatedPassword);
     console.log(userName);
     console.log(group);
   };
