@@ -32,7 +32,7 @@
       e.preventDefault();
 
       //socket.emit("channel:create", uid.value, name.value, maxRoom.value, maxTeam.value);
-      socket.emit("channel:read", name.value);
+      socket.emit("login:admin", name.value);
 
       name.value = '';
       maxRoom.value = '';

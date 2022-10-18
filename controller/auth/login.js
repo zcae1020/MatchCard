@@ -11,11 +11,14 @@ const db = getDatabase();
 const userRef = db.ref('user');
 
 export const login = (io, socket) => {
-    const getAdminChannel = async (adminId) => {
-      CM.getChannels(adminId).then(cs=>{
-        socket.emit("login:admin", cs);
-      }).catch(e=>{
-        console.log(e.msg);
+    const login = (uid) => {
+      userRef.child(`/${uid}`).on('value',(snapshot)=>{
+        console.log(uid, snapshot.val());
+        CM.getChannelIdInGroup(snapshot.val()["groupId"]).then(cs=>{
+          socket.emit("login:admin", cs);
+        }).catch(e=>{
+          console.log(e.msg);
+        })
       })
     }   
     
@@ -30,6 +33,6 @@ export const login = (io, socket) => {
         socket.emit("login:player", CM.getChannels(adminId));
     }
 
-    socket.on("login:admin", getAdminChannel);
+    socket.on("login:admin", login);
     socket.on("login:player", getPlayerChannel);
 }
