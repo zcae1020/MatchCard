@@ -32,7 +32,7 @@
       e.preventDefault();
 
       //socket.emit("channel:create", uid.value, name.value, maxRoom.value, maxTeam.value);
-      socket.emit("login:admin", name.value);
+      socket.emit("login", name.value);
 
       name.value = '';
       maxRoom.value = '';
@@ -46,7 +46,7 @@
     socket.on("channel:read",(c)=>{
       console.log(c, c["alalalal"]);
     })
-    socket.on("login:admin",(c)=>{
+    socket.on("login",(c)=>{
       console.log(c);
     })
   </script>

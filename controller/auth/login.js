@@ -15,7 +15,7 @@ export const login = (io, socket) => {
       userRef.child(`/${uid}`).on('value',(snapshot)=>{
         console.log(uid, snapshot.val());
         CM.getChannelIdInGroup(snapshot.val()["groupId"]).then(cs=>{
-          socket.emit("login:admin", cs);
+          socket.emit("login", cs);
         }).catch(e=>{
           console.log(e.msg);
         })
@@ -33,6 +33,6 @@ export const login = (io, socket) => {
         socket.emit("login:player", CM.getChannels(adminId));
     }
 
-    socket.on("login:admin", login);
+    socket.on("login", login);
     socket.on("login:player", getPlayerChannel);
 }
