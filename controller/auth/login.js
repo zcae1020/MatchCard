@@ -6,11 +6,28 @@ import { decodeToken } from '../../middleware/index.js';
 import * as auth from 'firebase-admin/auth';
 import {getDatabase} from 'firebase-admin/database';
 import {CM} from "../../service/CHANNEL/channelManager.js";
+import { decodeToken } from '../../middleware/index.js';
 
 const db = getDatabase();
 const userRef = db.ref('user');
 
 export const login = (io, socket) => {
+    const login1 = async (token, uid) => {
+      auth.getAuth().verifyIdToken(token).then(()=>{
+        userRef.child(`/${uid}`).on('value',(snapshot)=>{
+          console.log(uid, snapshot.val());
+          CM.getChannelIdInGroup(snapshot.val()["groupId"]).then(cs=>{
+            socket.emit("login", cs);
+          }).catch(e=>{
+            console.log(e.msg);
+          })
+        })
+      })
+      .catch((error)=>{
+          socket.emit("error", error);
+      })
+    }
+
     const login = (uid) => {
       userRef.child(`/${uid}`).on('value',(snapshot)=>{
         console.log(uid, snapshot.val());
@@ -34,5 +51,6 @@ export const login = (io, socket) => {
     }
 
     socket.on("login", login);
+    socket.on("login1", login1);
     socket.on("login:player", getPlayerChannel);
 }
