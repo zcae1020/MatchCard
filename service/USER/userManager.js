@@ -1,18 +1,29 @@
 import {getDatabase} from "firebase-admin/database";
 import {channel} from "../../domain/CHANNEL/channel.js";
 import * as index from "../../domain/USER/index.js";
+import user from "../../domain/USER/user.js";
 
 const db = getDatabase();
 const userRef = db.ref('user');
 
 //crud
 class userManager {
-  createAdmin(){
-
+  createAdmin(){ // create direct in firebase
   }
   
-  createPlayer(){
+  createPlayer(id, password, name, groupId){
+    const newPostRef = userRef.push();
+    const ret = new user(newPostRef.key, id, password, name, groupId);
+    newPostRef.set(JSON.parse(JSON.stringify(ret)));
 
+    userRef.child(`${uid}/groupId`).on('value',(snapshot)=>{
+      let groupId = snapshot.val();
+      groupRef.child(`${groupId}/users`).push().set({uid:newPostRef.key});
+    },(e)=>{
+      console.log(e);
+    })
+
+    return ret;
   }
 
   getAdminByAdminId(adminId){
