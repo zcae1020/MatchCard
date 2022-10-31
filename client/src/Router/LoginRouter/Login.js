@@ -22,10 +22,14 @@ function Login({ userType, socket }) {
       return;
     } else if (userType === 'admin') {
       socket.emit('admin login', { accessToken, uid });
-      navigate('/Admin');
+      socket.on('success', () => {
+        navigate('/Admin');
+      });
     } else {
       socket.emit('player login', { accessToken, uid });
-      navigate('/Channel');
+      socket.on('success', () => {
+        navigate('/Channel');
+      });
     }
   }, [accessToken, uid]);
 

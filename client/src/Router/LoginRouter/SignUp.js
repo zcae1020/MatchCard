@@ -38,10 +38,14 @@ function SignUp({ socket }) {
       return;
     } else if (userType === 'admin') {
       socket.emit('admin signup', { accessToken, uid, group });
-      navigate('/Admin');
+      socket.on('success', () => {
+        navigate('/Admin');
+      });
     } else {
       socket.emit('player signup', { accessToken, uid, group });
-      navigate('/Channel');
+      socket.on('success', () => {
+        navigate('/Channel');
+      });
     }
   }, [accessToken, uid]);
 

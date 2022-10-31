@@ -8,16 +8,17 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-const channels = [
-  {
-    name: 'channel_1',
-    id: 'id_1',
+const channel = {
+  channel1: {
+    id: 'good1',
   },
-  {
-    name: 'channel_2',
-    id: 'id_2',
+  channel2: {
+    id: 'good2',
   },
-];
+  channel3: {
+    id: 'good3',
+  },
+};
 // const channels = { name: 'name_1', id: 'id_1' };
 
 const io = new Server(server, {
@@ -32,28 +33,28 @@ io.on('connection', (socket) => {
   socket.on('player login', ({ accessToken, uid }) => {
     console.log(accessToken);
     console.log(uid);
+    socket.emit('success');
   });
   socket.on('admin login', ({ accessToken, uid }) => {
     console.log(accessToken);
     console.log(uid);
+    socket.emit('success');
   });
   socket.on('show me admin info', () => {
-    console.log('is good?');
-    channels.map((channel) => {
-      console.log('not bad');
-      socket.emit('admin info', { channel });
-      console.log(channel);
-    });
+    console.log('good');
+    socket.emit('admin channels info', { channel });
   });
   socket.on('admin signup', ({ accessToken, uid, group }) => {
     console.log(accessToken);
     console.log(uid);
     console.log(group);
+    socket.emit('success');
   });
   socket.on('player signup', ({ accessToken, uid, group }) => {
     console.log(accessToken);
     console.log(uid);
     console.log(group);
+    socket.emit('success');
   });
 });
 
