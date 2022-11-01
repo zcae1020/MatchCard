@@ -1,9 +1,8 @@
 import { room } from "./room.js";
 
 export class channel {
-    constructor(id, name, maxRoom, maxTeam, groupId){ 
+    constructor(id, maxRoom, maxTeam, groupId){ 
         this.id=id;
-        this.name=name;
         this.maxRoom=maxRoom;
         this.maxTeam=maxTeam;
         this.groupId=groupId;

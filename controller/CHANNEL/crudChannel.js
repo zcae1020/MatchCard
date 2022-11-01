@@ -9,9 +9,9 @@ const db = getDatabase();
 const userRef = db.ref('user');
  
 export const crudChannel = (io, socket) => {
-    const createChannel = (uid = 0, name = 'channel', maxRoom = 4, maxTeam = 4) => {
+    const createChannel = (uid = 0, maxRoom = 4, maxTeam = 4) => {
         if(uid!=0)
-            socket.emit("channel:create", CM.createChannel(uid, name, maxRoom, maxTeam));
+            socket.emit("channel:create", CM.createChannel(uid,vmaxRoom, maxTeam));
     }   
      
     const readChannel = (id = 0) => {
