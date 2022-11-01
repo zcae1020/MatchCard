@@ -10,8 +10,12 @@ const userRef = db.ref('user');
 
 //crud
 class userManager {
-  whoIsUser(){ // user is admin or player? / admin: 0, player: 1
-    
+  whoIsUser(uid){ // user is admin or player? / admin: 0, player: 1
+    userRef.child(`${uid}`).on('value', (snapshot)=>{
+      let user = snapshot.val();
+      return (user['win']==undefined?0:1);
+    })
+    return -1;
   }
 
   createAdmin(){ // create direct in firebase

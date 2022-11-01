@@ -47,11 +47,11 @@
     })
 
     b1.addEventListener("click", ()=>{
+      socket.emit("user")
       socket.emit("user:create","id","password","name","group");
     })
 
     b2.addEventListener("click", ()=>{
-
     })
 
     b3.addEventListener("click", ()=>{

@@ -1,4 +1,3 @@
-//import { gameBoard } from "../GAME/gameBoard.js";
 import { gameManager } from "../GAME/gameManager.js";
 import { team } from "./team.js";
 
