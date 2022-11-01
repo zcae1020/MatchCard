@@ -17,7 +17,14 @@ class groupManager {
   }
 
   getGroupByGroupId(groupId){
-    
+    return new Promise((resolve, reject)=>{
+        groupRef.child(`${groupId}`).on('value', (snapshot)=>  {
+          resolve(snapshot.val());
+        }, (errorObject)=>{
+          console.log('The read failed: ' + errorObject.name);
+          reject(new Error());
+        })
+      })
   }
 
   getGroupByName(name){
