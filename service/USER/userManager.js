@@ -40,22 +40,17 @@ class userManager {
 
   getUserByName(name){
     return new Promise((resolve, reject)=>{
-      
+      userRef.on('value', (snapshot)=>{
+        for(let idx in snapshot.val()){
+          if(snapshot.val()[idx]['name']==name){
+            resolve(snapshot.val()[idx]);
+          }
+        }
+        reject(new Error());
+      })
+      reject(new Error());
     })
   }
-
-
-
-  // getAdminByPlayerId(playerId){
-  //   return new Promise((resolve, reject)=>{
-  //     userRef.child(`/player/${playerId}`).on('value', async (snapshot)=>  {
-  //       resolve(await this.getAdminByAdminId(snapshot.val()["adminId"]))
-  //     }, (errorObject)=>{
-  //       console.log('The read failed: ' + errorObject.name);
-  //       reject(new Error());
-  //     })
-  //   })
-  // }
 
   deleteUserByUid(uid){ 
 
