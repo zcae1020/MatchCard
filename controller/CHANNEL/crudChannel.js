@@ -1,6 +1,7 @@
 import express from 'express'
 import {getDatabase} from 'firebase-admin/database';
 import {CM} from "../../service/CHANNEL/channelManager.js";
+import { UM } from '../../service/USER/userManager.js';
  
 export const router = express.Router();
  
@@ -20,12 +21,21 @@ export const crudChannel = (io, socket) => {
         CM.getChannelById(id).then(c=>socket.emit("channel:read", (c?c:"isNull"))).catch(e=>console.log(e));
     }
 
+    const getChannelList = (uid) => {
+        if(UM.whoIsUser(uid))
+            socket.emit("admin channel list",CM.getChannelIdInGroup(uid));
+        else
+            socket.emit("admin channel list",CM.getChannelIdInGroup(uid));
+    }
+
     const updateChannel = (name, maxRoom, maxTeam, channelId) => { 
     }
 
     const deleteChannel = (channelId) => { 
     }
 
-    socket.on("channel:create", createChannel);
-    socket.on("channel:read", readChannel);
+    socket.on("create channel", createChannel);
+    socket.on("admin channel list", getChannelList);
+    socket.on("player channel list", getChannelList);
+    //socket.on("channel:read", readChannel);
 }

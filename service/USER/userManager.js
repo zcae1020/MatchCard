@@ -10,6 +10,10 @@ const userRef = db.ref('user');
 
 //crud
 class userManager {
+  whoIsUser(){ // user is admin or player? / admin: 0, player: 1
+    
+  }
+
   createAdmin(){ // create direct in firebase
   }
   
