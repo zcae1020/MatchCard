@@ -4,6 +4,7 @@
 import express from 'express'
 import {login} from './controller/AUTH/login.js'
 import { crudChannel } from './controller/CHANNEL/crudChannel.js';
+import { crudUser } from './controller/USER/crudUser.js';
 import cors from 'cors'
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -37,6 +38,7 @@ const onConnection = (socket) => {
     })
     login(io,socket);
     crudChannel(io,socket);
+    crudUser(io, socket);
     // socket.on("login:admin", getAdminChannel);
     // socket.on("login:player", getPlayerChannel);
   

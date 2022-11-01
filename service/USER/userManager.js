@@ -1,7 +1,8 @@
 import {getDatabase} from "firebase-admin/database";
+import * as firebase from "../../config/firebase-config.js";
 import {channel} from "../../domain/CHANNEL/channel.js";
-import * as index from "../../domain/USER/index.js";
 import user from "../../domain/USER/user.js";
+import player from "../../domain/USER/player.js";
 
 const db = getDatabase();
 const userRef = db.ref('user');
@@ -11,25 +12,25 @@ class userManager {
   createAdmin(){ // create direct in firebase
   }
   
-  createPlayer(id, password, name, groupId){
+  createUser(id, password, name, groupId){
     const newPostRef = userRef.push();
-    const ret = new user(newPostRef.key, id, password, name, groupId);
+    const ret = new player(newPostRef.key, id, password, name, groupId);
     newPostRef.set(JSON.parse(JSON.stringify(ret)));
 
-    userRef.child(`${uid}/groupId`).on('value',(snapshot)=>{
-      let groupId = snapshot.val();
-      groupRef.child(`${groupId}/users`).push().set({uid:newPostRef.key});
-    },(e)=>{
-      console.log(e);
-    })
+    // userRef.child(`${uid}/groupId`).on('value',(snapshot)=>{
+    //   let groupId = snapshot.val();
+    //   groupRef.child(`${groupId}/users`).push().set({uid:newPostRef.key});
+    // },(e)=>{
+    //   console.log(e);
+    // })
 
     return ret;
   }
 
-  getAdminByAdminId(adminId){
+  getUserByUid(uid){
     return new Promise((resolve, reject)=>{
-      userRef.child(`/player/${playerId}`).on('value', async (snapshot)=>  {
-        resolve(await this.getAdminByAdminId(snapshot.val()["adminId"]))
+      userRef.child(`${uid}`).on('value', async (snapshot)=>  {
+        resolve(snapshot.val());
       }, (errorObject)=>{
         console.log('The read failed: ' + errorObject.name);
         reject(new Error());
@@ -37,15 +38,31 @@ class userManager {
     })
   }
 
-  getAdminByPlayerId(playerId){
+  getUserByName(name){
     return new Promise((resolve, reject)=>{
-      userRef.child(`/player/${playerId}`).on('value', async (snapshot)=>  {
-        resolve(await this.getAdminByAdminId(snapshot.val()["adminId"]))
-      }, (errorObject)=>{
-        console.log('The read failed: ' + errorObject.name);
-        reject(new Error());
-      })
+      
     })
+  }
+
+
+
+  // getAdminByPlayerId(playerId){
+  //   return new Promise((resolve, reject)=>{
+  //     userRef.child(`/player/${playerId}`).on('value', async (snapshot)=>  {
+  //       resolve(await this.getAdminByAdminId(snapshot.val()["adminId"]))
+  //     }, (errorObject)=>{
+  //       console.log('The read failed: ' + errorObject.name);
+  //       reject(new Error());
+  //     })
+  //   })
+  // }
+
+  deleteUserByUid(uid){ 
+
+  }
+
+  deleteUserByName(name){ 
+
   }
 }
 

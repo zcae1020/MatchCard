@@ -1,5 +1,6 @@
 import {getDatabase} from "firebase-admin/database";
 import {channel} from "../../domain/CHANNEL/channel.js";
+import * as firebase from "../../config/firebase-config.js";
 
 const db = getDatabase();
 const channelRef = db.ref('channel');

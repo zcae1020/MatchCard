@@ -2,7 +2,6 @@
  * 로그인시 jwt 토큰 인식 및 인식확인 후 channel data
  */
 
-import { decodeToken } from '../../middleware/index.js';
 import * as auth from 'firebase-admin/auth';
 import {getDatabase} from 'firebase-admin/database';
 import {CM} from "../../service/CHANNEL/channelManager.js";
