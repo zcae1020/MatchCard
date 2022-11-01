@@ -28,7 +28,20 @@ class groupManager {
   }
 
   getGroupByName(name){
-    
+    return new Promise((resolve, reject)=>{
+        groupRef.on('value', (snapshot)=>  {
+            for(let idx in snapshot.val()){
+                if(snapshot.val()[idx]['name']==name){
+                    resolve(snapshot.val()[idx]);
+                }
+            }
+            reject(new Error());
+          resolve(snapshot.val());
+        }, (errorObject)=>{
+          console.log('The read failed: ' + errorObject.name);
+          reject(new Error());
+        })
+      })
   }
 
   getGroupByUid(uid){
