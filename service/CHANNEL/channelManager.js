@@ -5,14 +5,13 @@ import { GM } from "../GROUP/groupManager.js";
 
 const db = getDatabase();
 const channelRef = db.ref('channel');
-const userRef = db.ref('user');
 const groupRef = db.ref('group');
 
 class channelManager {
   async createChannel(uid, name, maxRoom, maxTeam, groupName){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용
     const newPostRef = channelRef.push();
     let groupId;
-    
+
     await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);
     const ret = new channel(newPostRef.key, name, maxRoom, maxTeam, groupId);
     newPostRef.set(JSON.parse(JSON.stringify(ret)));
@@ -48,8 +47,23 @@ class channelManager {
     })
   }
 
-  deleteChannelById(channelId){ //firebase에서 id로 channel 지우기
+  deleteChannelInGroup(channelId){
+    let groupId;
+    channelRef.child(`${channelId}`).on('value', (snapshot)=>{
+      groupId = snapshot.val()['groupId'];
+    }, (errorObject)=>{
+      console.log('The read failed: ' + errorObject.name);
+    });
 
+    return groupRef.child(`${groupId}/channels/${channelId}`).set(null);
+  }
+
+  deleteChannelInChannelRef(channelId){
+    return channelRef.child(`${channelId}`).set(null);
+  }
+
+  deleteChannelById(channelId){ //firebase에서 id로 channel 지우기
+    return deleteChannelInGroup(channelId) && this.deleteChannelInChannelRef(channelId);
   }
 
   deleteChannelByName(channelName){ //firebase에서 name로 channel 지우기
@@ -58,9 +72,3 @@ class channelManager {
 }
 
 export const CM = new channelManager();
-
-// CM.getChannelById(CM.createChannel("alalal", 4,0).id).then((channel)=>{
-//   console.log(channel["room"][0]["gameboard"]);
-// }).catch((error)=>{
-//   console.log(1, error.msg);
-// })
