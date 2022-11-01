@@ -36,7 +36,6 @@ class groupManager {
                 }
             }
             reject(new Error());
-          resolve(snapshot.val());
         }, (errorObject)=>{
           console.log('The read failed: ' + errorObject.name);
           reject(new Error());

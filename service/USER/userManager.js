@@ -3,6 +3,7 @@ import * as firebase from "../../config/firebase-config.js";
 import {channel} from "../../domain/CHANNEL/channel.js";
 import user from "../../domain/USER/user.js";
 import player from "../../domain/USER/player.js";
+import { GM } from "../GROUP/groupManager.js";
 
 const db = getDatabase();
 const userRef = db.ref('user');
@@ -12,17 +13,19 @@ class userManager {
   createAdmin(){ // create direct in firebase
   }
   
-  createUser(id, password, name, groupId){
+  async createUser(id, password, name, groupName){
     const newPostRef = userRef.push();
+    let groupId;
+    await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);
     const ret = new player(newPostRef.key, id, password, name, groupId);
     newPostRef.set(JSON.parse(JSON.stringify(ret)));
 
-    // userRef.child(`${uid}/groupId`).on('value',(snapshot)=>{
-    //   let groupId = snapshot.val();
-    //   groupRef.child(`${groupId}/users`).push().set({uid:newPostRef.key});
-    // },(e)=>{
-    //   console.log(e);
-    // })
+    db.ref('group').child(`${groupId}/users`).on('value',(snapshot)=>{
+      let groupId = snapshot.val();
+      groupRef.child(`${groupId}/users`).push().set({uid:newPostRef.key});
+    },(e)=>{
+      console.log(e);
+    })
 
     return ret;
   }

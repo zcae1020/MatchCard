@@ -8,8 +8,8 @@ const db = getDatabase();
 const userRef = db.ref('user');
 
 export const crudUser = (io, socket) => {
-    const createUser = (id, password, name, groupId) => {
-        socket.emit("user:create", UM.createUser(id,password,name,groupId));
+    const createUser = (id, password, name, groupName) => {
+        socket.emit("user:create", UM.createUser(id,password,name,groupName));
     }   
     
     const readUser = (id = 0) => {
