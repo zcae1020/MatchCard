@@ -16,16 +16,27 @@ class groupManager {
     return ret;
   }
 
-  getGroupByUid(uid){
+  getGroupByGroupId(groupId){
     
-  }
-
-  getGroupByChannelId(channelId){
-
   }
 
   getGroupByName(name){
     
+  }
+
+  getGroupByUid(uid){
+    return new Promise((resolve, reject)=>{
+        db.ref('user').child(`${uid}`).on('value', async (snapshot)=>  {
+          resolve(await this.getGroupByGroupId(snapshot.val()['groupId']));
+        }, (errorObject)=>{
+          console.log('The read failed: ' + errorObject.name);
+          reject(new Error());
+        })
+      })
+  }
+
+  getGroupByChannelId(channelId){
+
   }
 
   deleteGroupByGroupId(groupId){

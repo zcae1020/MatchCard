@@ -29,7 +29,7 @@ class userManager {
 
   getUserByUid(uid){
     return new Promise((resolve, reject)=>{
-      userRef.child(`${uid}`).on('value', async (snapshot)=>  {
+      userRef.child(`${uid}`).on('value', (snapshot)=>  {
         resolve(snapshot.val());
       }, (errorObject)=>{
         console.log('The read failed: ' + errorObject.name);
