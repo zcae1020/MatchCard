@@ -1,6 +1,7 @@
 import {getDatabase} from "firebase-admin/database";
 import {channel} from "../../domain/CHANNEL/channel.js";
 import * as firebase from "../../config/firebase-config.js";
+import { GM } from "../GROUP/groupManager.js";
 
 const db = getDatabase();
 const channelRef = db.ref('channel');
@@ -8,12 +9,13 @@ const userRef = db.ref('user');
 const groupRef = db.ref('group');
 
 class channelManager {
-  createChannel(uid, name, maxRoom, maxTeam){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용
+  async createChannel(uid, name, maxRoom, maxTeam, groupName){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용
     const newPostRef = channelRef.push();
-    const ret = new channel(newPostRef.key, name, maxRoom, maxTeam);
+    let groupId;
+    await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);s
+    const ret = new channel(newPostRef.key, name, maxRoom, maxTeam, groupId);
     newPostRef.set(JSON.parse(JSON.stringify(ret)));
 
-    
     userRef.child(`${uid}/groupId`).on('value',(snapshot)=>{
       let groupId = snapshot.val();
       groupRef.child(`${groupId}/channels`).push().set({channelId:newPostRef.key});
