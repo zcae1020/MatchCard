@@ -27,4 +27,5 @@ export const crudUser = (io, socket) => {
 
     socket.on("user:create", createUser);
     socket.on("user:read", readUser);
+    socket.on("player signup", createUser);
 }

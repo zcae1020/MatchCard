@@ -6,6 +6,7 @@ import * as auth from 'firebase-admin/auth';
 import {getDatabase} from 'firebase-admin/database';
 import {CM} from "../../service/CHANNEL/channelManager.js";
 import { decodeToken } from '../../middleware/index.js';
+import { UM } from '../../service/USER/userManager.js';
 
 const db = getDatabase();
 const userRef = db.ref('user');
@@ -16,6 +17,7 @@ export const login = (io, socket) => {
         userRef.child(`/${uid}`).on('value',(snapshot)=>{
           console.log(uid, snapshot.val());
           CM.getChannelIdInGroup(snapshot.val()["groupId"]).then(cs=>{
+            
             socket.emit("login", cs);
           }).catch(e=>{
             console.log(e.msg);
@@ -36,20 +38,16 @@ export const login = (io, socket) => {
           console.log(e.msg);
         })
       })
-    }   
-    
-    const getPlayerChannel = (playerId) => { 
-        const playerRef = userRef.child(`/player/${playerId}`);
-        playerRef.on('value', (snapshot) => {
-          
-          console.log(snapshot.val());
-        }, (errorObject) => {
-          console.log('The read failed: ' + errorObject.name);
-        });
-        socket.emit("login:player", CM.getChannels(adminId));
     }
 
-    socket.on("login", login);
-    socket.on("login1", login1);
-    socket.on("login:player", getPlayerChannel);
+    const player_login = (jwt, uid) => {
+
+    }
+
+    const admin_login = (jwt, uid) => {
+
+    }
+
+    socket.on("player login", player_login);
+    socket.on("admin login", admin_login);
 }
