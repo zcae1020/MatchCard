@@ -18,6 +18,14 @@ class userManager {
     return -1;
   }
 
+  connectUser(uid){
+
+  }
+
+  disconnectUser(uid){
+
+  }
+
   createAdmin(){ // create direct in firebase
   }
   
