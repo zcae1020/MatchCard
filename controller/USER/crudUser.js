@@ -16,7 +16,9 @@ export const crudUser = (io, socket) => {
         //if(id) c = CM.getChannelById(id);
         //else if(name) c = CM.getChannelByName(name);
 
-        CM.getChannelById(id).then(c=>socket.emit("channel:read", (c?c:"isNull"))).catch(e=>console.log(e));
+        CM.getChannelById(id)
+        .then(c=>socket.emit("channel:read", (c?c:"isNull")))
+        .catch(e=>console.log(e));
     }
 
     const updateChannel = (name, maxRoom, maxTeam, channelId) => { 

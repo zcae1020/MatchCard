@@ -12,33 +12,33 @@ const db = getDatabase();
 const userRef = db.ref('user');
 
 export const login = (io, socket) => {
-    const login1 = async (token, uid) => {
-      auth.getAuth().verifyIdToken(token).then(()=>{
-        userRef.child(`/${uid}`).on('value',(snapshot)=>{
-          console.log(uid, snapshot.val());
-          CM.getChannelIdInGroup(snapshot.val()["groupId"]).then(cs=>{
+    // const login1 = async (token, uid) => {
+    //   auth.getAuth().verifyIdToken(token).then(()=>{
+    //     userRef.child(`/${uid}`).on('value',(snapshot)=>{
+    //       console.log(uid, snapshot.val());
+    //       CM.getChannelIdInGroup(snapshot.val()["groupId"]).then(cs=>{
             
-            socket.emit("login", cs);
-          }).catch(e=>{
-            console.log(e.msg);
-          })
-        })
-      })
-      .catch((error)=>{
-          socket.emit("error", error);
-      })
-    }
+    //         socket.emit("login", cs);
+    //       }).catch(e=>{
+    //         console.log(e.msg);
+    //       })
+    //     })
+    //   })
+    //   .catch((error)=>{
+    //       socket.emit("error", error);
+    //   })
+    // }
 
-    const login = (uid) => {
-      userRef.child(`/${uid}`).on('value',(snapshot)=>{
-        console.log(uid, snapshot.val());
-        CM.getChannelIdInGroup(snapshot.val()["groupId"]).then(cs=>{
-          socket.emit("login", cs);
-        }).catch(e=>{
-          console.log(e.msg);
-        })
-      })
-    }
+    // const login = (uid) => {
+    //   userRef.child(`/${uid}`).on('value',(snapshot)=>{
+    //     console.log(uid, snapshot.val());
+    //     CM.getChannelIdInGroup(snapshot.val()["groupId"]).then(cs=>{
+    //       socket.emit("login", cs);
+    //     }).catch(e=>{
+    //       console.log(e.msg);
+    //     })
+    //   })
+    // }
 
     const player_login = (jwt, uid) => {
       auth.getAuth().verifyIdToken(jwt).then(()=>{
@@ -51,7 +51,13 @@ export const login = (io, socket) => {
     }
 
     const admin_login = (jwt, uid) => {
-
+      auth.getAuth().verifyIdToken(jwt).then(()=>{
+        UM.connectUser(uid);
+        socket.emit("success admin login", "success");
+      })
+      .catch((error)=>{
+        socket.emit("error", error);
+      })
     }
 
     socket.on("player login", player_login);
