@@ -7,6 +7,7 @@ import { GM } from "../GROUP/groupManager.js";
 
 const db = getDatabase();
 const userRef = db.ref('user');
+const connectionRef = db.ref('connection');
 
 //crud
 class userManager {
@@ -19,7 +20,7 @@ class userManager {
   }
 
   connectUser(uid){
-
+    connectionRef.push().set(uid);
   }
 
   disconnectUser(uid){
