@@ -20,11 +20,11 @@ class userManager {
   }
 
   connectUser(uid){
-    connectionRef.push().set(uid);
+    connectionRef.child(`${uid}`).set({uid:uid});
   }
 
   disconnectUser(uid){
-
+s
   }
 
   createAdmin(){ // create direct in firebase
