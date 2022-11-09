@@ -9,7 +9,7 @@ const userRef = db.ref('user');
 
 export const crudUser = (io, socket) => {
     const createUser = (id, password, name, groupName) => {
-        socket.emit("user:create", UM.createUser(id,password,name,groupName));
+        socket.emit("success player signup", UM.createUser(id,password,name,groupName));
     }   
     
     const readUser = (id = 0) => {
@@ -27,7 +27,7 @@ export const crudUser = (io, socket) => {
     const deleteChannel = (channelId) => { 
     }
 
-    socket.on("user:create", createUser);
-    socket.on("user:read", readUser);
+    // socket.on("user:create", createUser);
+    // socket.on("user:read", readUser);
     socket.on("player signup", createUser);
 }

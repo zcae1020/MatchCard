@@ -62,7 +62,7 @@ class channelManager {
   }
 
   deleteChannelById(channelId){ //firebase에서 id로 channel 지우기
-    return deleteChannelInGroup(channelId) && this.deleteChannelInChannelRef(channelId);
+    return this.deleteChannelInGroup(channelId) && this.deleteChannelInChannelRef(channelId);
   }
 
   deleteChannelByName(channelName){ //firebase에서 name로 channel 지우기
