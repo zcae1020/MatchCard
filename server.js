@@ -11,6 +11,7 @@ import { Server } from "socket.io";
 import * as path from "path";
 
 const __dirname = path.resolve();
+const port = process.env.PORT;
 
 const app = express();
 const httpServer = createServer(app);
@@ -47,6 +48,6 @@ const onConnection = (socket) => {
   
 io.on("connection", onConnection);
 
-httpServer.listen(3000, ()=>{
+httpServer.listen(port, ()=>{
     console.log('start server');
 });
