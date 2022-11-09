@@ -32,6 +32,7 @@ export const crudChannel = (io, socket) => {
     }
 
     const deleteChannel = (channelId) => { 
+        socket.emit("success delete channel", CM.deleteChannelById(channelId));
     }
 
     socket.on("create channel", createChannel);
