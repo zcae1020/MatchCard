@@ -5,6 +5,7 @@ import express from 'express'
 import {login} from './controller/AUTH/auth.js'
 import { crudChannel } from './controller/CHANNEL/crudChannel.js';
 import { crudUser } from './controller/USER/crudUser.js';
+//import cors from 'cors'
 import { createServer } from "http";
 import { Server } from "socket.io";
 import * as path from "path";
