@@ -2,7 +2,7 @@ export const serviceAccount = {
   "type": "service_account",
   "project_id": "match-card-dcd2e",
   "private_key_id": process.env.PK_ID,
-  "private_key": "-----BEGIN PRIVATE KEY-----\n"+process.env.PK+"\n-----END PRIVATE KEY-----\n",
+  "private_key": "-----BEGIN PRIVATE KEY-----\n"+process.env.PK.replace(/\\n/g, '\n')+"\n-----END PRIVATE KEY-----\n",
   "client_email": "firebase-adminsdk-k6k6x@match-card-dcd2e.iam.gserviceaccount.com",
   "client_id": process.env.CI,
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
