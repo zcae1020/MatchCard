@@ -17,5 +17,18 @@
     "pm2": "^5.2.0",
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.2"
+  },
+  "name": "heroku",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
