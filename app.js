@@ -2,7 +2,7 @@
  * root router
  */
 import express from 'express'
-import {login} from './controller/AUTH/login.js'
+import {login} from './controller/AUTH/auth.js'
 import { crudChannel } from './controller/CHANNEL/crudChannel.js';
 import { crudUser } from './controller/USER/crudUser.js';
 import cors from 'cors'
