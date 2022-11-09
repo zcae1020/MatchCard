@@ -24,7 +24,7 @@ class userManager {
   }
 
   disconnectUser(uid){
-s
+    connectionRef.child(`${uid}`).set(null);
   }
 
   createAdmin(){ // create direct in firebase
