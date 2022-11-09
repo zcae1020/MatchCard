@@ -1,7 +1,7 @@
 {
-  "name": "matchcard",
+  "name": "heroku",
   "version": "1.0.0",
-  "description": "npm project",
+  "description": "",
   "type": "module",
   "main": "index.js",
   "engines": {
@@ -9,8 +9,7 @@
     "node": "16.x"
   },
   "scripts": {
-    "start": "NODE_ENV=production&&node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app"
   },
   "author": "",
   "license": "ISC",
@@ -23,24 +22,8 @@
     "socket.io-client": "^4.5.2"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.1",
-    "firebase-admin": "^11.0.1",
-    "pm2": "^5.2.0",
-    "socket.io": "^4.5.2",
-    "socket.io-client": "^4.5.2"
+    "express": "^4.17.1",
+    "firebase-tools": "^11.16.0"
   },
-  "name": "heroku",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node app"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+  "keywords": []
 }
