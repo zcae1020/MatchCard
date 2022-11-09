@@ -5,25 +5,20 @@
   "type": "module",
   "main": "index.js",
   "engines": {
-    "npm": "8.x",
-    "node": "16.x"
+    "node": "18.x"
   },
   "scripts": {
-    "start": "node app"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "firebase-admin": "^11.0.1",
     "pm2": "^5.2.0",
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.2"
-  },
-  "dependencies": {
-    "express": "^4.17.1",
-    "firebase-tools": "^11.16.0"
-  },
-  "keywords": []
+  }
 }
