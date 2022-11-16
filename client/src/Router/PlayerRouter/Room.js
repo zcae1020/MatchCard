@@ -1,36 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../css/ChannelAndRoom.module.css";
 
-function Room({ socket, uid }) {
+function Room({ socket, channelid }) {
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    socket.emit("player room list", channelid);
+    console.log(channelid);
+  }, []);
+
+  socket.on("player room info", (rooms) => {
+    console.log(rooms);
+    setRooms(rooms);
+  });
+
+  const enterRoom = (roomid) => {
+    socket.emit("enter room", roomid);
+  };
+
+  const RoomList = () => {
+    return rooms.map((room) => {
+      return (
+        <div key={room.roomid} className={styles.roomBox}>
+          <span>Room {room.roomid}</span>
+          <span>{room.state ? <button disabled={true}>게임중</button> : <button onClick={() => enterRoom(room.roomid)}>입장하기</button>}</span>
+        </div>
+      );
+    });
+  };
+
   return (
     <div>
-      <span>
-        <h1>Channels</h1>
-        {/* <button onClick={logout}>logout</button> */}
-      </span>
-      <div className={styles.channel_row}>
-        <span className={styles.channel_span}>
-          <span className={styles.channel_num}>Channel1</span>
-        </span>
-        <span className={styles.channel_span}>
-          <span className={styles.channel_num}>Channel2</span>
-        </span>
-      </div>
-      <div className={styles.channel_row}>
-        <span className={styles.channel_span}>
-          <span className={styles.channel_num}>Channel3</span>
-        </span>
-        <span className={styles.channel_span}>
-          <span className={styles.channel_num}>Channel4</span>
-        </span>
-      </div>
-      <div className={styles.channel_row}>
-        <span className={styles.channel_span}>
-          <span className={styles.channel_num}>Channel5</span>
-        </span>
-        <span className={styles.channel_span}>
-          <span className={styles.channel_num}>Channel6</span>
-        </span>
+      <h1>Room</h1>
+      <div className={styles.roomList}>
+        <RoomList />
       </div>
     </div>
   );

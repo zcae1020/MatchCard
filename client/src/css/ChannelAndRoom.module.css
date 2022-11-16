@@ -5,6 +5,8 @@ div {
   align-items: center;
   justify-content: center;
   margin-top: 35px;
+  margin-left: 48.5px;
+  margin-right: 48.5px;
 }
 
 .channel_row {
@@ -23,4 +25,21 @@ div {
 
 .channel_num {
   font-size: 20px;
+}
+
+.roomList {
+  display: flex;
+  flex-direction: row;
+  justify-content: initial;
+  flex-wrap: wrap;
+}
+
+.roomBox {
+  width: 440px;
+  height: 90px;
+  border-style: solid;
+  border-width: 2pt;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin: 13px 15px;
 }

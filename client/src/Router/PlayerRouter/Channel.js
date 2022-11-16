@@ -3,7 +3,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useNavigate } from "react-router-dom";
 
-function Channel({ socket, uid }) {
+function Channel({ socket, uid, setChannelid }) {
   const [channels, setChannels] = useState([]);
   const [listNum, setListNum] = useState(0);
   const [beforeDisable, setBeforeDisable] = useState(true);
@@ -46,6 +46,7 @@ function Channel({ socket, uid }) {
 
   const enterChannel = (channelId) => {
     socket.emit("room list", channelId);
+    setChannelid(channelId);
     console.log(channelId + " clicked");
     navigate("/Room");
   };

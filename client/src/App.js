@@ -14,6 +14,7 @@ import Admin from "./Router/Admin";
 function App() {
   const [connection, setConnection] = useState(false);
   const [uid, setUid] = useState("");
+  const [channelid, setChannelid] = useState("");
 
   const socket = io.connect("http://localhost:3001");
 
@@ -30,8 +31,8 @@ function App() {
         <Route path="/SignUp" element={<SignUp socket={socket} />} />
         <Route path="/SignUpSuccess" element={<SignUpSuccess />} />
         <Route element={<AuthLayout />}>
-          <Route path="/Channel" element={<Channel socket={socket} uid={uid} />} />
-          <Route path="/Room" element={<Room socket={socket} uid={uid} />} />
+          <Route path="/Channel" element={<Channel socket={socket} uid={uid} setChannelid={setChannelid} />} />
+          <Route path="/Room" element={<Room socket={socket} channelid={channelid} />} />
           <Route path="/Admin" element={<Admin socket={socket} uid={uid} />} />
         </Route>
       </Routes>
