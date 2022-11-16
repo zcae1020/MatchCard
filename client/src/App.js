@@ -16,7 +16,7 @@ function App() {
   const [uid, setUid] = useState("");
   const [channelid, setChannelid] = useState("");
 
-  const socket = io.connect("http://localhost:3001");
+  const socket = io.connect("http://localhost:5000");
 
   socket.on("connected", () => {
     setConnection(true);
