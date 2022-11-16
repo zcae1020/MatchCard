@@ -1,5 +1,4 @@
 server/node_modules
 server/test.js
-client/
-front/web-board-game/client/node_modules
-node_modules
+server/config/serviceAccount.js
+client/node_modules
