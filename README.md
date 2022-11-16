@@ -1,2 +1,2 @@
-# web-game-login
-자주프 로그인화면
+# web-game
+자주프
