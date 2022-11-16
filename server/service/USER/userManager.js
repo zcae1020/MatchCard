@@ -8,6 +8,7 @@ import { GM } from "../GROUP/groupManager.js";
 const db = getDatabase();
 const userRef = db.ref('user');
 const connectionRef = db.ref('connection');
+const groupRef = db.ref('group');
 
 //crud
 class userManager {
@@ -20,11 +21,17 @@ class userManager {
   }
 
   connectUser(uid){
-    connectionRef.child(`${uid}`).set({uid:uid});
+    connectionRef.push().set({uid:`${uid}`})
   }
 
   disconnectUser(uid){
-    connectionRef.child(`${uid}`).set(null);
+    connectionRef.on('value', (snapshot) => {
+      for(let idx in snapshot.val()){
+        if(snapshot.val()[idx]['uid']==uid){
+          connectionRef.child(idx).set(null);
+        }
+      }
+    })
   }
 
   createAdmin(){ // create direct in firebase
