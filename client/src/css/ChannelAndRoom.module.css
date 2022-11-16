@@ -1,0 +1,45 @@
+div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 35px;
+  margin-left: 48.5px;
+  margin-right: 48.5px;
+}
+
+.channel_row {
+  flex-direction: row;
+}
+
+.channel_span {
+  width: 470px;
+  height: 80px;
+  border-style: solid;
+  border-width: 2pt;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin: 0px 15px;
+}
+
+.channel_num {
+  font-size: 20px;
+}
+
+.roomList {
+  display: flex;
+  flex-direction: row;
+  justify-content: initial;
+  flex-wrap: wrap;
+}
+
+.roomBox {
+  width: 440px;
+  height: 90px;
+  border-style: solid;
+  border-width: 2pt;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin: 13px 15px;
+}
