@@ -11,25 +11,27 @@ import { Server } from "socket.io";
 import * as path from "path";
 
 const __dirname = path.resolve();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: "https://example.com",
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
         allowedHeaders: ["my-custom-header"],
         credentials: true
     }
 });
 
-app.get('/', function(req, res) {
-    res.sendFile(
-        path.join(__dirname + "/front/web-board-game/client/public/index.html")
-    )
-})
+// app.get('/', function(req, res) {
+//     res.sendFile(
+//         path.join(__dirname + "/../front/web-board-game/client/public/index.html")
+//     )
+// })
 
 const onConnection = (socket) => {
+    socket.emit("connected");
     console.log("new connection" + socket.id);
     socket.on("disconnect",()=>{
         console.log('disconnected');

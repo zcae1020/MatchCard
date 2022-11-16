@@ -41,23 +41,28 @@ export const login = (io, socket) => {
     // }
 
     const player_login = (jwt, uid) => {
-      auth.getAuth().verifyIdToken(jwt).then(()=>{
-        UM.connectUser(uid);
-        socket.emit("success player login", "success");
-      })
-      .catch((error)=>{
-        socket.emit("error", error);
-      })
+      UM.connectUser(uid);
+      socket.emit("success player login", "success");
+
+      // auth.getAuth().verifyIdToken(jwt).then(()=>{
+      //   UM.connectUser(uid);
+      //   socket.emit("success player login", "success");
+      // })
+      // .catch((error)=>{
+      //   socket.emit("error", error);
+      // })
     }
 
     const admin_login = (jwt, uid) => {
-      auth.getAuth().verifyIdToken(jwt).then(()=>{
-        UM.connectUser(uid);
-        socket.emit("success admin login", "success");
-      })
-      .catch((error)=>{
-        socket.emit("error", error);
-      })
+      UM.connectUser(uid);
+      socket.emit("success admin login", "success");
+      // auth.getAuth().verifyIdToken(jwt).then(()=>{
+      //   UM.connectUser(uid);
+      //   socket.emit("success admin login", "success");
+      // })
+      // .catch((error)=>{
+      //   socket.emit("error", error);
+      // })
     }
 
     socket.on("player login", player_login);
