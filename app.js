@@ -30,7 +30,7 @@ app.get('/', function(req, res) {
 })
 
 const onConnection = (socket) => {
-    console.log("new connection");
+    console.log("new connection" + socket.id);
     socket.on("disconnect",()=>{
         console.log('disconnected');
     })
