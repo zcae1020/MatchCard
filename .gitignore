@@ -1,2 +1,4 @@
+server/node_modules
+server/test.js
+front/web-board-game/client/node_modules
 node_modules
-test.js
