@@ -10,6 +10,7 @@ export class gameManager{
     teamscore = [] //팀별 점수
     teams = []; //게임 시작후 확정된 team
     maxTeam;
+    round = 1;
 
     constructor(maxTeam){
         maxTeam = maxTeam;
