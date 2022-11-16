@@ -37,7 +37,11 @@ class userManager {
   createAdmin(){ // create direct in firebase
   }
   
-  async createUser(id, password, name, groupName){
+  async createUser(data){
+    let id = data["email"];
+    let password = data["password"];
+    let name = data["userName"];
+    let groupName = data["group"];
     const newPostRef = userRef.push();
     let groupId;
     await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);

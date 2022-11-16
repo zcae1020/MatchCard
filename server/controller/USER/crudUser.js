@@ -8,8 +8,8 @@ const db = getDatabase();
 const userRef = db.ref('user');
 
 export const crudUser = (io, socket) => {
-    const createUser = (id, password, name, groupName) => {
-        socket.emit("success player signup", UM.createUser(id,password,name,groupName));
+    const createUser = (data) => {
+        socket.emit("success player signup", UM.createUser(data));
     }   
     
     const readUser = (id = 0) => {
@@ -21,10 +21,10 @@ export const crudUser = (io, socket) => {
         .catch(e=>console.log(e));
     }
 
-    const updateChannel = (name, maxRoom, maxTeam, channelId) => { 
+    const updateUser = (name, maxRoom, maxTeam, channelId) => { 
     }
 
-    const deleteChannel = (channelId) => { 
+    const deleteUser = (channelId) => { 
     }
 
     // socket.on("user:create", createUser);
