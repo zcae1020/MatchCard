@@ -1,4 +1,4 @@
-div {
+/* div {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -7,7 +7,7 @@ div {
   margin-top: 35px;
   margin-left: 48.5px;
   margin-right: 48.5px;
-}
+} */
 
 .channel_row {
   flex-direction: row;
@@ -42,4 +42,39 @@ div {
   border-radius: 10px;
   padding: 15px 20px;
   margin: 13px 15px;
+}
+
+.logout {
+  position: absolute;
+  top: 30px;
+  right: 50px;
+  border: none;
+  display: inline-block;
+  background-color: white;
+}
+
+.logout:hover {
+  cursor: pointer;
+}
+
+.btn {
+  color: white;
+  padding: 15px 25px;
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, 0.21);
+  border-bottom-color: rgba(0, 0, 0, 0.34);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.34) inset, 0 2px 0 -1px rgba(0, 0, 0, 0.13), 0 3px 0 -1px rgba(0, 0, 0, 0.08), 0 3px 13px -1px rgba(0, 0, 0, 0.21);
+  background-color: #7fccde;
+}
+
+.btn:hover {
+  background-color: #82d1e3;
+}
+
+.btn:active {
+  top: 1px;
+  border-color: rgba(0, 0, 0, 0.34) rgba(0, 0, 0, 0.21) rgba(0, 0, 0, 0.21);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.89), 0 1px rgba(0, 0, 0, 0.05) inset;
+  position: relative;
 }

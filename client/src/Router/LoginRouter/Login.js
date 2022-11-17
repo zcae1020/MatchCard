@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import styles from "../../css/Login.module.css";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../../firebase";
+import style from "../../css/Login.module.css";
 
 const auth = getAuth(app);
 
@@ -78,28 +78,26 @@ function Login({ userType, socket, setUid }) {
   };
 
   return (
-    <div>
-      <div className={styles.div_login}>
-        <Box
-          className={styles.div_box_login}
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "25ch" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField id="textfield-id" label="E-MAIL" variant="standard" onChange={onChange} />
-          <TextField id="textfield-password" label="PASSWORD" variant="standard" type="password" onChange={onChange} />
-          <button className={styles.box_login_button} onClick={onClick}>
-            login
-          </button>
-        </Box>
-        <p className={styles.errorMessage}>{errorMessage}</p>
-        <p>
-          <Link to={"/SignUp"}>signup</Link>
-        </p>
-      </div>
+    <div className={style.div_login}>
+      <Box
+        className={style.div_box_login}
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField id="textfield-id" label="E-MAIL" variant="standard" onChange={onChange} />
+        <TextField id="textfield-password" label="PASSWORD" variant="standard" type="password" onChange={onChange} />
+        <button className={style.box_login_button} onClick={onClick}>
+          login
+        </button>
+      </Box>
+      <p className={style.errorMessage}>{errorMessage}</p>
+      <p>
+        <Link to={"/SignUp"}>signup</Link>
+      </p>
     </div>
   );
 }

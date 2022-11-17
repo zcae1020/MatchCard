@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import styles from "../css/ChannelAndRoom.module.css";
 
 function AuthLayout() {
   const auth = getAuth();
@@ -24,7 +25,9 @@ function AuthLayout() {
 
   return (
     <div>
-      <button onClick={logout}>logout</button>
+      <a onClick={logout} className={styles.logout}>
+        로그아웃
+      </a>
       <Outlet />
     </div>
   );

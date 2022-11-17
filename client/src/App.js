@@ -10,6 +10,7 @@ import AdminLogin from "./Router/LoginRouter/AdminLogin.js";
 import SignUpSuccess from "./Router/SignUpSuccess";
 import io from "socket.io-client";
 import Admin from "./Router/Admin";
+import "./css/Common.css";
 
 function App() {
   const [connection, setConnection] = useState(false);
