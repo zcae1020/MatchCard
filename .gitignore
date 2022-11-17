@@ -1,6 +1,7 @@
 .DS_Store
 README.md
 server/
+myserver/
 
 client/.DS_Store
 client/.gitignore
