@@ -1,3 +1,7 @@
+.signup_link {
+  text-decoration: none;
+}
+
 .div_login {
   width: 450px;
   border-style: solid;
@@ -21,4 +25,12 @@
 .radio_userType {
   height: 50px;
   margin: 0;
+}
+
+.toLogin {
+  color: #6343d4;
+}
+
+.toLogin:hover {
+  cursor: pointer;
 }

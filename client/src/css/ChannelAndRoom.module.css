@@ -9,6 +9,39 @@
   margin-right: 48.5px;
 } */
 
+.channel_plus {
+  background-color: rgb(45, 164, 78);
+  border-radius: 5px;
+  padding: 4px 13px;
+  color: #fefdf8;
+}
+.channel_plus:hover {
+  cursor: pointer;
+  background-color: rgb(39, 146, 69);
+}
+
+.channel_delete {
+  border: solid 1px #d5d8da;
+  padding: 4px 15px;
+  border-radius: 5px;
+  background-color: #f6f8fa;
+  color: #cf222e;
+}
+.channel_delete:hover {
+  cursor: pointer;
+  background-color: #cf222e;
+  color: #f6f8fa;
+}
+
+.modal {
+  padding: 0;
+  border-radius: 100px;
+}
+
+.list {
+  padding-top: 0;
+}
+
 .channel_row {
   flex-direction: row;
 }
@@ -57,14 +90,16 @@
   cursor: pointer;
 }
 
-.btn {
+/* .btn {
   color: white;
   padding: 15px 25px;
   display: inline-block;
   border: 1px solid rgba(0, 0, 0, 0.21);
   border-bottom-color: rgba(0, 0, 0, 0.34);
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.34) inset, 0 2px 0 -1px rgba(0, 0, 0, 0.13), 0 3px 0 -1px rgba(0, 0, 0, 0.08), 0 3px 13px -1px rgba(0, 0, 0, 0.21);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.34) inset,
+    0 2px 0 -1px rgba(0, 0, 0, 0.13), 0 3px 0 -1px rgba(0, 0, 0, 0.08),
+    0 3px 13px -1px rgba(0, 0, 0, 0.21);
   background-color: #7fccde;
 }
 
@@ -77,4 +112,4 @@
   border-color: rgba(0, 0, 0, 0.34) rgba(0, 0, 0, 0.21) rgba(0, 0, 0, 0.21);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.89), 0 1px rgba(0, 0, 0, 0.05) inset;
   position: relative;
-}
+} */
