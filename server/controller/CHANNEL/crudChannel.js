@@ -9,9 +9,8 @@ const db = getDatabase();
 const userRef = db.ref('user');
  
 export const crudChannel = (io, socket) => {
-    const createChannel = (uid = 0, maxRoom = 4, maxTeam = 4) => {
-        if(uid!=0)
-            socket.emit("success create channel", CM.createChannel(uid, maxRoom, maxTeam));
+    const createChannel = (uid, maxRoom, maxTeam) => {
+        socket.emit("success create channel", CM.createChannel(uid, maxRoom, maxTeam));
     }   
      
     const readChannel = (id = 0) => {
@@ -21,11 +20,12 @@ export const crudChannel = (io, socket) => {
         //CM.getChannelById(id).then(c=>socket.emit("channel:read", (c?c:"isNull"))).catch(e=>console.log(e));
     }
 
-    const getChannelList = (uid) => {
-        if(UM.whoIsUser(uid))
-            socket.emit("success admin channel list",CM.getChannelIdInGroup(uid));
-        else
-            socket.emit("success player channel list",CM.getChannelIdInGroup(uid));
+    const getChannelListAdmin = (uid) => {
+        socket.emit("success admin channel list",CM.getChannelIdInGroup(uid));
+    }
+
+    const getChannelListPlayer = (uid) => {
+        socket.emit("success player channel list",CM.getChannelIdInGroup(uid));
     }
 
     const updateChannel = (name, maxRoom, maxTeam, channelId) => { 
@@ -37,7 +37,7 @@ export const crudChannel = (io, socket) => {
 
     socket.on("create channel", createChannel);
     socket.on("delete channel", deleteChannel);
-    socket.on("admin channel list", getChannelList);
-    socket.on("player channel list", getChannelList);
+    socket.on("admin channel list", getChannelListAdmin);
+    socket.on("player channel list", getChannelListPlayer);
     //socket.on("channel:read", readChannel);
 }

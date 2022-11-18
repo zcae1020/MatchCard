@@ -3,6 +3,7 @@ import * as firebase from "../../config/firebase-config.js";
 import {channel} from "../../domain/CHANNEL/channel.js";
 import user from "../../domain/USER/user.js";
 import player from "../../domain/USER/player.js";
+import admin from "../../domain/USER/admin.js";
 import { GM } from "../GROUP/groupManager.js";
 
 const db = getDatabase();
@@ -34,14 +35,8 @@ class userManager {
     })
   }
 
-  async createAdmin(){
-    let uid = data["uid"]
-    let id = data["email"];
-    let password = data["password"];
-    let name = data["userName"];
-    let groupName = data["group"];
+  async createAdmin(uid, id, password, name, groupName){
     let groupId;
-
     await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);
     const ret = new admin(uid, id, password, name, groupId);
     userRef.child(`${uid}`).set(JSON.parse(JSON.stringify(ret)));

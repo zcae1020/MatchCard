@@ -8,12 +8,13 @@ const db = getDatabase();
 const userRef = db.ref('user');
 
 export const crudUser = (io, socket) => {
-    const createUser = (data) => {
-        if(UM.whoIsUser(data))
-            socket.emit("success player signup", UM.createAdmin(data));
-        else
-            socket.emit("success player signup", UM.createUser(data));
-    }   
+    const createPlayer = (uid, id, password, name, groupName) => {
+        socket.emit("success player signup", UM.createUser(uid, id, password, name, groupName));
+    } 
+    
+    const createAdmin = (uid, id, password, name, groupName) => {
+        socket.emit("success admin signup", UM.createAdmin(uid, id, password, name, groupName));
+    }
     
     const readUser = (id = 0) => {
         //if(id) c = CM.getChannelById(id);
@@ -32,6 +33,6 @@ export const crudUser = (io, socket) => {
 
     // socket.on("user:create", createUser);
     // socket.on("user:read", readUser);
-    socket.on("player signup", createUser);
-    socket.on("admin signup", createUser);
+    socket.on("player signup", createPlayer);
+    socket.on("admin signup", createAdmin);
 }
