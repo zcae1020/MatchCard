@@ -53,9 +53,9 @@ function SignUp({ userType, socket }) {
     if (email === "" || password === "" || userName === "" || uid === "" || group === "") {
       return;
     } else if (userType === "player") {
-      socket.emit("player signup", { email, password, userName, group, uid });
+      socket.emit("player signup", email, password, userName, group, uid);
     } else {
-      socket.emit("admin signup", { email, password, userName, group, uid });
+      socket.emit("admin signup", email, password, userName, group, uid);
     }
   }, [uid]);
 
