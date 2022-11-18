@@ -21,11 +21,17 @@ export const crudChannel = (io, socket) => {
     }
 
     const getChannelListAdmin = (uid) => {
-        socket.emit("success admin channel list",CM.getChannelIdInGroup(uid));
+        console.log(uid);
+        CM.getChannelListInGroupByUid(uid).then((r)=>{
+            console.log(r);
+            socket.emit("success admin channel list",r);
+        });
     }
 
     const getChannelListPlayer = (uid) => {
-        socket.emit("success player channel list",CM.getChannelIdInGroup(uid));
+        CM.getChannelListInGroupByUid(uid).then((r)=>{
+            socket.emit("success player channel list",r);
+        });
     }
 
     const updateChannel = (name, maxRoom, maxTeam, channelId) => { 
@@ -39,5 +45,4 @@ export const crudChannel = (io, socket) => {
     socket.on("delete channel", deleteChannel);
     socket.on("admin channel list", getChannelListAdmin);
     socket.on("player channel list", getChannelListPlayer);
-    //socket.on("channel:read", readChannel);
 }

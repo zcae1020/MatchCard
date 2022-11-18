@@ -44,7 +44,6 @@ class groupManager {
   }
 
   getGroupByUid(uid){
-    console.log(uid);
     return new Promise((resolve, reject)=>{
         db.ref('user').child(`${uid}`).on('value', async (snapshot)=>  {
           resolve(await this.getGroupByGroupId(snapshot.val()['groupId']));

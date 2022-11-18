@@ -35,15 +35,22 @@ class channelManager {
     //필요할때 구현
   }
 
-  getChannelIdInGroup(groupId){ // group이 관리하는 channelId들 가져오기
+  getChannelListInGroupByUid(uid){ // group이 관리하는 channelId들 가져오기
     return new Promise((resolve, reject)=>{
-      groupRef.child(`/${groupId}/channels`).on('value', async (snapshot)=>{
-        resolve(snapshot.val());
-      }, (errorObject)=>{
-        console.log('The read failed: ' + errorObject.name);
-        reject(new Error());
-      })
-    })
+      GM.getGroupByUid(uid).then((group) => {
+        let groupId = group["groupId"];
+        groupRef.child(`/${groupId}/channels`).on('value', async (snapshot)=>{
+          let ret = [];
+          for(let idx in snapshot.val()){
+            ret.push(idx);
+          }
+          resolve(ret);
+        }, (errorObject)=>{
+            console.log('The read failed: ' + errorObject.name);
+            reject(new Error());
+          })
+        })
+      });
   }
 
   deleteChannelInGroup(channelId){
