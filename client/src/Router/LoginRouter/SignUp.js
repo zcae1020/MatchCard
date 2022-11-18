@@ -61,12 +61,12 @@ function SignUp({ userType, socket }) {
 
   socket.on("success player signup", () => {
     signOut(auth).then(() => {
-      navigate("/SignUpSuccess");
+      navigate("/PlayerSignUpSuccess");
     });
   });
   socket.on("success admin signup", () => {
     signOut(auth).then(() => {
-      navigate("/SignUpSuccess");
+      navigate("/AdminSignUpSuccess");
     });
   });
   const signup = async () => {

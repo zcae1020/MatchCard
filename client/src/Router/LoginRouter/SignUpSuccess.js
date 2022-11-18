@@ -1,11 +1,12 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import style from '../css/Login.module.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import style from "../../css/Login.module.css";
 
-function SignUpSuccess() {
+function SignUpSuccess({ userType }) {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/');
+    if (userType === "admin") navigate("/AdminLogin");
+    else navigate("/");
   };
 
   return (
