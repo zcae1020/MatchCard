@@ -3,6 +3,7 @@ import * as firebase from "../../config/firebase-config.js";
 import {channel} from "../../domain/CHANNEL/channel.js";
 import user from "../../domain/USER/user.js";
 import player from "../../domain/USER/player.js";
+import admin from "../../domain/USER/admin.js";
 import { GM } from "../GROUP/groupManager.js";
 
 const db = getDatabase();
@@ -34,7 +35,7 @@ class userManager {
     })
   }
 
-  async createAdmin(){
+  async createAdmin(data){
     let uid = data["uid"]
     let id = data["email"];
     let password = data["password"];
