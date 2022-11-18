@@ -53,20 +53,20 @@ function SignUp({ userType, socket }) {
     if (email === "" || password === "" || userName === "" || uid === "" || group === "") {
       return;
     } else if (userType === "player") {
-      socket.emit("player signup", { email, password, userName, group, uid });
+      socket.emit("player signup", email, password, userName, group, uid);
     } else {
-      socket.emit("admin signup", { email, password, userName, group, uid });
+      socket.emit("admin signup", email, password, userName, group, uid);
     }
   }, [uid]);
 
   socket.on("success player signup", () => {
     signOut(auth).then(() => {
-      navigate("/SignUpSuccess");
+      navigate("/PlayerSignUpSuccess");
     });
   });
   socket.on("success admin signup", () => {
     signOut(auth).then(() => {
-      navigate("/SignUpSuccess");
+      navigate("/AdminSignUpSuccess");
     });
   });
   const signup = async () => {

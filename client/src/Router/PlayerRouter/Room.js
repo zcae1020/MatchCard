@@ -55,19 +55,23 @@ function Room({ socket, channelid }) {
             key={room.roomid}
             className={parseInt(rooms.length / listNum) <= 1 && parseInt(rooms.length % listNum) === 0 ? style.room_box_one : style.room_box}
           >
-            <span>Room {room.roomid}</span>
+            <span className={style.room_num}>Room {room.roomid}</span>
             <span>
               {room.userCnt}/{room.maxTeam * 2}
             </span>
-            <span>
-              {room.state ? (
-                <button disabled={true}>게임중</button>
-              ) : room.userCnt >= room.maxTeam * 2 ? (
-                <button disabled={true}>입장하기</button>
-              ) : (
-                <button onClick={() => enterRoom(room.roomid)}>입장하기</button>
-              )}
-            </span>
+            {room.state ? (
+              <button className={style.room_enter} disabled={true}>
+                게임중
+              </button>
+            ) : room.userCnt >= room.maxTeam * 2 ? (
+              <button className={style.room_enter} disabled={true}>
+                입장하기
+              </button>
+            ) : (
+              <button className={style.room_enter} onClick={() => enterRoom(room.roomid)}>
+                입장하기
+              </button>
+            )}
           </div>
         );
     });

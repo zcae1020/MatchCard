@@ -114,7 +114,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 30px 195px;
-  border: solid 1px;
+  /* border: solid 1px; */
 }
 
 .room_box {
@@ -125,6 +125,7 @@
   border-radius: 10px;
   padding: 15px 20px;
   margin: 13px 15px;
+  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
 }
 
 .room_box_one {
@@ -138,7 +139,18 @@
   /* margin: 13px 15px; */
   margin-top: 13px;
   margin-left: -502px;
+  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
   /* padding: 30px 195px; */
+}
+
+.room_num {
+  font-size: 20pt;
+}
+
+.room_enter {
+  padding: 5px 13px;
+  font-family: inherit;
+  font-size: medium;
 }
 
 .arrow {

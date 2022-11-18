@@ -8,7 +8,8 @@ import Channel from "./Router/PlayerRouter/Channel";
 import Room from "./Router/PlayerRouter/Room";
 import AuthLayout from "./Router/AuthLayout.js";
 import AdminLogin from "./Router/LoginRouter/AdminLogin.js";
-import SignUpSuccess from "./Router/SignUpSuccess";
+import AdminSignUpSuccess from "./Router/LoginRouter/AdminSignUpSuccess";
+import PlayerSignUpSuccess from "./Router/LoginRouter/PlayerSignUpSuccess";
 import io from "socket.io-client";
 import Admin from "./Router/Admin";
 import "./css/Common.css";
@@ -32,7 +33,8 @@ function App() {
         <Route path="/AdminLogin" element={<AdminLogin socket={socket} setUid={setUid} />} />
         <Route path="/PlayerSignUp" element={<PlayerSignUp socket={socket} />} />
         <Route path="/AdminSignUp" element={<AdminSignUp socket={socket} />} />
-        <Route path="/SignUpSuccess" element={<SignUpSuccess />} />
+        <Route path="/PlayerSignUpSuccess" element={<PlayerSignUpSuccess />} />
+        <Route path="/AdminSignUpSuccess" element={<AdminSignUpSuccess />} />
         <Route element={<AuthLayout />}>
           <Route path="/Channel" element={<Channel socket={socket} uid={uid} setChannelid={setChannelid} />} />
           <Route path="/Room" element={<Room socket={socket} channelid={channelid} />} />
