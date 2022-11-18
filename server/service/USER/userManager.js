@@ -41,34 +41,18 @@ class userManager {
     const ret = new admin(uid, id, password, name, groupId);
     userRef.child(`${uid}`).set(JSON.parse(JSON.stringify(ret)));
 
-    db.ref('group').child(`${groupId}/users`).on('value',(snapshot)=>{
-      let groupId = snapshot.val();
-      groupRef.child(`${groupId}/users`).push().set({"uid":uid});
-    },(e)=>{
-      console.log(e);
-    })
+    groupRef.child(`${groupId}/users/${uid}`).set({"uid":uid});
 
     return ret;
   }
   
-  async createUser(data){
-    let uid = data["uid"]
-    let id = data["email"];
-    let password = data["password"];
-    let name = data["userName"];
-    let groupName = data["group"];
+  async createUser(uid, id, password, name, groupName){
     let groupId;
-
     await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);
     const ret = new player(uid, id, password, name, groupId);
     userRef.child(`${uid}`).set(JSON.parse(JSON.stringify(ret)));
 
-    db.ref('group').child(`${groupId}/users`).on('value',(snapshot)=>{
-      let groupId = snapshot.val();
-      groupRef.child(`${groupId}/users`).push().set({"uid":uid});
-    },(e)=>{
-      console.log(e);
-    })
+    groupRef.child(`${groupId}/users/${uid}`).set({"uid":uid});
 
     return ret;
   }

@@ -32,7 +32,7 @@ class groupManager {
         groupRef.on('value', (snapshot)=>  {
             for(let idx in snapshot.val()){
                 if(snapshot.val()[idx]['name']==name){
-                    resolve(snapshot.val()[idx]);
+                  resolve(snapshot.val()[idx]);
                 }
             }
             reject(new Error());
