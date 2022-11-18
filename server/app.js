@@ -11,7 +11,7 @@ import { Server } from "socket.io";
 import * as path from "path";
 
 const __dirname = path.resolve();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3001;
 
 const app = express();
 const httpServer = createServer(app);

@@ -15,7 +15,6 @@ class userManager {
   whoIsUser(uid){ // user is admin or player? / admin: 0, player: 1
     userRef.child(`${uid}`).on('value', (snapshot)=>{
       let user = snapshot.val();
-      console.log(user);
       return (user.hasOwnProperty('win')?1:0);
     })
     return -1;
@@ -35,7 +34,26 @@ class userManager {
     })
   }
 
-  createAdmin(){ // create direct in firebase
+  async createAdmin(){
+    let uid = data["uid"]
+    let id = data["email"];
+    let password = data["password"];
+    let name = data["userName"];
+    let groupName = data["group"];
+    let groupId;
+
+    await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);
+    const ret = new admin(uid, id, password, name, groupId);
+    userRef.child(`${uid}`).set(JSON.parse(JSON.stringify(ret)));
+
+    db.ref('group').child(`${groupId}/users`).on('value',(snapshot)=>{
+      let groupId = snapshot.val();
+      groupRef.child(`${groupId}/users`).push().set({"uid":uid});
+    },(e)=>{
+      console.log(e);
+    })
+
+    return ret;
   }
   
   async createUser(data){
@@ -48,11 +66,11 @@ class userManager {
 
     await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);
     const ret = new player(uid, id, password, name, groupId);
-    userRef.set({uid: JSON.parse(JSON.stringify(ret))});
+    userRef.child(`${uid}`).set(JSON.parse(JSON.stringify(ret)));
 
     db.ref('group').child(`${groupId}/users`).on('value',(snapshot)=>{
       let groupId = snapshot.val();
-      groupRef.child(`${groupId}/users`).push().set({uid:newPostRef.key});
+      groupRef.child(`${groupId}/users`).push().set({"uid":uid});
     },(e)=>{
       console.log(e);
     })
