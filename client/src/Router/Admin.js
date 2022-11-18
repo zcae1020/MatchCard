@@ -68,6 +68,7 @@ function Admin({ socket, uid }) {
     } else if (maxTeam < 2 || maxTeam > 4) {
       setErrorMessage('*maxTeam은 2 이상 4 이하의 숫자를 입력해주세요');
     } else {
+      console.log(uid, maxRoom, maxTeam);
       socket.emit('create channel', uid, maxRoom, maxTeam);
       setOpen((prev) => !prev);
     }
