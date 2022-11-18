@@ -22,9 +22,9 @@ function Login({ userType, socket, setUid }) {
     if (accessToken === "" || thisUid === "") {
       return;
     } else if (userType === "admin") {
-      socket.emit("admin login", { accessToken, thisUid });
+      socket.emit("admin login", accessToken, thisUid);
     } else {
-      socket.emit("player login", { accessToken, thisUid });
+      socket.emit("player login", accessToken, thisUid);
     }
   }, [accessToken, thisUid]);
 
