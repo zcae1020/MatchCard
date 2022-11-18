@@ -35,14 +35,8 @@ class userManager {
     })
   }
 
-  async createAdmin(data){
-    let uid = data["uid"]
-    let id = data["email"];
-    let password = data["password"];
-    let name = data["userName"];
-    let groupName = data["group"];
+  async createAdmin(uid, id, password, name, groupName){
     let groupId;
-
     await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);
     const ret = new admin(uid, id, password, name, groupId);
     userRef.child(`${uid}`).set(JSON.parse(JSON.stringify(ret)));

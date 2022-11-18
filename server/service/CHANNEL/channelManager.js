@@ -11,6 +11,7 @@ class channelManager {
   async createChannel(uid, maxRoom, maxTeam){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용
     const newPostRef = channelRef.push();
     let groupId;
+    console.log(data, uid);
     await GM.getGroupByUid(uid).then((group)=>groupId = group["groupId"]);
     const ret = new channel(newPostRef.key, name, maxRoom, maxTeam, groupId);
     newPostRef.set(JSON.parse(JSON.stringify(ret)));

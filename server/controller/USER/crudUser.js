@@ -8,12 +8,12 @@ const db = getDatabase();
 const userRef = db.ref('user');
 
 export const crudUser = (io, socket) => {
-    const createPlayer = (data) => {
-        socket.emit("success player signup", UM.createUser(data));
+    const createPlayer = (uid, id, password, name, groupName) => {
+        socket.emit("success player signup", UM.createUser(uid, id, password, name, groupName));
     } 
     
-    const createAdmin = (data) => {
-        socket.emit("success admin signup", UM.createAdmin(data));
+    const createAdmin = (uid, id, password, name, groupName) => {
+        socket.emit("success admin signup", UM.createAdmin(uid, id, password, name, groupName));
     }
     
     const readUser = (id = 0) => {
