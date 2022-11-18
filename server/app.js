@@ -42,10 +42,6 @@ const onConnection = (socket) => {
     login(io,socket);
     crudChannel(io,socket);
     crudUser(io, socket);
-    // socket.on("login:admin", getAdminChannel);
-    // socket.on("login:player", getPlayerChannel);
-  
-    //socket.on("user:update-password", updatePassword);
 }
   
 io.on("connection", onConnection);
