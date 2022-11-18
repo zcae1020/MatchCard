@@ -12,7 +12,7 @@ import app from "../../firebase";
 
 const auth = getAuth(app);
 
-function SignUp({ socket }) {
+function SignUp({ userType, socket }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
@@ -52,11 +52,19 @@ function SignUp({ socket }) {
   useEffect(() => {
     if (email === "" || password === "" || userName === "" || uid === "" || group === "") {
       return;
+    } else if (userType === "player") {
+      socket.emit("player signup", { email, password, userName, group, uid });
+    } else {
+      socket.emit("admin signup", { email, password, userName, group, uid });
     }
-    socket.emit("player signup", { email, password, userName, group, uid });
   }, [uid]);
 
   socket.on("success player signup", () => {
+    signOut(auth).then(() => {
+      navigate("/SignUpSuccess");
+    });
+  });
+  socket.on("success admin signup", () => {
     signOut(auth).then(() => {
       navigate("/SignUpSuccess");
     });
@@ -119,7 +127,7 @@ function SignUp({ socket }) {
 
   return (
     <div>
-      <h1>Match Card Game</h1>
+      {/* <h1>Match Card Game</h1> */}
       <div className={styles.div_login}>
         <Box
           className={styles.div_box_login}

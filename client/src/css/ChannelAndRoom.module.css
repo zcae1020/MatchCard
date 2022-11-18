@@ -114,6 +114,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 30px 195px;
+  border: solid 1px;
 }
 
 .room_box {
@@ -127,16 +128,16 @@
 }
 
 .room_box_one {
-  position: absolute;
+  /* position: absolute; */
   width: 440px;
   height: 90px;
   border-style: solid;
   border-width: 2pt;
   border-radius: 10px;
   padding: 15px 20px;
-  margin: 13px 15px;
-  /* margin-top: 30px; */
-  left: 208px;
+  /* margin: 13px 15px; */
+  margin-top: 13px;
+  margin-left: -502px;
   /* padding: 30px 195px; */
 }
 
