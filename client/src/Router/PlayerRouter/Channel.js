@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useNavigate } from "react-router-dom";
+import style from "../../css/ChannelAndRoom.module.css";
 
 function Channel({ socket, uid, setChannelid }) {
   const [channels, setChannels] = useState([]);
@@ -55,11 +56,12 @@ function Channel({ socket, uid, setChannelid }) {
     return channels.map((item, index) => {
       if (index >= listNum && index < listNum + 10)
         return (
-          <button key={item} onClick={() => enterChannel(item)}>
-            <div>
-              <span>Channel {index + 1}</span>
-            </div>
-          </button>
+          <div className={style.channel} key={item}>
+            <span className={style.channel_text}>Channel {index + 1}</span>
+            <span className={style.channel_enter} onClick={() => enterChannel(item)}>
+              입장
+            </span>
+          </div>
         );
     });
   };
@@ -68,7 +70,7 @@ function Channel({ socket, uid, setChannelid }) {
     <div>
       <h1>Channels</h1>
       <ChannelList />
-      <span>
+      <span className={style.arrow}>
         <button disabled={beforeDisable} onClick={previousChannelList}>
           <ArrowBackIosNewIcon fontSize="small" />
         </button>

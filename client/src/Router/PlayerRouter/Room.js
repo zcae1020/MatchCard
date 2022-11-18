@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import styles from "../../css/ChannelAndRoom.module.css";
+import style from "../../css/ChannelAndRoom.module.css";
 
 function Room({ socket, channelid }) {
   const [rooms, setRooms] = useState([]);
-  const [listNum, setListNum] = useState(0);
+  const [listNum, setListNum] = useState(1);
   const [beforeDisable, setBeforeDisable] = useState(true);
   const [forwardDisable, setForwardDisable] = useState(true);
 
@@ -25,10 +25,10 @@ function Room({ socket, channelid }) {
   });
 
   useEffect(() => {
-    if (listNum === 0) {
+    if (listNum === 1) {
       setBeforeDisable(true);
     }
-    if (rooms.length - listNum <= 6) {
+    if (rooms.length - listNum <= 5) {
       setForwardDisable(true);
     }
   }, [listNum]);
@@ -49,23 +49,37 @@ function Room({ socket, channelid }) {
 
   const RoomList = () => {
     return rooms.map((room, index) => {
-      if (index >= listNum && index < listNum + 6)
+      if (index >= listNum - 1 && index < listNum + 5)
         return (
-          <div key={room.roomid} className={styles.roomBox}>
+          <div
+            key={room.roomid}
+            className={parseInt(rooms.length / listNum) <= 1 && parseInt(rooms.length % listNum) === 0 ? style.room_box_one : style.room_box}
+          >
             <span>Room {room.roomid}</span>
-            <span>{room.state ? <button disabled={true}>게임중</button> : <button onClick={() => enterRoom(room.roomid)}>입장하기</button>}</span>
+            <span>
+              {room.userCnt}/{room.maxTeam * 2}
+            </span>
+            <span>
+              {room.state ? (
+                <button disabled={true}>게임중</button>
+              ) : room.userCnt >= room.maxTeam * 2 ? (
+                <button disabled={true}>입장하기</button>
+              ) : (
+                <button onClick={() => enterRoom(room.roomid)}>입장하기</button>
+              )}
+            </span>
           </div>
         );
     });
   };
 
   return (
-    <div>
+    <div className={style.room}>
       <h1>Room</h1>
-      <div className={styles.roomList}>
+      <div className={style.room_list}>
         <RoomList />
       </div>
-      <span>
+      <span className={style.arrow}>
         <button disabled={beforeDisable} onClick={previousChannelList}>
           <ArrowBackIosNewIcon fontSize="small" />
         </button>
