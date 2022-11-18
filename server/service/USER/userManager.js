@@ -15,7 +15,8 @@ class userManager {
   whoIsUser(uid){ // user is admin or player? / admin: 0, player: 1
     userRef.child(`${uid}`).on('value', (snapshot)=>{
       let user = snapshot.val();
-      return (user['win']==undefined?0:1);
+      console.log(user);
+      return (user.hasOwnProperty('win')?1:0);
     })
     return -1;
   }
@@ -38,15 +39,16 @@ class userManager {
   }
   
   async createUser(data){
+    let uid = data["uid"]
     let id = data["email"];
     let password = data["password"];
     let name = data["userName"];
     let groupName = data["group"];
-    const newPostRef = userRef.push();
     let groupId;
+
     await GM.getGroupByName(groupName).then((group)=>groupId = group["groupId"]);
-    const ret = new player(newPostRef.key, id, password, name, groupId);
-    newPostRef.set(JSON.parse(JSON.stringify(ret)));
+    const ret = new player(uid, id, password, name, groupId);
+    userRef.set({uid: JSON.parse(JSON.stringify(ret))});
 
     db.ref('group').child(`${groupId}/users`).on('value',(snapshot)=>{
       let groupId = snapshot.val();
