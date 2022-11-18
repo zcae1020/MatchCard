@@ -42,7 +42,7 @@ function Admin({ socket, uid }) {
     // });
   }, []);
 
-  socket.on("success admin channels list ", (channel) => {
+  socket.on("success admin channel list", (channel) => {
     console.log(channel);
     setChannels(channel);
     setErrorMessage("");

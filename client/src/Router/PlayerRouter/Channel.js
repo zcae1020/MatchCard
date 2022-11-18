@@ -25,7 +25,7 @@ function Channel({ socket, uid, setChannelid }) {
     }
   }, [listNum]);
 
-  socket.on("success player channels list", (channel) => {
+  socket.on("success player channel list", (channel) => {
     setChannels(channel);
     console.log(channel);
     if (channel.length > 10) {
@@ -46,7 +46,7 @@ function Channel({ socket, uid, setChannelid }) {
   };
 
   const enterChannel = (channelId) => {
-    socket.emit("room list", channelId);
+    // socket.emit("room list", channelId);
     setChannelid(channelId);
     console.log(channelId + " clicked");
     navigate("/Room");
