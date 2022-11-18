@@ -14,7 +14,7 @@ function Room({ socket, channelid }) {
     console.log(channelid);
   }, []);
 
-  socket.on("player room info", (rooms) => {
+  socket.on("success player room list", (rooms) => {
     console.log(rooms);
     setRooms(rooms);
     if (rooms.length > 6) {
