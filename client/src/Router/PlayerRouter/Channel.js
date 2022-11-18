@@ -25,7 +25,7 @@ function Channel({ socket, uid, setChannelid }) {
     }
   }, [listNum]);
 
-  socket.on("player channels info", (channel) => {
+  socket.on("success player channels list", (channel) => {
     setChannels(channel);
     console.log(channel);
     if (channel.length > 10) {

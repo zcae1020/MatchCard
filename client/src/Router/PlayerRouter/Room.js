@@ -14,7 +14,7 @@ function Room({ socket, channelid }) {
     console.log(channelid);
   }, []);
 
-  socket.on("player room info", (rooms) => {
+  socket.on("success player room list", (rooms) => {
     console.log(rooms);
     setRooms(rooms);
     if (rooms.length > 6) {
@@ -57,13 +57,13 @@ function Room({ socket, channelid }) {
           >
             <span className={style.room_num}>Room {room.roomid}</span>
             <span>
-              {room.userCnt}/{room.maxTeam * 2}
+              {room.userCnt}/{room.maxTeam * 4}
             </span>
             {room.state ? (
               <button className={style.room_enter} disabled={true}>
                 게임중
               </button>
-            ) : room.userCnt >= room.maxTeam * 2 ? (
+            ) : room.userCnt >= room.maxTeam * 4 ? (
               <button className={style.room_enter} disabled={true}>
                 입장하기
               </button>
