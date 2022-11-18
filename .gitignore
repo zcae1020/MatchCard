@@ -1,4 +1,11 @@
+.DS_Store
+README.md
+myserver/
+
+client/.DS_Store
+client/.gitignore
+client/README.md
+client/node_modules/
 server/node_modules
 server/test.js
 server/config/serviceAccount.js
-client/node_modules

@@ -1,18 +1,5 @@
-div {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 5%;
-}
-
-h1 {
-  font-size: 50px;
-}
-
-p {
-  margin: 3px;
+.signup_link {
+  text-decoration: none;
 }
 
 .div_login {
@@ -38,4 +25,12 @@ p {
 .radio_userType {
   height: 50px;
   margin: 0;
+}
+
+.toLogin {
+  color: #6343d4;
+}
+
+.toLogin:hover {
+  cursor: pointer;
 }
