@@ -15,7 +15,7 @@ class channelManager {
     const ret = new channel(newPostRef.key, maxRoom, maxTeam, groupId);
     newPostRef.set(JSON.parse(JSON.stringify(ret)));
 
-    groupRef.child(`${groupId}/channels`).push().set({channelId:newPostRef.key});
+    groupRef.child(`${groupId}/channels/${newPostRef.key}`).set({channelId:newPostRef.key});
 
     return ret;
   }
@@ -31,10 +31,6 @@ class channelManager {
     })
   }
 
-  getChannelByName(channelName){ //firebase에서 name으로 channel 가져오기
-    //필요할때 구현
-  }
-
   getChannelListInGroupByUid(uid){ // group이 관리하는 channelId들 가져오기
     return new Promise((resolve, reject)=>{
       GM.getGroupByUid(uid).then((group) => {
@@ -42,7 +38,7 @@ class channelManager {
         groupRef.child(`/${groupId}/channels`).on('value', async (snapshot)=>{
           let ret = [];
           for(let idx in snapshot.val()){
-            ret.push(idx);
+            ret.push(snapshot.val()[idx]['channelId']);
           }
           resolve(ret);
         }, (errorObject)=>{
@@ -53,27 +49,12 @@ class channelManager {
       });
   }
 
-  deleteChannelInGroup(channelId){
-    let groupId;
-    channelRef.child(`${channelId}`).on('value', (snapshot)=>{
-      groupId = snapshot.val()['groupId'];
-    }, (errorObject)=>{
-      console.log('The read failed: ' + errorObject.name);
-    });
-
-    return groupRef.child(`${groupId}/channels/${channelId}`).set(null);
-  }
-
-  deleteChannelInChannelRef(channelId){
-    return channelRef.child(`${channelId}`).set(null);
-  }
-
   deleteChannelById(channelId){ //firebase에서 id로 channel 지우기
-    return this.deleteChannelInGroup(channelId) && this.deleteChannelInChannelRef(channelId);
-  }
-
-  deleteChannelByName(channelName){ //firebase에서 name로 channel 지우기
-
+    GM.getGroupByChannelId(channelId).then((group)=>{
+      let groupId = group["groupId"];
+      groupRef.child(`${groupId}/channels/${channelId}`).set(null);
+      channelRef.child(`${channelId}`).set(null);
+    })
   }
 }
 

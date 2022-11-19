@@ -21,9 +21,7 @@ export const crudChannel = (io, socket) => {
     }
 
     const getChannelListAdmin = (uid) => {
-        console.log(uid);
         CM.getChannelListInGroupByUid(uid).then((r)=>{
-            console.log(r);
             socket.emit("success admin channel list",r);
         });
     }
@@ -38,7 +36,8 @@ export const crudChannel = (io, socket) => {
     }
 
     const deleteChannel = (channelId) => { 
-        socket.emit("success delete channel", CM.deleteChannelById(channelId));
+        CM.deleteChannelById(channelId)
+        socket.emit("success delete channel", channelId);
     }
 
     socket.on("create channel", createChannel);

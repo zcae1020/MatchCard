@@ -44,7 +44,7 @@ class groupManager {
   }
 
   getGroupByUid(uid){
-    return new Promise((resolve, reject)=>{
+    return new Promise(async (resolve, reject)=>{
         db.ref('user').child(`${uid}`).on('value', async (snapshot)=>  {
           resolve(await this.getGroupByGroupId(snapshot.val()['groupId']));
         }, (errorObject)=>{
@@ -55,9 +55,9 @@ class groupManager {
   }
 
   getGroupByChannelId(channelId){
-    return new Promise((resolve, reject)=>{
+    return new Promise(async (resolve, reject)=>{
         db.ref('channel').child(`${channelId}`).on('value', async (snapshot)=>  {
-          resolve(await this.getGroupByGroupId(snapshot.val()['groupId']));
+          resolve(snapshot.val());
         }, (errorObject)=>{
           console.log('The read failed: ' + errorObject.name);
           reject(new Error());
