@@ -10,7 +10,8 @@ const userRef = db.ref('user');
  
 export const crudChannel = (io, socket) => {
     const createChannel = (uid, maxRoom, maxTeam) => {
-        socket.emit("success create channel", CM.createChannel(uid, maxRoom, maxTeam));
+        CM.createChannel(uid, maxRoom, maxTeam);
+        getChannelListAdmin(uid);
     }   
      
     const readChannel = (id = 0) => {
@@ -35,11 +36,11 @@ export const crudChannel = (io, socket) => {
     const updateChannel = (name, maxRoom, maxTeam, channelId) => { 
     }
 
-    const deleteChannel = (channelId) => { 
+    const deleteChannel = (uid, channelId) => { 
         CM.deleteChannelById(channelId)
-        socket.emit("success delete channel", channelId);
+        getChannelListAdmin(uid);
     }
-
+    
     socket.on("create channel", createChannel);
     socket.on("delete channel", deleteChannel);
     socket.on("admin channel list", getChannelListAdmin);

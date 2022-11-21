@@ -5,7 +5,6 @@ import express from 'express'
 import {login} from './controller/AUTH/auth.js'
 import { crudChannel } from './controller/CHANNEL/crudChannel.js';
 import { crudUser } from './controller/USER/crudUser.js';
-//import cors from 'cors'
 import { createServer } from "http";
 import { Server } from "socket.io";
 import * as path from "path";
@@ -24,12 +23,6 @@ const io = new Server(httpServer, {
     }
 });
 
-// app.get('/', function(req, res) {
-//     res.sendFile(
-//         path.join(__dirname + "/../front/web-board-game/client/public/index.html")
-//     )
-// })
-
 const onConnection = (socket) => {
     socket.emit("connected");
     console.log("new connection" + socket.id);
@@ -39,6 +32,7 @@ const onConnection = (socket) => {
     socket.on("new_message", msg =>{
         console.log("new message ", msg);
     })
+    
     login(io,socket);
     crudChannel(io,socket);
     crudUser(io, socket);
