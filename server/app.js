@@ -32,10 +32,13 @@ const onConnection = (socket) => {
     socket.on("new_message", msg =>{
         console.log("new message ", msg);
     })
-    
-    login(io,socket);
-    crudChannel(io,socket);
-    crudUser(io, socket);
+    try {
+        login(io,socket);
+        crudChannel(io,socket);
+        crudUser(io, socket);
+    } catch (e) {
+        console.log(e);
+    }
 }
   
 io.on("connection", onConnection);

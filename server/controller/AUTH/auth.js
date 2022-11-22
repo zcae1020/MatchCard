@@ -13,13 +13,19 @@ const userRef = db.ref('user');
 
 export const login = (io, socket) => {
     const player_login = (jwt, uid) => {
-      UM.connectUser(uid);
-      socket.emit("success player login", "success");
+      return new Promise((resolve, reject) => {
+        UM.connectUser(uid);
+        socket.emit("success player login", "success");
+        resolve();
+      })
     }
 
     const admin_login = (jwt, uid) => {
-      UM.connectUser(uid);
-      socket.emit("success admin login", "success");
+      return new Promise((resolve, reject) => {
+        UM.connectUser(uid);
+        socket.emit("success admin login", "success");
+        resolve();
+      })
     }
 
     socket.on("player login", player_login);

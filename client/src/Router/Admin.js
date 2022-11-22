@@ -76,7 +76,7 @@ function Admin({ socket, uid }) {
 
   const deleteChannel = (channelId) => {
     console.log(channelId);
-    socket.emit("delete channel", channelId);
+    socket.emit("delete channel", uid, channelId);
   };
 
   const ChannelList = () => {

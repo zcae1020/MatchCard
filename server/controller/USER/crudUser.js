@@ -9,11 +9,17 @@ const userRef = db.ref('user');
 
 export const crudUser = (io, socket) => {
     const createPlayer = (id, password, name, groupName, uid) => {
-        socket.emit("success player signup", UM.createUser(uid, id, password, name, groupName));
+        return new Promise((resolve, reject) => {
+            socket.emit("success player signup", UM.createUser(uid, id, password, name, groupName));
+            resolve();
+        })
     } 
     
     const createAdmin = (id, password, name, groupName, uid) => {
-        socket.emit("success admin signup", UM.createAdmin(uid, id, password, name, groupName));
+        return new Promise((resolve, reject) => {
+            socket.emit("success admin signup", UM.createAdmin(uid, id, password, name, groupName));
+            resolve();
+        })
     }
     
     const readUser = (id = 0) => {
