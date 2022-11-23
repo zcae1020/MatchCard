@@ -8,6 +8,7 @@ import { crudUser } from './controller/USER/crudUser.js';
 import { createServer } from "http";
 import { Server } from "socket.io";
 import * as path from "path";
+import { list } from './controller/CHANNEL/list.js';
 
 const __dirname = path.resolve();
 const port = process.env.PORT || 3001;
@@ -36,6 +37,7 @@ const onConnection = (socket) => {
         login(io,socket);
         crudChannel(io,socket);
         crudUser(io, socket);
+        list(io, socket);
     } catch (e) {
         console.log(e);
     }
