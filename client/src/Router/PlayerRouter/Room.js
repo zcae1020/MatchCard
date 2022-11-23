@@ -44,7 +44,7 @@ function Room({ socket, channelid }) {
   };
 
   const enterRoom = (roomid) => {
-    socket.emit("enter room", roomid);
+    socket.emit("enter room", roomid, channelid);
   };
 
   const RoomList = () => {
