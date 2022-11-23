@@ -8,9 +8,10 @@ export const router = express.Router();
 const db = getDatabase();
 const channelRef = db.ref("channel");
  
-export const list = (io, socket) => {
-    const getRoomList = (channelId) => {
+export const room = (io, socket) => {
+    const enterChannel = (uid, channelId) => {
         return new Promise((resolve, reject) => {
+            UM.setChannelId(uid, channelId);
             const curChannelRef = channelRef.child(`${channelId}`);
             curChannelRef.child(`/rooms`).on('value', (snapshot) => {
                 //console.log(sanpshot, snapshot.val());
@@ -21,9 +22,15 @@ export const list = (io, socket) => {
                 reject();
             });
         })
-
-        //curChannelRef.child(`/conn`).set(socket.id);
     }
 
-    socket.on("room list", getRoomList);
+    const enterRoom = (uid, roomId) => {
+        return new Promise((resolve, reject) => {
+            UM.setroomId(uid, roomId);
+            // 팀 배정 후, team 목록 return
+        })
+    }
+
+    socket.on("room list", enterChannel);
+    socket.on("enter room", enterRoom);
 }
