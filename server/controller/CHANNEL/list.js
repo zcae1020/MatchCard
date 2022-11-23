@@ -10,12 +10,17 @@ const channelRef = db.ref("channel");
  
 export const list = (io, socket) => {
     const getRoomList = (channelId) => {
-        const curChannelRef = channelRef.child(`${channelId}`);
-        curChannelRef.child(`/rooms`).on('value', (snapshot) => {
-            socket.emit("success room list", snapshot.val());
-        }, (errorObject)=>{
-            socket.emit("success room list", errorObject.name);
-        });
+        return new Promise((resolve, reject) => {
+            const curChannelRef = channelRef.child(`${channelId}`);
+            curChannelRef.child(`/rooms`).on('value', (snapshot) => {
+                //console.log(sanpshot, snapshot.val());
+                socket.emit("success room list", snapshot.val());
+                resolve();
+            }, (errorObject)=>{
+                socket.emit("success room list", errorObject.name);
+                reject();
+            });
+        })
 
         //curChannelRef.child(`/conn`).set(socket.id);
     }

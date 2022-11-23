@@ -8,16 +8,21 @@ const channelRef = db.ref('channel');
 const groupRef = db.ref('group');
 
 class channelManager {
-  async createChannel(uid, maxRoom, maxTeam){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용
-    const newPostRef = channelRef.push();
-    let groupId;
-    await GM.getGroupByUid(uid).then((group)=>groupId = group["groupId"]);
-    const ret = new channel(newPostRef.key, maxRoom, maxTeam, groupId);
-    newPostRef.set(JSON.parse(JSON.stringify(ret)));
+  async createChannel(uid, maxRoom, maxTeam){ //firebase에서 channel 저장, id는 firebase에서 만들어준 id사용4
+    return new Promise(async (resolve, reject) =>{
+      await GM.getGroupByUid(uid).then((group)=>{
+        const newPostRef = channelRef.push();
+        let groupId;
+        groupId = group["groupId"]
+        const ret = new channel(newPostRef.key, maxRoom, maxTeam, groupId);
+        newPostRef.set(JSON.parse(JSON.stringify(ret)));
 
-    groupRef.child(`${groupId}/channels/${newPostRef.key}`).set({channelId:newPostRef.key});
-
-    return ret;
+        groupRef.child(`${groupId}/channels/${newPostRef.key}`).set({channelId:newPostRef.key});
+        resolve(ret);
+      }).catch((e) => {
+        reject(e);
+      })
+    })
   }
 
   getChannelById(channelId){ //firebase에서 id로 channel 가져오기
@@ -42,19 +47,24 @@ class channelManager {
           }
           resolve(ret);
         }, (errorObject)=>{
-            console.log('The read failed: ' + errorObject.name);
-            reject(new Error());
-          })
+          console.log('The read failed: ' + errorObject.name);
+          reject(new Error());
         })
-      });
+      })
+    });
   }
 
   deleteChannelById(channelId){ //firebase에서 id로 channel 지우기
-    GM.getGroupByChannelId(channelId).then((group)=>{
-      let groupId = group["groupId"];
-      groupRef.child(`${groupId}/channels/${channelId}`).set(null);
-      channelRef.child(`${channelId}`).set(null);
-    })
+    return new Promise((resolve, reject)=>{
+      GM.getGroupByChannelId(channelId).then((group)=>{
+        let groupId = group["groupId"];
+        groupRef.child(`${groupId}/channels/${channelId}`).set(null);
+        channelRef.child(`${channelId}`).set(null);
+        resolve();
+      }).catch((e) => {
+        reject(e);
+      })
+    });
   }
 }
 

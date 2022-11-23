@@ -10,7 +10,11 @@ const userRef = db.ref('user');
  
 export const crudChannel = (io, socket) => {
     const createChannel = (uid, maxRoom, maxTeam) => {
-        socket.emit("success create channel", CM.createChannel(uid, maxRoom, maxTeam));
+        return new Promise((resolve, reject) => {
+            CM.createChannel(uid, maxRoom, maxTeam);
+            getChannelListAdmin(uid);
+            resolve();
+        })
     }   
      
     const readChannel = (id = 0) => {
@@ -21,25 +25,34 @@ export const crudChannel = (io, socket) => {
     }
 
     const getChannelListAdmin = (uid) => {
-        CM.getChannelListInGroupByUid(uid).then((r)=>{
-            socket.emit("success admin channel list",r);
-        });
+        return new Promise((resolve, reject) => {
+            CM.getChannelListInGroupByUid(uid).then((r)=>{
+                socket.emit("success admin channel list",r);
+            });
+            resolve();
+        })
     }
 
     const getChannelListPlayer = (uid) => {
-        CM.getChannelListInGroupByUid(uid).then((r)=>{
-            socket.emit("success player channel list",r);
-        });
+        return new Promise((resolve, reject) => {
+            CM.getChannelListInGroupByUid(uid).then((r)=>{
+                socket.emit("success player channel list",r);
+            });
+            resolve();
+        })
     }
 
     const updateChannel = (name, maxRoom, maxTeam, channelId) => { 
     }
 
-    const deleteChannel = (channelId) => { 
-        CM.deleteChannelById(channelId)
-        socket.emit("success delete channel", channelId);
+    const deleteChannel = (uid, channelId) => { 
+        return new Promise((resolve, reject) => {
+            CM.deleteChannelById(channelId)
+            getChannelListAdmin(uid);
+            resolve();
+        })
     }
-
+    
     socket.on("create channel", createChannel);
     socket.on("delete channel", deleteChannel);
     socket.on("admin channel list", getChannelListAdmin);
