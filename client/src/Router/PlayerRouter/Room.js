@@ -10,11 +10,11 @@ function Room({ socket, channelid }) {
   const [forwardDisable, setForwardDisable] = useState(true);
 
   useEffect(() => {
-    socket.emit("room list", channelid);
+    socket.emit("player room list", channelid);
     console.log(channelid);
   }, []);
 
-  socket.on("success room list", (rooms) => {
+  socket.on("player success room list", (rooms) => {
     console.log(rooms);
     setRooms(rooms);
     if (rooms.length > 6) {
