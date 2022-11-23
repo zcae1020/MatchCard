@@ -3,14 +3,14 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import style from "../../css/ChannelAndRoom.module.css";
 
-function Room({ socket, channelid }) {
+function Room({ socket, channelid, uid }) {
   const [rooms, setRooms] = useState([]);
   const [listNum, setListNum] = useState(1);
   const [beforeDisable, setBeforeDisable] = useState(true);
   const [forwardDisable, setForwardDisable] = useState(true);
 
   useEffect(() => {
-    socket.emit("room list", channelid);
+    socket.emit("room list", channelid, uid);
     console.log(channelid);
   }, []);
 
@@ -44,7 +44,7 @@ function Room({ socket, channelid }) {
   };
 
   const enterRoom = (roomid) => {
-    socket.emit("enter room", roomid, channelid);
+    socket.emit("enter room", roomid, channelid, uid);
   };
 
   const RoomList = () => {

@@ -37,7 +37,7 @@ function App() {
         <Route path="/AdminSignUpSuccess" element={<AdminSignUpSuccess />} />
         <Route element={<AuthLayout />}>
           <Route path="/Channel" element={<Channel socket={socket} uid={uid} setChannelid={setChannelid} />} />
-          <Route path="/Room" element={<Room socket={socket} channelid={channelid} />} />
+          <Route path="/Room" element={<Room socket={socket} channelid={channelid} uid={uid} />} />
           <Route path="/Admin" element={<Admin socket={socket} uid={uid} />} />
         </Route>
       </Routes>
