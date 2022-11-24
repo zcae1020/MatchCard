@@ -15,6 +15,6 @@ export class channel {
         this.rooms = [];
 
         for(let i=0;i<this.maxRoom;i++)
-            this.rooms[i] = new room(this.maxTeam);            
+            this.rooms[i] = new room(i, this.maxTeam);            
     }
 }

@@ -54,7 +54,7 @@ class teamManager {
                 let mn = 10;
                 let teamId = 0;
                 let teams = snapshot.val();
-                for(id in teams) {
+                for(let id in teams) {
                     if(mn > teams[id].length) {
                         mn = teams[id].length;
                         teamId = id;
