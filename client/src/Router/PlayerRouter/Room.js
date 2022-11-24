@@ -19,12 +19,12 @@ function Room({ socket, channelid, uid }) {
 
   useEffect(() => {
     if (connection === true) {
-      socket.emit("room list", channelid, uid);
+      socket_channel.emit("room list", channelid, uid);
       console.log(channelid);
     }
   }, [connection]);
 
-  socket.on("success room list", (rooms) => {
+  socket_channel.on("success room list", (rooms) => {
     console.log(rooms);
     setRooms(rooms);
     if (rooms.length > 6) {
@@ -54,7 +54,10 @@ function Room({ socket, channelid, uid }) {
   };
 
   const enterRoom = (roomid) => {
-    socket.emit("enter room", roomid, channelid, uid);
+    socket_channel.emit("enter room", roomid, channelid, uid);
+    console.log(roomid);
+    console.log(channelid);
+    console.log(uid);
   };
 
   const RoomList = () => {
