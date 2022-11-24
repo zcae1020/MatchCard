@@ -2,17 +2,27 @@ import React, { useEffect, useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import style from "../../css/ChannelAndRoom.module.css";
+import io from "socket.io-client";
 
 function Room({ socket, channelid, uid }) {
+  const [connection, setConnection] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [listNum, setListNum] = useState(1);
   const [beforeDisable, setBeforeDisable] = useState(true);
   const [forwardDisable, setForwardDisable] = useState(true);
 
+  const socket_channel = io(`http://localhost:3001/${channelid}`);
+
+  socket_channel.on("channel connected", () => {
+    setConnection(true);
+  });
+
   useEffect(() => {
-    socket.emit("room list", channelid, uid);
-    console.log(channelid);
-  }, []);
+    if (connection === true) {
+      socket.emit("room list", channelid, uid);
+      console.log(channelid);
+    }
+  }, [connection]);
 
   socket.on("success room list", (rooms) => {
     console.log(rooms);
