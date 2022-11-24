@@ -11,18 +11,17 @@ function Room({ socket, channelid, uid }) {
   const [beforeDisable, setBeforeDisable] = useState(true);
   const [forwardDisable, setForwardDisable] = useState(true);
 
+  // socket_channel.on("channel connected", () => {
+  //   setConnection(true);
+  // });
+
   const socket_channel = io(`http://localhost:3001/${channelid}`);
-
-  socket_channel.on("channel connected", () => {
-    setConnection(true);
-  });
-
   useEffect(() => {
-    if (connection === true) {
-      socket_channel.emit("room list", channelid, uid);
-      console.log(channelid);
-    }
-  }, [connection]);
+    // if (connection === true) {
+    socket.emit("room list", channelid, uid);
+    console.log(channelid);
+    // }
+  }, []);
 
   socket_channel.on("success room list", (rooms) => {
     console.log(rooms);
