@@ -8,7 +8,7 @@ import { crudUser } from './controller/USER/crudUser.js';
 import { createServer } from "http";
 import { Server } from "socket.io";
 import * as path from "path";
-import { list } from './controller/CHANNEL/list.js';
+import { room } from './controller/CHANNEL/room.js';
 
 const __dirname = path.resolve();
 const port = process.env.PORT || 3001;
@@ -33,11 +33,15 @@ const onConnection = (socket) => {
     socket.on("new_message", msg =>{
         console.log("new message ", msg);
     })
+    socket.on('connect_error', msg => {
+        console.log("error msg ", msg);
+    })
+    
     try {
         login(io,socket);
         crudChannel(io,socket);
         crudUser(io, socket);
-        list(io, socket);
+        room(io, socket);
     } catch (e) {
         console.log(e);
     }

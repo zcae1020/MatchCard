@@ -33,6 +33,8 @@ class userManager {
         }
       }
     })
+
+    this.delCurrentLocation(uid);
   }
 
   async createAdmin(uid, id, password, name, groupName){
@@ -80,6 +82,31 @@ class userManager {
       })
       reject(new Error());
     })
+  }
+
+  currentLocation(uid) {
+    return new Promise((resolve, reject) => {
+      userRef.child(`${uid}/currentLocation`).on('value', (snapshot) => {
+        resolve(snapshot.val());
+      })
+      reject();
+    })
+  }
+
+  setChannelId(uid, channelId) {
+    userRef.child(`${uid}/currentLocation`).update({channelId: channelId});
+  }
+
+  setRoomId(uid, roomId) {
+    userRef.child(`${uid}/currentLocation`).update({roomId: roomId});
+  }
+
+  setTeamId(uid, teamId) {
+    userRef.child(`${uid}/currentLocation`).update({teamId: teamId});
+  } 
+
+  delCurrentLocation(uid) {
+    userRef.child(`${uid}/currentLocation`).update(null);
   }
 
   deleteUserByUid(uid){ 
