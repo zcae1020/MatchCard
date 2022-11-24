@@ -3,6 +3,7 @@ import {getDatabase} from 'firebase-admin/database';
 import {CM} from "../../service/CHANNEL/channelManager.js";
 import { TM } from '../../service/CHANNEL/teamManager.js';
 import { UM } from '../../service/USER/userManager.js';
+import { connection } from '../../inChannel.js';
  
 export const router = express.Router();
  
@@ -19,16 +20,10 @@ export const room = (io, socket) => {
             //console.log(sanpshot, snapshot.val());
             socket.emit("success room list", snapshot.val());
         }, (errorObject)=>{
-            socket.emit("success room list", errorObject.name);
+            console.log(errorObject);
         });
 
-        channelNamespace.on('connection', (socket) => {
-            console.log("channel connect");
-            socket.emit("channel connected");
-            socket.on("success enter room",(a) => {
-                console.log(a);
-            })
-        })
+        connection(channelNamespace);
     }
 
     const enterRoom = (roomId, channelId, uid) => {
