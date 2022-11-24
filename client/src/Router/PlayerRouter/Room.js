@@ -24,14 +24,18 @@ function Room({ socket, channelid, uid }) {
     // }
   }, []);
 
-  socket.on("success room list", (rooms) => {
-    console.log(rooms);
-    setRooms(rooms);
+  useEffect(() => {
     if (rooms.length > 6) {
       setForwardDisable(false);
     } else {
       setForwardDisable(true);
     }
+  }, [rooms]);
+
+  socket.on("success room list", (rooms) => {
+    console.log(rooms);
+
+    setRooms(Object.keys(rooms).map((item) => rooms[item]));
   });
 
   useEffect(() => {
@@ -53,9 +57,9 @@ function Room({ socket, channelid, uid }) {
     setBeforeDisable(false);
   };
 
-  const enterRoom = (roomid) => {
-    socket.emit("enter room", roomid, channelid, uid);
-    console.log(roomid);
+  const enterRoom = (roomId) => {
+    socket.emit("enter room", roomId, channelid, uid);
+    console.log(roomId);
     console.log(channelid);
     console.log(uid);
   };
@@ -65,10 +69,10 @@ function Room({ socket, channelid, uid }) {
       if (index >= listNum - 1 && index < listNum + 5)
         return (
           <div
-            key={room.roomid}
+            key={room.roomId}
             className={parseInt(rooms.length / listNum) <= 1 && parseInt(rooms.length % listNum) === 0 ? style.room_box_one : style.room_box}
           >
-            <span className={style.room_num}>Room {room.roomid}</span>
+            <span className={style.room_num}>Room {room.roomId}</span>
             <span>
               {room.userCnt}/{room.maxTeam * 4}
             </span>
@@ -81,7 +85,7 @@ function Room({ socket, channelid, uid }) {
                 입장하기
               </button>
             ) : (
-              <button className={style.room_enter} onClick={() => enterRoom(room.roomid)}>
+              <button className={style.room_enter} onClick={() => enterRoom(room.roomId)}>
                 입장하기
               </button>
             )}
