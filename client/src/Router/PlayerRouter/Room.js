@@ -20,10 +20,11 @@ function Room({ socket, channelid, uid }) {
     // if (connection === true) {
     socket.emit("room list", channelid, uid);
     console.log(channelid);
+    console.log(uid);
     // }
   }, []);
 
-  socket_channel.on("success room list", (rooms) => {
+  socket.on("success room list", (rooms) => {
     console.log(rooms);
     setRooms(rooms);
     if (rooms.length > 6) {
@@ -53,7 +54,7 @@ function Room({ socket, channelid, uid }) {
   };
 
   const enterRoom = (roomid) => {
-    socket_channel.emit("enter room", roomid, channelid, uid);
+    socket.emit("enter room", roomid, channelid, uid);
     console.log(roomid);
     console.log(channelid);
     console.log(uid);
