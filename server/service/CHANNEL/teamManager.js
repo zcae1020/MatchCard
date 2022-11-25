@@ -21,7 +21,7 @@ class teamManager {
     putTeam(uid, channelId, roomId) {
         return new Promise((resolve, reject)=> {
             this.getOptimalTeam(channelId, roomId).then((teamId) => {
-                console.log(teamId);
+                console.log(channelId, roomId, teamId);
                 const teamRef = channelRef.child(`${channelId}/rooms/${roomId}/teams/${teamId}`);
                 this.getLengthById(channelId, roomId, teamId).then((length)=>{
                     teamRef.child(`users/${length}`).set(uid);

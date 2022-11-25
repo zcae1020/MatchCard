@@ -12,8 +12,7 @@ class channelManager {
     return new Promise(async (resolve, reject) =>{
       await GM.getGroupByUid(uid).then((group)=>{
         const newPostRef = channelRef.push();
-        let groupId;
-        groupId = group["groupId"]
+        let groupId = group["groupId"]
         const ret = new channel(newPostRef.key, maxRoom, maxTeam, groupId);
         newPostRef.set(JSON.parse(JSON.stringify(ret)));
 

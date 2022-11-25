@@ -8,7 +8,8 @@ import { crudUser } from './controller/USER/crudUser.js';
 import { createServer } from "http";
 import { Server } from "socket.io";
 import * as path from "path";
-import { room } from './controller/CHANNEL/room.js';
+import { enter } from './controller/CHANNEL/enter.js';
+import { UM } from './service/USER/userManager.js';
 
 const __dirname = path.resolve();
 const port = process.env.PORT || 3001;
@@ -29,6 +30,7 @@ const onConnection = (socket) => {
     console.log("new connection" + socket.id);
     socket.on("disconnect",()=>{
         console.log('disconnected');
+        //UM.disconnectUser
     })
     socket.on("new_message", msg =>{
         console.log("new message ", msg);
@@ -37,14 +39,10 @@ const onConnection = (socket) => {
         console.log("error msg ", msg);
     })
     
-    try {
-        login(io,socket);
-        crudChannel(io,socket);
-        crudUser(io, socket);
-        room(io, socket);
-    } catch (e) {
-        console.log(e);
-    }
+    login(io,socket);
+    crudChannel(io,socket);
+    crudUser(io, socket);
+    enter(io, socket);
 }
   
 io.on("connection", onConnection);

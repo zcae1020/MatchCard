@@ -10,12 +10,12 @@ export const router = express.Router();
 const db = getDatabase();
 const channelRef = db.ref("channel");
 
-export const room = (io, socket) => {
+export const enter = (io, socket) => {
     const enterChannel = (channelId, uid) => {
         let channelNamespace = io.of(`/${channelId}`);
 
         UM.setChannelId(uid, channelId);
-        const curChannelRef = channelRef.child(`${channelId}`);
+        const curChannelRef = channelRef.child(`/${channelId}`);
         curChannelRef.child(`/rooms`).on('value', (snapshot) => {
             //console.log(sanpshot, snapshot.val());
             socket.emit("success room list", snapshot.val());
