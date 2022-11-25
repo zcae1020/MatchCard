@@ -1,0 +1,318 @@
+table {
+  width: 100%;
+  height: 80%;
+  /* padding: 0; */
+  /* bottom: 0px; */
+  /* position: absolute; */
+}
+
+td {
+  text-align: center;
+  border: 4px solid #bcbcbc;
+  background-color: #f2f2f2;
+  padding: 10px;
+  width: 10%;
+  font-size: x-large;
+}
+
+.gameboard {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.round,
+.time {
+  font-size: xx-large;
+  text-align: center;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 300px;
+  height: 42px;
+  padding: 0;
+  border: 4px solid #bcbcbc;
+  transform: translate(-50%, 0%);
+}
+
+.time {
+  transform: translate(-50%, 120%);
+}
+
+.team_info_0,
+.team_info_1,
+.team_info_2,
+.team_info_3 {
+  width: 20%;
+  height: 20%;
+  display: flex;
+  position: absolute;
+  padding: 0;
+}
+
+.team_info_0 {
+  border: 4px solid #ff628f;
+  background-color: #ffd7de;
+  left: 0px;
+  top: 0px;
+}
+.team_info_1 {
+  border: 4px solid #ffb662;
+  background-color: #fff2d7;
+  right: 0px;
+  top: 0px;
+}
+
+.team_info_2 {
+  border: 4px solid #a6ff62;
+  background-color: #e0ffd7;
+  left: 0px;
+  bottom: 0px;
+}
+
+.team_info_3 {
+  border: 4px solid #62a1ff;
+  background-color: #d7f7ff;
+  right: 0px;
+  bottom: 0px;
+}
+.score {
+  width: 100%;
+  height: 20%;
+  display: block;
+  text-align: center;
+  font-size: x-large;
+  padding-top: 3px;
+}
+
+.memory_game {
+  position: absolute;
+  top: 15%;
+  width: 800px;
+  height: 600px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  perspective: 1000px;
+}
+
+#cardTable {
+  width: 800px;
+  height: 600px;
+}
+
+#cardTable > tbody > tr > td:hover {
+  cursor: pointer;
+}
+
+.modal_wrap,
+.modal_wrap_none {
+  display: block;
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -250px 0 0 -250px;
+  background: #eee;
+  z-index: 2;
+  padding: 0;
+}
+.modal_wrap_none {
+  display: none;
+}
+
+.black_bg,
+.black_bg_none {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: 0;
+}
+.black_bg_none {
+  display: none;
+}
+
+.modal_close {
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  top: -30px;
+  right: 0;
+}
+.modal_close > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url(https://img.icons8.com/metro/26/000000/close-window.png);
+  text-indent: -9999px;
+}
+
+.modal_content {
+  text-align: center;
+  font-size: x-large;
+  /* padding-top: 15%; */
+  line-height: 300%;
+}
+
+/* * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  background: #ffffff;
+}
+
+.memory-game {
+  width: 800px;
+  height: 600px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  perspective: 1000px;
+}
+
+#cardTable {
+  width: 800px;
+  height: 600px;
+}
+
+.team_info_0 {
+  width: 20%;
+  height: 20%;
+  display: flex;
+  border: 4px solid #ff628f;
+  background-color: #ffd7de;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.team_info_1 {
+  width: 20%;
+  height: 20%;
+  display: flex;
+  border: 4px solid #ffb662;
+  background-color: #fff2d7;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.team_info_2 {
+  width: 20%;
+  height: 20%;
+  display: flex;
+  border: 4px solid #a6ff62;
+  background-color: #e0ffd7;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+}
+
+.team_info_3 {
+  width: 20%;
+  height: 20%;
+  display: flex;
+  border: 4px solid #62a1ff;
+  background-color: #d7f7ff;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+}
+
+.score {
+  width: 100%;
+  height: 20%;
+  display: block;
+  text-align: center;
+  font-size: x-large;
+}
+
+table {
+  width: 100%;
+  height: 80%;
+  bottom: 0px;
+  position: absolute;
+}
+
+td {
+  text-align: center;
+  border: 4px solid #bcbcbc;
+  background-color: #f2f2f2;
+  padding: 15px;
+  font-size: x-large;
+}
+
+.board {
+  font-size: xx-large;
+  text-align: center;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 300px;
+  height: 50px;
+  border: 4px solid #bcbcbc;
+  transform: translate(-50%, 0%);
+}
+
+.time {
+  transform: translate(-50%, 120%);
+}
+
+.modal_wrap {
+  display: none;
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -250px 0 0 -250px;
+  background: #eee;
+  z-index: 2;
+}
+.black_bg {
+  display: none;
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.modal_close {
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  top: -30px;
+  right: 0;
+}
+.modal_close > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url(https://img.icons8.com/metro/26/000000/close-window.png);
+  text-indent: -9999px;
+}
+.modal_content {
+  text-align: center;
+  font-size: x-large;
+  padding-top: 15%;
+  line-height: 300%;
+} */
