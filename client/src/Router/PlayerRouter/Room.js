@@ -34,8 +34,11 @@ function Room({ socket, channelid, uid }) {
 
   socket.on("success room list", (rooms) => {
     console.log(rooms);
-
     setRooms(Object.keys(rooms).map((item) => rooms[item]));
+  });
+
+  socket.on("success enter room", (roomInfo) => {
+    console.log("roomInfo:", roomInfo);
   });
 
   useEffect(() => {
