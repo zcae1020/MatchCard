@@ -10,9 +10,13 @@ export const router = express.Router();
 const db = getDatabase();
 const channelRef = db.ref("channel");
 
+export let currentChannel, currentRoom, socketRoom;
+
 export const enter = (io, socket) => {
     const enterChannel = (channelId, uid) => {
         let channelNamespace = io.of(`/${channelId}`);
+
+        currentChannel = channelId;
 
         UM.setChannelId(uid, channelId);
         const curChannelRef = channelRef.child(`/${channelId}`);
@@ -29,7 +33,8 @@ export const enter = (io, socket) => {
   const enterRoom = (roomId, channelId, uid) => {
     return new Promise((resolve, reject) => {
       console.log("enter room:", roomId, channelId, uid);
-      const socketRoom = `${channelId}/${roomId}`;
+      currentRoom = roomId;
+      socketRoom = `${currentChannel}/${currentRoom}`;
       socket.join(socketRoom);
       UM.setRoomId(uid, roomId);
       // 팀 배정 후, team 목록 return, channel에 있는 socket에 broadcast,
@@ -39,6 +44,17 @@ export const enter = (io, socket) => {
     });
   };
 
+  const getUsernameByUid = async (uids) => {
+    let ret = [];
+    for(let uid in uids) {
+      let user = await UM.getUserByUid(uid);
+      ret.push(user.name);
+    }
+    
+    io.to(socketRoom).emit("success enter room", teams);
+  }
+
   socket.on("room list", enterChannel);
   socket.on("enter room", enterRoom);
+  socket.on("getUsernameByUid", getUsernameByUid);
 };
