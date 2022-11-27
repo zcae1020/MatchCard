@@ -12,6 +12,7 @@ import AdminSignUpSuccess from "./Router/LoginRouter/AdminSignUpSuccess";
 import PlayerSignUpSuccess from "./Router/LoginRouter/PlayerSignUpSuccess";
 import io from "socket.io-client";
 import Admin from "./Router/Admin";
+import GameBoard from "./Router/PlayerRouter/GameBoard";
 import "./css/Common.css";
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/Room" element={<Room socket={socket} channelid={channelid} uid={uid} />} />
           <Route path="/Admin" element={<Admin socket={socket} uid={uid} />} />
         </Route>
+        <Route path="/Game" element={<GameBoard socket={socket} uid={uid} />} />
       </Routes>
     </BrowserRouter>
   );
