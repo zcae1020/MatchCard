@@ -6,18 +6,6 @@ const db = getDatabase();
 const channelRef = db.ref('channel');
 
 class teamManager {
-    // getTeams(uid) {
-    //     return new Promise((resolve, reject) => {
-    //         UM.currentLocation(uid).then((location) => {
-    //             let channelId = location.channelId;
-    //             let roomId = location.roomId;
-    //             const teamRef = channelRef.child(`${channelId}/rooms/${roomId}/teams`);
-    
-    
-                
-    //         })
-    //     })
-    // }
 
     putTeam(uid, channelId, roomId) {
         return new Promise((resolve, reject)=> {
@@ -25,7 +13,10 @@ class teamManager {
                 console.log(channelId, roomId, teamId);
                 const teamRef = channelRef.child(`${channelId}/rooms/${roomId}/teams/${teamId}`);
                 this.getLengthById(channelId, roomId, teamId).then((length)=>{
-                    teamRef.child(`users/${length}`).set(uid);
+                    teamRef.child(`users/${length}`).set({
+                        uid: uid,
+                        ready: false
+                    });
                     teamRef.child('length').set(length + 1);
                 })
                 

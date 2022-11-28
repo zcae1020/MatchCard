@@ -39,7 +39,7 @@ export const enter = (io, socket) => {
       // 팀 배정 후, team 목록 return, channel에 있는 socket에 broadcast,
       let teams = TM.putTeam(uid, channelId, roomId);
       //room으로 뿌리기
-      channelNamespace.to(socketRoom).emit("success enter room", teams);
+      io.to(socketRoom).emit("success enter room", teams);
     });
   };
 
@@ -58,7 +58,7 @@ export const enter = (io, socket) => {
       channelNamespace.to(socketRoom).emit("success ready", location);
       if(GAM.isAllReady()){
           GAM.start().then((gamemanager) => {
-              channelNamespace.to(socketRoom).emit("start game", gamemanager);
+              io.to(socketRoom).emit("start game", gamemanager);
           })
       }
     })

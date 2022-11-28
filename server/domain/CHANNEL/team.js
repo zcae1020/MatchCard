@@ -3,6 +3,5 @@ export class team{
         this.teamId = teamId;
         this.length = 0;
         this.users=[];
-        this.ready=[];
     }
 }

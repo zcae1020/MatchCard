@@ -11,12 +11,8 @@ class gameManager {
         return new Promise(async (resolve, reject) => {
             let location = await this.getTeamsLocationByUid(uid);
 
-            teamsRef.child(`/${location.teamId}/ready/${location.idx}`).on((snapshot) => {
-                if(snapshot.val() == 0) {
-                    teamsRef.child(`/${location.teamId}/ready/${idx}`).set(1);
-                } else {
-                    teamsRef.child(`/${location.teamId}/ready/${idx}`).set(0);
-                }
+            teamsRef.child(`/${location.teamId}/users/${location.idx}/ready`).on((snapshot) => {
+                teamsRef.child(`/${location.teamId}/users/${location.idx}/ready`).set(snapshot.val() == 0 ? 1 : 0);
             })
 
             resolve(location);
@@ -71,7 +67,7 @@ class gameManager {
         })
     }
 
-    getCardIdByCardLocation(row, col) {
+    #getCardIdByCardLocation(row, col) {
         return new Promise((resolve, reject) => {
             roomRef.child(`/gameManager/gameboard/${row}/${col}`).on(snapshot=>{
                 resolve(snapshot.val());
@@ -79,7 +75,7 @@ class gameManager {
         })
     }
 
-    getMaxTeam() {
+    #getMaxTeam() {
         return new Promise((resolve, reject) => {
             teamsRef.on((snapshot) => {
                 let teams = snapshot.val();
@@ -96,7 +92,7 @@ class gameManager {
         })
     }
 
-    isAllReady() {
+    #isAllReady() {
         return new Promise((resolve, reject) => {
             teamsRef.on(snapshot => {
                 let teams = snapshot.val();
@@ -110,7 +106,7 @@ class gameManager {
 
                 for(let teamId in teams) {
                     for(let i=0;i<length;i++) {
-                        if(teams[teamId]["ready"][i] == 0) {
+                        if(teams[teamId][users][i]["ready"] == 0) {
                             resolve(false);
                         }
                     }
@@ -121,7 +117,7 @@ class gameManager {
         })
     }
 
-    getTeamsLocationByUid(uid) {
+    #getTeamsLocationByUid(uid) {
         return new Promise((resolve, reject) => {
             teamsRef.on('value', async (snapshot) => {
                 for(let teamId in snapshot.val()) {
@@ -137,7 +133,7 @@ class gameManager {
         })
     }
 
-    getTeamLocationByUid(teamId, uid) {
+    #getTeamLocationByUid(teamId, uid) {
         return new Promise((resolve, reject) => {
             teamsRef.child(`/${teamId}`).on('value', (snapshot) => {
                 let users = snapshot.val().users;
