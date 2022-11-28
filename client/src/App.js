@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loading from "./Router/Loading";
 import PlayerLogin from "./Router/LoginRouter/PlayerLogin.js";
@@ -19,6 +19,7 @@ function App() {
   const [connection, setConnection] = useState(false);
   const [uid, setUid] = useState("");
   const [channelid, setChannelid] = useState("");
+  const [roomid, setRoomid] = useState("");
 
   const socket = io("http://localhost:3001");
 
@@ -38,10 +39,10 @@ function App() {
         <Route path="/AdminSignUpSuccess" element={<AdminSignUpSuccess />} />
         <Route element={<AuthLayout />}>
           <Route path="/Channel" element={<Channel socket={socket} uid={uid} setChannelid={setChannelid} />} />
-          <Route path="/Room" element={<Room socket={socket} channelid={channelid} uid={uid} />} />
+          <Route path="/Room" element={<Room socket={socket} channelid={channelid} uid={uid} setRoomid={setRoomid} />} />
           <Route path="/Admin" element={<Admin socket={socket} uid={uid} />} />
         </Route>
-        <Route path="/Game" element={<GameBoard socket={socket} uid={uid} />} />
+        <Route path="/Game" element={<GameBoard socket={socket} uid={uid} roomid={roomid} />} />
       </Routes>
     </BrowserRouter>
   );

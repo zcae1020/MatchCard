@@ -3,19 +3,26 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import style from "../../css/ChannelAndRoom.module.css";
 import io from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
-function Room({ socket, channelid, uid }) {
-  const [connection, setConnection] = useState(false);
+function Room({ socket, channelid, uid, setRoomid }) {
+  // const [connection, setConnection] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [listNum, setListNum] = useState(1);
   const [beforeDisable, setBeforeDisable] = useState(true);
   const [forwardDisable, setForwardDisable] = useState(true);
+
+  const navigate = useNavigate();
 
   // socket_channel.on("channel connected", () => {
   //   setConnection(true);
   // });
 
   const socket_channel = io(`http://localhost:3001/${channelid}`);
+  // socket_channel.on("channel connected", () => {
+  //   console.log("channel connected!!!!");
+  // });
+
   useEffect(() => {
     // if (connection === true) {
     socket.emit("room list", channelid, uid);
@@ -32,7 +39,7 @@ function Room({ socket, channelid, uid }) {
     }
   }, [rooms]);
 
-  socket.on("success room list", (rooms) => {
+  socket_channel.on("success room list", (rooms) => {
     console.log(rooms);
     setRooms(Object.keys(rooms).map((item) => rooms[item]));
   });
@@ -62,9 +69,11 @@ function Room({ socket, channelid, uid }) {
 
   const enterRoom = (roomId) => {
     socket.emit("enter room", roomId, channelid, uid);
+    setRoomid(roomId);
     console.log(roomId);
     console.log(channelid);
     console.log(uid);
+    navigate("/Game");
   };
 
   const RoomList = () => {
@@ -75,7 +84,7 @@ function Room({ socket, channelid, uid }) {
             key={room.roomId}
             className={parseInt(rooms.length / listNum) <= 1 && parseInt(rooms.length % listNum) === 0 ? style.room_box_one : style.room_box}
           >
-            <span className={style.room_num}>Room {room.roomId}</span>
+            <span className={style.room_num}>Room {room.roomId + 1}</span>
             <span>
               {room.userCnt}/{room.maxTeam * 4}
             </span>
