@@ -38,6 +38,11 @@ export const enter = (io, socket) => {
       UM.setRoomId(uid, roomId);
       // 팀 배정 후, team 목록 return, channel에 있는 socket에 broadcast,
       let teams = TM.putTeam(uid, channelId, roomId);
+      channelRef.child(`/${channelId}`).child(`/rooms`).on('value', (snapshot) => {
+        channelNamespace.emit("success room list", snapshot.val());
+      }, (errorObject)=>{
+        console.log(errorObject);
+      });
       //room으로 뿌리기
       io.to(socketRoom).emit("success enter room", teams);
     });

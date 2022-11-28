@@ -23,6 +23,9 @@ class teamManager {
                 UM.setTeamId(uid, teamId);
                 
                 const roomRef = channelRef.child(`${channelId}/rooms/${roomId}`);
+                roomRef.child('userCnt').on('value', (snapshot) => {
+                    roomRef.child('userCnt').set(snapshot.val() + 1);
+                })
                 roomRef.child('teams').on('value', (snapshot) => {
                     resolve(snapshot.val());
                 })
