@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../../css/Game.module.css";
 import Team from "./Team";
 
-export default function GameBoard({ socket, uid }) {
+export default function GameBoard({ socket, uid, roomid }) {
   const rowIndex = [0, 1, 2, 3];
   const columnIndex = [0, 1, 2, 3, 4, 5, 6, 7];
   const [cards, setCards] = useState([
@@ -19,6 +19,10 @@ export default function GameBoard({ socket, uid }) {
   const [myturn, setMyturn] = useState(false); //내 턴인지 확인
   const [turnUid, setTurnUid] = useState("");
   const [playing, setPlaying] = useState(true); //ture면 modal창 안나옴
+
+  useEffect(() => {
+    console.log(roomid);
+  });
 
   //선택한 카드가 뒤집힘
   socket.on("success pick card", (row, column, cardNum, player) => {
