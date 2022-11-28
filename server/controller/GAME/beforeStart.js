@@ -8,11 +8,8 @@ const userRef = db.ref('user');
  
 export const beforeStart = (io, socket) => {
     const ready =  (uid) => {
-
+        
     }
 
     socket.on("ready", ready);
-    socket.on("delete channel", deleteChannel);
-    socket.on("admin channel list", getChannelListAdmin);
-    socket.on("player channel list", getChannelListPlayer);
 }

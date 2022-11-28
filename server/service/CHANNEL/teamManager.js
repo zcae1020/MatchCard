@@ -1,5 +1,6 @@
 import {getDatabase} from "firebase-admin/database";
 import { UM } from "../USER/userManager.js";
+import { currentChannel, curr } from "../../controller/CHANNEL/enter.js";
 
 const db = getDatabase();
 const channelRef = db.ref('channel');
