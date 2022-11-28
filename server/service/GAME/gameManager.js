@@ -8,10 +8,10 @@ const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
 
 class gameManager {
     ready(uid) {
-        return new Promise((resolve, reject) => {
-            let location = this.getTeamsLocationByUid(uid);
+        return new Promise(async (resolve, reject) => {
+            let location = await this.getTeamsLocationByUid(uid);
 
-            teamsRef.child(`/${location.teamId}/ready/${idx}`).on((snapshot) => {
+            teamsRef.child(`/${location.teamId}/ready/${location.idx}`).on((snapshot) => {
                 if(snapshot.val() == 0) {
                     teamsRef.child(`/${location.teamId}/ready/${idx}`).set(1);
                 } else {
@@ -41,6 +41,41 @@ class gameManager {
             roomRef.child('/gameManager').on(snapshot => {
                 resolve(snapshot.val());
             });
+        })
+    }
+
+    pickCard(row, col) {
+        return new Promise((resolve, reject) => {
+            roomRef.child('/gameManager').on(snapshot => {
+                if(snapshot.val()['pick'] == 0) {
+                    roomRef.child('/gameManager/pick').set({
+                        row: row,
+                        col: col
+                    });
+                    resolve(-1);
+                }
+                else {
+                    roomRef.child('/gameManager/pick').on(async snapshot => {
+                        let pick = snapshot.val();
+                        let c1 = await this.getCardIdByCardLocation(pick.row, pick.col);
+                        let c2 = await this.getCardIdByCardLocation(row, col);
+
+                        if(c1 == c2) {
+                            resolve(1);
+                        }
+
+                        resolve(0);
+                    })
+                }
+            })
+        })
+    }
+
+    getCardIdByCardLocation(row, col) {
+        return new Promise((resolve, reject) => {
+            roomRef.child(`/gameManager/gameboard/${row}/${col}`).on(snapshot=>{
+                resolve(snapshot.val());
+            })
         })
     }
 

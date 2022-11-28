@@ -65,7 +65,7 @@ export const enter = (io, socket) => {
   }
 
   const changeTeam = (uid, teamId) => {
-    
+
   }
 
   socket.on("ready", ready);

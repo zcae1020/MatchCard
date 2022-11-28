@@ -9,8 +9,8 @@ const channelRef = db.ref("channel");
 
 export const game = (io, socket) => {
     const pickCard = (row, col) => {
-        
+            
     }
 
-  socket.on("pick card", pickCard);
+    socket.on("pick card", pickCard);
 };
