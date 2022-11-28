@@ -16,8 +16,8 @@ export class gameManager{
         maxTeam = maxTeam;
         this.gameBoard = new gameBoard();
 
-        for(let i=0;i<maxTeam;i++)
-            this.teamscore.push(0);
+        //for(let i=0;i<maxTeam;i++)
+        //   this.teamscore.push(0);
 
         for(let i=0;i<this.gameBoard.row;i++){
             let a=[];

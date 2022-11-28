@@ -15,7 +15,6 @@ export let currentChannel, currentRoom, socketRoom, channelNamespace;
 export const enter = (io, socket) => {
     const enterChannel = (channelId, uid) => {
         channelNamespace = io.of(`/${channelId}`);
-
         currentChannel = channelId;
 
         UM.setChannelId(uid, channelId);
@@ -54,6 +53,22 @@ export const enter = (io, socket) => {
     io.to(socketRoom).emit("success enter room", teams);
   }
 
+  const ready =  (uid) => {
+    GAM.ready(uid).then((location) => {
+      channelNamespace.to(socketRoom).emit("success ready", location);
+      if(GAM.isAllReady()){
+          GAM.start().then((gamemanager) => {
+              channelNamespace.to(socketRoom).emit("start game", gamemanager);
+          })
+      }
+    })
+  }
+
+  const changeTeam = (uid, teamId) => {
+    
+  }
+
+  socket.on("ready", ready);
   socket.on("room list", enterChannel);
   socket.on("enter room", enterRoom);
   socket.on("get username by uid", getUsernameByUid);

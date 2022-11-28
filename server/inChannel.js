@@ -1,3 +1,5 @@
+import { enter } from "./controller/CHANNEL/enter";
+
 export const connection = (channelNamespace) => {
     channelNamespace.on('connection', (socket) => {
         console.log("channel connect");
@@ -6,4 +8,6 @@ export const connection = (channelNamespace) => {
             console.log(a);
         })
     })
+
+    enter(channelNamespace, socket);
 }
