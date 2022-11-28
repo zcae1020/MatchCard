@@ -1,4 +1,4 @@
-import { enter } from "./controller/CHANNEL/enter";
+import { enter } from "./controller/CHANNEL/enter.js";
 
 export const connection = (channelNamespace) => {
     channelNamespace.on('connection', (socket) => {
