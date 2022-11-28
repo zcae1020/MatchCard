@@ -39,7 +39,7 @@ function Room({ socket, channelid, uid, setRoomid }) {
     }
   }, [rooms]);
 
-  socket_channel.on("success room list", (rooms) => {
+  socket.on("success room list", (rooms) => {
     console.log(rooms);
     setRooms(Object.keys(rooms).map((item) => rooms[item]));
   });
