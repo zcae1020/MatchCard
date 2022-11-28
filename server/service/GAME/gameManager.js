@@ -32,6 +32,8 @@ class gameManager {
                 arr.push(0);
             }
 
+            roomRef.child('state').set(1);
+
             roomRef.child('/gameManager/teamscore').set(arr);
 
             roomRef.child('/gameManager').on(snapshot => {
@@ -66,6 +68,8 @@ class gameManager {
             })
         })
     }
+
+
 
     #getCardIdByCardLocation(row, col) {
         return new Promise((resolve, reject) => {
