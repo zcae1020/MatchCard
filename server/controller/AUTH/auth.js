@@ -14,7 +14,7 @@ const userRef = db.ref('user');
 export const login = (io, socket) => {
     const player_login = (jwt, uid) => {
       return new Promise((resolve, reject) => {
-        UM.connectUser(uid);
+        //UM.connectUser(uid);
         socket.emit("success player login", "success");
         resolve();
       })
@@ -22,7 +22,7 @@ export const login = (io, socket) => {
 
     const admin_login = (jwt, uid) => {
       return new Promise((resolve, reject) => {
-        UM.connectUser(uid);
+        //UM.connectUser(uid);
         socket.emit("success admin login", "success");
         resolve();
       })

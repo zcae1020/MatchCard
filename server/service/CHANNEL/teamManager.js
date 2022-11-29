@@ -10,7 +10,7 @@ class teamManager {
     putTeam(uid, teamId) {
         return new Promise((resolve, reject)=> {
             const teamRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
-            this.getLengthById(currentChannel, currentRoom, teamId).then((length)=>{
+            this.getLengthById(teamId).then((length)=>{
                 teamRef.child(`users/${length}`).set({
                     uid: uid,
                     ready: false
@@ -36,7 +36,7 @@ class teamManager {
 
     async changeTeam(uid, dest) {
         return new Promise(async (resolve, reject) => {
-            let teamId = await this.getTeamIdByUid(uid, currentChannel, currentRoom);
+            let teamId = await this.getTeamIdByUid(uid);
             this.takeUserOutInTeam(uid, teamId);
             this.putTeam(uid, dest).then(teams=>{
                 resolve(teams);
@@ -46,7 +46,7 @@ class teamManager {
 
     takeUserOutInTeam(uid, teamId) {
         const teamRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
-        this.getLengthById(currentChannel, currentRoom, teamId).then((length)=>{
+        this.getLengthById(teamId).then((length)=>{
             teamRef.child('length').set(length - 1);
         })
         

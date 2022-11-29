@@ -8,21 +8,31 @@ const db = getDatabase();
 
 export const game = (io, socket) => {
     const pickCard = (row, col, uid) => {
-        IGM.pickCard(row, col).then(res=>{
-            let nextUid = IGM.nextTurn(uid);
+        IGM.pickCard(row, col).then(async res=>{
+            let nextUid = await IGM.nextTurn();
             
             switch(res) {
                 case -1: // 기존 카드 존재 x
                     break;
                 case 0: // 매칭 x
                     IGM.setCombo(1);
-                    nextUid = IGM.nextTeam(nextUid);
+                    nextUid = await IGM.nextTeam();
+                    socket.emit("fail match");
                     break;
                 case 1: // 매칭 o
                 // teamscore combo에 맞게 설정
-                    IGM.match(uid);
+                    IGM.match(uid).then(teamscore=>{
+                        socket.emit("success match", teamscore);
+                    })
                     break;
             }
+
+            let isNextRound = await IGM.isNextRound();
+            if(isNextRound == 1) {
+                //next round emit
+            }
+
+            socket.emit("success pick card", row, col, nextUid);
         })
     }
 
