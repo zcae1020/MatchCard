@@ -62,14 +62,14 @@ export const enter = (io, socket) => {
     GAM.ready(uid).then((location) => {
       channelNamespace.to(socketRoom).emit("success ready", location);
       if(GAM.isAllReady()){
-          GAM.start().then((gamemanager) => {
-            channelRef.child(`/${channelId}`).child(`/rooms`).on('value', (snapshot) => {
-              channelNamespace.emit("success room list", snapshot.val());
-            }, (errorObject)=>{
-              console.log(errorObject);
-            });
-            io.to(socketRoom).emit("start game", gamemanager);
-          })
+        GAM.start().then((gamemanager) => {
+          channelRef.child(`/${channelId}`).child(`/rooms`).on('value', (snapshot) => {
+            channelNamespace.emit("success room list", snapshot.val());
+          }, (errorObject)=>{
+            console.log(errorObject);
+          });
+          io.to(socketRoom).emit("start game", gamemanager);
+        })
       }
     })
   }

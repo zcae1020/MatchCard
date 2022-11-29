@@ -12,6 +12,7 @@ export class gameManager{
     teams = []; //게임 시작후 확정된 team
     maxTeam;
     round = 1;
+    combo = 1;
 
     constructor(maxTeam){
         maxTeam = maxTeam;
@@ -47,38 +48,9 @@ export class gameManager{
         })
     }
 
-    /**
-     * 
-     * @param {team[]} teams 
-     */
-    gameStart(teams){
-        this.teams = teams;       
-    }
-
-    nextTeam(){
-        this.userTurn = 0;
-        this.teamTurn = (this.teamTurn+1)%this.maxTeam;
-    }
-
-    nextUser(team){
-        this.userTurn = (this.userTurn+1)%team.length;
-    }
-
-    //return: -1: no compare, 0: no match, 1: match
-    isMatch(point){
-        this.pick.push(point);
-
-        if(this.pick.length==2){
-            let p1x = pick[0][0], p1y = pick[0][1], p2x = pick[1][0], p2y = pick[1][1];
-
-            pick = [];
-            if(this.gameBoard.cards[p1x][p1y]==this.gameBoard.cards[p2x][p2y]){
-                this.teamscore[this.teamTurn]++;
-                return 1;
-            }
-            else return 0;
-        }
-
-        return -1;
+    setCombo(gameManagerRef, num) {
+        return new Promise((resolve, reject) => {
+            gameManagerRef.child(`${combo}`).set(num);
+        })
     }
 }

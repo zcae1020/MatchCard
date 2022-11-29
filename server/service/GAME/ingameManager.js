@@ -1,15 +1,18 @@
 import {getDatabase} from "firebase-admin/database";
 import { currentChannel, currentRoom } from "../../controller/CHANNEL/enter.js";
 import { gameManager } from "../../domain/GAME/gameManager.js";
+import { TM } from "../CHANNEL/teamManager.js";
 
 const db = getDatabase();
-const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
-const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
-const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+
+//const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
+//const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+//const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);       
 
 class ingameManager {
     pickCard(row, col) {
         return new Promise((resolve, reject) => {
+            const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
             roomRef.child('/gameManager').on(snapshot => {
                 if(snapshot.val()['pick'] == 0) {
                     roomRef.child('/gameManager/pick').set({
@@ -37,29 +40,46 @@ class ingameManager {
 
     nextTurn() {
         return new Promise(async (resolve, reject) => {
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
             let personPerTeam = await this.#getPersonPerTeam();
             gameManagerRef.on(async snapshot => {
                 let userTurn = snapshot.val()["userTurn"];
                 let nextUserTurn = (userTurn + 1) % personPerTeam;
+                let gamemanager = new gameManager(0);
                 gameManagerRef.child('userTurn').set(nextUserTurn);
-                let nextUid = await this.getUidByCurrentTurn();
+                let teamTurn = await gamemanager.getTeamTurn(gameManagerRef);
+                let nextUid = await this.getUidByCurrentTurn(nextUserTurn, teamTurn);
                 resolve(nextUid);
             })
         })
     }
 
-    getUidByCurrentTurn() {
+    getUidByCurrentTurn(userTurn, teamTurn) {
         return new Promise(async (resolve, reject) => {
-            let gamemanager = new gameManager(0);
-            let userTurn = await gamemanager.getUserTurn(gameManagerRef);
-            let teamTurn = await gamemanager.getTeamTurn(gameManagerRef);
+            const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
+        
+            teamsRef.child(`/${teamTurn}/${userTurn}/users/uid`).on('value', snapshot => {
+                let uid = snapshot.val();
+                resolve(uid);
+            })
+        })
+    }
 
-            //////////ㅅturn에 맞는 uid return
+    setCombo(num) {
+        const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+        let gamemanager = new gameManager(0);
+        gamemanager.setCombo(gameManagerRef, num);
+    }
+
+    match(uid) {
+        TM.getTeamIdByUid(uid).then(teamId => {
+            
         })
     }
 
     #getPersonPerTeam() {
         return new Promise((resolve, reject) => {
+            const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
             teamsRef.child('/0/length').on('value', async snapshot => {
                 resolve(await snapshot.val());
             })
@@ -68,6 +88,7 @@ class ingameManager {
 
     #getCardIdByCardLocation(row, col) {
         return new Promise((resolve, reject) => {
+            const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
             roomRef.child(`/gameManager/gameboard/${row}/${col}`).on(snapshot=>{
                 resolve(snapshot.val());
             })
