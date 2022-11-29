@@ -19,7 +19,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   const [myturn, setMyturn] = useState(false); //내 턴인지 확인
   const [turnUid, setTurnUid] = useState("");
   const [playing, setPlaying] = useState(true); //ture면 modal창 안나옴
-  const [roomInfo, setRoomInfo] = useState([]);
+  const [roomInfo, setRoomInfo] = useState([{ length: 0 }, { length: 0 }, { length: 0 }, { length: 0 }]);
 
   useEffect(() => {
     console.log(channelid, roomid);
@@ -147,10 +147,10 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     <div className={style.gameboard}>
       <div className={style.round}>Round: {round}</div>
       <div className={style.time}>Time: {time}</div>
-      <Team socket={socket} class_Name={style.team_info_0} score={score[0]} turnUid={turnUid} teamInfo={roomInfo.length >= 1 ? roomInfo[0] : undefined} />
-      <Team socket={socket} class_Name={style.team_info_1} score={score[1]} turnUid={turnUid} teamInfo={roomInfo.length >= 2 ? roomInfo[1] : undefined} />
-      <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teamInfo={roomInfo.length >= 3 ? roomInfo[2] : undefined} />
-      <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teamInfo={roomInfo.length == 4 ? roomInfo[3] : undefined} />
+      <Team socket={socket} class_Name={style.team_info_0} score={score[0]} turnUid={turnUid} teamInfo={roomInfo[0].length >= 1 ? roomInfo[0] : null} />
+      <Team socket={socket} class_Name={style.team_info_1} score={score[1]} turnUid={turnUid} teamInfo={roomInfo[1].length >= 1 ? roomInfo[1] : null} />
+      <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teamInfo={roomInfo[2].length >= 1 ? roomInfo[2] : null} />
+      <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teamInfo={roomInfo[3].length >= 1 ? roomInfo[3] : null} />
       <section className={style.memory_game}>
         <CardTable />
       </section>

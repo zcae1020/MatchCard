@@ -6,20 +6,25 @@ export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
   const [userName, setUserName] = useState([]);
 
   useEffect(() => {
-    if (teamInfo !== undefined) {
+    if (teamInfo !== null) {
+      console.log(teamInfo);
       setUids(
         teamInfo.users.map((user) => {
           return user.uid;
         })
       );
+    } else {
+      console.log(teamInfo);
     }
-  }, []);
+  }, [teamInfo]);
 
-  useEffect(() => {
+  const click = () => {
     socket.emit("get username by uid", uids);
-  }, [uids]);
+  };
 
-  socket.on("");
+  socket.on("success get username by uid", (ret) => {
+    console.log(ret);
+  });
 
   return (
     <div className={class_Name}>
@@ -36,6 +41,7 @@ export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
           </tr>
         </tbody>
       </table>
+      <button onClick={click}>123123123123</button>
     </div>
   );
 }
