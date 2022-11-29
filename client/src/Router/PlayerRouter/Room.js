@@ -44,10 +44,6 @@ function Room({ socket, channelid, uid, setRoomid }) {
     setRooms(Object.keys(rooms).map((item) => rooms[item]));
   });
 
-  socket.on("success enter room", (roomInfo) => {
-    console.log("roomInfo:", roomInfo);
-  });
-
   useEffect(() => {
     if (listNum === 1) {
       setBeforeDisable(true);
@@ -68,7 +64,7 @@ function Room({ socket, channelid, uid, setRoomid }) {
   };
 
   const enterRoom = (roomId) => {
-    socket.emit("enter room", roomId, channelid, uid);
+    // socket.emit("enter room", roomId, channelid, uid);
     setRoomid(roomId);
     console.log(roomId);
     console.log(channelid);
