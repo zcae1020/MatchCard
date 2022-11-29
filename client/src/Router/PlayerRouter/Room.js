@@ -73,7 +73,7 @@ function Room({ socket, channelid, uid, setRoomid }) {
     console.log(roomId);
     console.log(channelid);
     console.log(uid);
-    navigate("/Game");
+    // navigate("/Game");
   };
 
   const RoomList = () => {
