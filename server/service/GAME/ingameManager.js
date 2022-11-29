@@ -7,7 +7,9 @@ const db = getDatabase();
 
 //const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
 //const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
-//const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);       
+//const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);   
+
+const gamemanager = new gameManager(0);
 
 class ingameManager {
     pickCard(row, col) {
@@ -27,6 +29,8 @@ class ingameManager {
                         let c1 = await this.getCardIdByCardLocation(pick.row, pick.col);
                         let c2 = await this.getCardIdByCardLocation(row, col);
 
+                        roomRef.child('/gameManager/pick').set(null);
+
                         if(c1 == c2) {
                             resolve(1);
                         }
@@ -45,7 +49,6 @@ class ingameManager {
             gameManagerRef.on(async snapshot => {
                 let userTurn = snapshot.val()["userTurn"];
                 let nextUserTurn = (userTurn + 1) % personPerTeam;
-                let gamemanager = new gameManager(0);
                 gameManagerRef.child('userTurn').set(nextUserTurn);
                 let teamTurn = await gamemanager.getTeamTurn(gameManagerRef);
                 let nextUid = await this.getUidByCurrentTurn(nextUserTurn, teamTurn);
@@ -67,13 +70,14 @@ class ingameManager {
 
     setCombo(num) {
         const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
-        let gamemanager = new gameManager(0);
         gamemanager.setCombo(gameManagerRef, num);
     }
 
     match(uid) {
         TM.getTeamIdByUid(uid).then(teamId => {
-            
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+            gamemanager.plusTeamscore(gameManagerRef, teamId)
+            gamemanager.plusCombo(gameManagerRef, num);
         })
     }
 
