@@ -35,9 +35,13 @@ class teamManager {
     }
 
     async changeTeam(uid, dest) {
-        let teamId = await this.getTeamId(uid, currentChannel, currentRoom);
-        this.takeUserOutInTeam(uid, teamId);
-        this.putTeam(uid, dest);
+        return new Promise(async (resolve, reject) => {
+            let teamId = await this.getTeamIdByUid(uid, currentChannel, currentRoom);
+            this.takeUserOutInTeam(uid, teamId);
+            this.putTeam(uid, dest).then(teams=>{
+                resolve(teams);
+            })
+        })
     }
 
     takeUserOutInTeam(uid, teamId) {
@@ -61,9 +65,9 @@ class teamManager {
         })
     }    
 
-    getTeamId(uid, channelId, roomId) {
+    getTeamIdByUid(uid) {
         return new Promise((resolve, reject) => {
-            const roomRef = channelRef.child(`${channelId}/rooms/${roomId}`);
+            const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
             roomRef.child('teams').on('value', (snapshot) => {
                 let teams = snapshot.val();
                 for(let id in teams) {
@@ -79,18 +83,18 @@ class teamManager {
         })
     }
 
-    getLengthById(channelId, roomId, teamId) {
+    getLengthById(teamId) {
         return new Promise((resolve, reject) => {
-            const teamRef = channelRef.child(`${channelId}/rooms/${roomId}/teams/${teamId}`);
+            const teamRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
             teamRef.child('length').on('value', (snapshot) => {
                 resolve(snapshot.val());
             })
         })
     }
   
-    getOptimalTeam(channelId, roomId) {
+    getOptimalTeam() {
         return new Promise((resolve, reject) => {
-            const roomRef = channelRef.child(`${channelId}/rooms/${roomId}`);
+            const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
             roomRef.child('teams').on('value', (snapshot) => {
                 let mn = 10;
                 let teamId = 0;

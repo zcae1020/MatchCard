@@ -9,7 +9,6 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as path from "path";
 import { enter } from './controller/CHANNEL/enter.js';
-import { UM } from './service/USER/userManager.js';
 
 const __dirname = path.resolve();
 const port = process.env.PORT || 3001;

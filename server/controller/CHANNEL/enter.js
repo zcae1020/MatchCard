@@ -1,9 +1,9 @@
 import express from 'express'
 import {getDatabase} from 'firebase-admin/database';
-import {CM} from "../../service/CHANNEL/channelManager.js";
 import { TM } from '../../service/CHANNEL/teamManager.js';
 import { UM } from '../../service/USER/userManager.js';
 import { connection } from '../../inChannel.js';
+import { GAM } from '../../service/GAME/gameManager.js';
  
 export const router = express.Router();
 
@@ -44,7 +44,6 @@ export const enter = (io, socket) => {
         console.log(errorObject);
       });
       //room으로 뿌리기
-      console.log(teams);
       io.to(socketRoom).emit("success enter room", teams);
     });
   };
@@ -56,31 +55,34 @@ export const enter = (io, socket) => {
       ret.push(user.name);
     }
     
-    io.to(socketRoom).emit("success enter room", teams);
+    io.to(socketRoom).emit("success get username by uid", ret);
   }
 
   const ready =  (uid) => {
     GAM.ready(uid).then((location) => {
       channelNamespace.to(socketRoom).emit("success ready", location);
       if(GAM.isAllReady()){
-          GAM.start().then((gamemanager) => {
-            channelRef.child(`/${channelId}`).child(`/rooms`).on('value', (snapshot) => {
-              channelNamespace.emit("success room list", snapshot.val());
-            }, (errorObject)=>{
-              console.log(errorObject);
-            });
-            io.to(socketRoom).emit("start game", gamemanager);
-          })
+        GAM.start().then((gamemanager) => {
+          channelRef.child(`/${channelId}`).child(`/rooms`).on('value', (snapshot) => {
+            channelNamespace.emit("success room list", snapshot.val());
+          }, (errorObject)=>{
+            console.log(errorObject);
+          });
+          io.to(socketRoom).emit("start game", gamemanager);
+        })
       }
     })
   }
 
   const changeTeam = (uid, teamId) => {
-
+    TM.changeTeam(uid, teamId).then(teams => {
+      io.to(socketRoom).emit("success enter room", teams);
+    })
   }
 
   socket.on("ready", ready);
   socket.on("room list", enterChannel);
   socket.on("enter room", enterRoom);
   socket.on("get username by uid", getUsernameByUid);
+  socket.on("change team", changeTeam);
 };

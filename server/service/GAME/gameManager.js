@@ -2,13 +2,12 @@ import {getDatabase} from "firebase-admin/database";
 import { currentChannel, currentRoom } from "../../controller/CHANNEL/enter.js";
 
 const db = getDatabase();
-const channelRef = db.ref('channel');
-const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
-const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
 
 class gameManager {
     ready(uid) {
         return new Promise(async (resolve, reject) => {
+            const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
+            const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
             let location = await this.getTeamsLocationByUid(uid);
 
             teamsRef.child(`/${location.teamId}/users/${location.idx}/ready`).on((snapshot) => {
@@ -21,6 +20,8 @@ class gameManager {
 
     start() {
         return new Promise(async (resolve, reject) => {
+            const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
+            const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
             let maxTeam = await getMaxTeam();
             roomRef.child('/gameManager/maxTeam').set(maxTeam);
             teamsRef.on(snapshot => {
@@ -42,62 +43,18 @@ class gameManager {
         })
     }
 
-    pickCard(row, col) {
+    getMaxTeam() {
         return new Promise((resolve, reject) => {
-            roomRef.child('/gameManager').on(snapshot => {
-                if(snapshot.val()['pick'] == 0) {
-                    roomRef.child('/gameManager/pick').set({
-                        row: row,
-                        col: col
-                    });
-                    resolve(-1);
-                }
-                else {
-                    roomRef.child('/gameManager/pick').on(async snapshot => {
-                        let pick = snapshot.val();
-                        let c1 = await this.getCardIdByCardLocation(pick.row, pick.col);
-                        let c2 = await this.getCardIdByCardLocation(row, col);
-
-                        if(c1 == c2) {
-                            resolve(1);
-                        }
-
-                        resolve(0);
-                    })
-                }
-            })
-        })
-    }
-
-
-
-    #getCardIdByCardLocation(row, col) {
-        return new Promise((resolve, reject) => {
-            roomRef.child(`/gameManager/gameboard/${row}/${col}`).on(snapshot=>{
-                resolve(snapshot.val());
-            })
-        })
-    }
-
-    #getMaxTeam() {
-        return new Promise((resolve, reject) => {
-            teamsRef.on((snapshot) => {
-                let teams = snapshot.val();
-                let ret = 0;
-
-                for(let teamId in teams) {
-                    if(teams[teamId]["length"] > 0) {
-                        ret++;
-                    }
-                }
-
-                resolve(ret);
+            const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
+            roomRef.on(async snapshot=> {
+                resolve(await snapshot.val().maxTeam)
             })
         })
     }
 
     #isAllReady() {
         return new Promise((resolve, reject) => {
+            const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
             teamsRef.on(snapshot => {
                 let teams = snapshot.val();
                 let length = teams[0]["length"];
@@ -123,6 +80,7 @@ class gameManager {
 
     #getTeamsLocationByUid(uid) {
         return new Promise((resolve, reject) => {
+            const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
             teamsRef.on('value', async (snapshot) => {
                 for(let teamId in snapshot.val()) {
                     let idx = await this.getTeamLocationByUid(teamId, uid);
