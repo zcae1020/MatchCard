@@ -4,12 +4,12 @@ export const connection = (channelNamespace) => {
   const onConnection = (socket) => {
     console.log("channel connect");
     socket.emit("channel connected");
-    socket.on("success enter room", (a) => {
-      console.log(a);
+    socket.on("disconnect", () => {
+      console.log("channel disconnect")
     });
-
-    channelNamespace.on("connection", onConnection);
 
     enter(channelNamespace, socket);
   };
+
+  channelNamespace.on("connection", onConnection);
 };
