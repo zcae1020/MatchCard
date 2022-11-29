@@ -17,33 +17,33 @@ export const enter = (io, socket) => {
         channelNamespace = io.of(`/${channelId}`);
         currentChannel = channelId;
 
-        UM.setChannelId(uid, channelId);
-        const curChannelRef = channelRef.child(`/${channelId}`);
-        curChannelRef.child(`/rooms`).on('value', (snapshot) => {
+        channelRef.child(`/${channelId}/rooms`).on('value', async (snapshot) => {
             //console.log(sanpshot, snapshot.val());
-            socket.emit("success room list", snapshot.val());
+            socket.emit("success room list", await snapshot.val());
+            UM.setChannelId(uid, channelId);
+            connection(channelNamespace);
         }, (errorObject)=>{
             console.log(errorObject);
         });
-
-        connection(channelNamespace);
     }
 
   const enterRoom = (roomId, channelId, uid) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       console.log("enter room:", roomId, channelId, uid);
+      channelNamespace = io.of(`/${channelId}`);
       currentRoom = roomId;
       socketRoom = `${currentChannel}/${currentRoom}`;
       socket.join(socketRoom);
       UM.setRoomId(uid, roomId);
       // 팀 배정 후, team 목록 return, channel에 있는 socket에 broadcast,
-      let teams = TM.putTeam(uid, channelId, roomId);
-      channelRef.child(`/${channelId}`).child(`/rooms`).on('value', (snapshot) => {
+      let teams = await TM.putTeam(uid, channelId, roomId);
+      channelRef.child(`/${channelId}/rooms`).on('value', (snapshot) => {
         channelNamespace.emit("success room list", snapshot.val());
       }, (errorObject)=>{
         console.log(errorObject);
       });
       //room으로 뿌리기
+      console.log(teams);
       io.to(socketRoom).emit("success enter room", teams);
     });
   };

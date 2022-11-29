@@ -8,6 +8,7 @@ class teamManager {
 
     putTeam(uid, channelId, roomId) {
         return new Promise((resolve, reject)=> {
+            console.log("putteam");
             this.getOptimalTeam(channelId, roomId).then((teamId) => {
                 console.log(channelId, roomId, teamId);
                 const teamRef = channelRef.child(`${channelId}/rooms/${roomId}/teams/${teamId}`);
@@ -21,12 +22,17 @@ class teamManager {
                 
                 UM.setTeamId(uid, teamId);
                 
+                let userCnt;
                 const roomRef = channelRef.child(`${channelId}/rooms/${roomId}`);
-                roomRef.child('userCnt').on('value', (snapshot) => {
-                    roomRef.child('userCnt').set(snapshot.val() + 1);
+                roomRef.child('userCnt').on('value', async (snapshot) => {
+                    userCnt = snapshot.val();
                 })
-                roomRef.child('teams').on('value', (snapshot) => {
-                    resolve(snapshot.val());
+
+                console.log("snapshot:"+ userCnt);
+                roomRef.child('userCnt').set(userCnt + 1);
+
+                roomRef.child('teams').on('value', async (snapshot) => {
+                    resolve(await snapshot.val());
                 })
             })
         })
