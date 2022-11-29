@@ -1,4 +1,5 @@
 import { gameBoard } from "./gameBoard.js";
+import {getDatabase} from "firebase-admin/database";
 
 export class gameManager{
     //coupledCards = [] // 짝 맞춰진 카드 id
@@ -26,6 +27,24 @@ export class gameManager{
             }
             this.cardsState.push(a);
         }
+    }
+
+    getUserTurn(gameManagerRef) {
+        return new Promise((resolve, reject) => {
+            gameManagerRef.on('value', snapshot => {
+                let userTurn = snapshot.val()["userTurn"];
+                resolve(userTurn);
+            })
+        })
+    }
+
+    getTeamTurn(gameManagerRef) {
+        return new Promise((resolve, reject) => {
+            gameManagerRef.on('value', snapshot => {
+                let teamTurn = snapshot.val()["teamTurn"];
+                resolve(teamTurn);
+            })
+        })
     }
 
     /**

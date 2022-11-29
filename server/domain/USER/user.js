@@ -1,4 +1,5 @@
 import {currentLocation} from './currentLocation.js'
+import {getDatabase} from "firebase-admin/database";
 
 class user{
     constructor(uid, id, password, name, groupId){ 
@@ -8,6 +9,12 @@ class user{
         this.name=name;
         this.groupId=groupId;
         this.currentLocation= new currentLocation();
+    }
+
+    getCurrentLocation() {
+        return new Promise((resolve, reject) => {
+            
+        })
     }
 }
 
