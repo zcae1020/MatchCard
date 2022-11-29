@@ -36,7 +36,8 @@ export const enter = (io, socket) => {
       socket.join(socketRoom);
       UM.setRoomId(uid, roomId);
       // 팀 배정 후, team 목록 return, channel에 있는 socket에 broadcast,
-      let teams = await TM.putTeam(uid, channelId, roomId);
+      let teamId = await TM.getOptimalTeam(channelId, roomId);
+      let teams = await TM.putTeam(uid, teamId);
       channelRef.child(`/${channelId}/rooms`).on('value', (snapshot) => {
         channelNamespace.emit("success room list", snapshot.val());
       }, (errorObject)=>{
