@@ -42,7 +42,7 @@ function App() {
           <Route path="/Room" element={<Room socket={socket} channelid={channelid} uid={uid} setRoomid={setRoomid} />} />
           <Route path="/Admin" element={<Admin socket={socket} uid={uid} />} />
         </Route>
-        <Route path="/Game" element={<GameBoard socket={socket} uid={uid} roomid={roomid} />} />
+        <Route path="/Game" element={<GameBoard socket={socket} uid={uid} channelid={channelid} roomid={roomid} />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "../../css/Game.module.css";
 
-export default function Team({ class_Name, score, turnUid }) {
+export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
+  const [uids, setUids] = useState([]);
+  const [userName, setUserName] = useState([]);
+
+  useEffect(() => {
+    if (teamInfo !== undefined) {
+      setUids(
+        teamInfo.users.map((user) => {
+          return user.uid;
+        })
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    socket.emit("get username by uid", uids);
+  }, [uids]);
+
+  socket.on("");
+
   return (
     <div className={class_Name}>
       <div className={style.score}>TeamScore: {score}</div>
