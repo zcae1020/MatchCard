@@ -35,9 +35,13 @@ class teamManager {
     }
 
     async changeTeam(uid, dest) {
-        let teamId = await this.getTeamId(uid, currentChannel, currentRoom);
-        this.takeUserOutInTeam(uid, teamId);
-        this.putTeam(uid, dest);
+        return new Promise(async (resolve, reject) => {
+            let teamId = await this.getTeamId(uid, currentChannel, currentRoom);
+            this.takeUserOutInTeam(uid, teamId);
+            this.putTeam(uid, dest).then(teams=>{
+                resolve(teams);
+            })
+        })
     }
 
     takeUserOutInTeam(uid, teamId) {
