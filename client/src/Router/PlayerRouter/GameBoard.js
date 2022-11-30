@@ -128,7 +128,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   };
 
   const getReady = () => {
-    setReady(true);
+    setReady(!ready);
     socket.emit("ready", uid);
   };
 
@@ -179,7 +179,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
         <CardTable />
       </section>
 
-      <button className={ready === true ? style.ready : style.getready} onClick={getReady} disabled={ready === true ? true : false}>
+      <button className={ready === true ? style.ready : style.getready} onClick={getReady}>
         {ready === true ? "준비완료" : "준비"}
       </button>
 

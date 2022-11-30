@@ -185,8 +185,6 @@ td {
   font: inherit;
   font-size: medium;
   color: rgb(44, 98, 148);
-}
-.getready:hover {
   cursor: pointer;
 }
 
