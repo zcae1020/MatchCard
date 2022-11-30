@@ -20,6 +20,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   const [turnUid, setTurnUid] = useState("");
   const [playing, setPlaying] = useState(true); //ture면 modal창 안나옴
   const [roomInfo, setRoomInfo] = useState([{ length: 0 }, { length: 0 }, { length: 0 }, { length: 0 }]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     console.log(channelid, roomid);
@@ -120,6 +121,10 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     socket.emit("pick card", row, column);
   };
 
+  const getReady = () => {
+    setReady(true);
+  };
+
   //카드테이블을 관리
   const CardTable = () => {
     return (
@@ -155,11 +160,15 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
         <CardTable />
       </section>
 
+      <button className={ready === true ? style.ready : style.getready} onClick={getReady} disabled={ready === true ? true : false}>
+        {ready === true ? "준비완료" : "준비"}
+      </button>
+
       {/* playing 상태를 확인하고 modal의 display를 결정. 적용되는 css가 달라짐 */}
       <div className={playing ? style.black_bg_none : style.black_bg}></div>
       <div className={playing ? style.modal_wrap_none : style.modal_wrap}>
         <div className={style.modal_close}>
-          <a href="#" onClick={offClick}>
+          <a href="" onClick={offClick}>
             close
           </a>
         </div>
