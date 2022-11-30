@@ -21,12 +21,18 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
     }
   }, [teaminfo]);
 
-  const click = () => {
+  // const click = () => {
+  //   if (team === null) return;
+  //   socket.emit("get username by uid", uids, team.teamId);
+  //   console.log("보내는 uids 배열 정보:", uids);
+  //   console.log("보내는 teamId:", team.teamId);
+  // };
+
+  useEffect(() => {
     if (team === null) return;
+    if (uids === null) return;
     socket.emit("get username by uid", uids, team.teamId);
-    console.log("보내는 uids 배열 정보:", uids);
-    console.log("보내는 teamId:", team.teamId);
-  };
+  }, [uids, team]);
 
   socket.on("success get username by uid", (ret, teamId) => {
     console.log("받은 username:", ret);
@@ -64,7 +70,7 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
           </tr>
         </tbody>
       </table>
-      <button onClick={click}>123123123123</button>
+      {/* <button onClick={click}>123123123123</button> */}
     </div>
   );
 }
