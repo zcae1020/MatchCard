@@ -161,6 +161,15 @@ class ingameManager {
         }) 
     }
 
+    allMatch() {
+        return new Promise(async (resolve, reject) => {
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+            await gamemanager.setNewGameboard(gameManagerRef);
+            await gameManagerRef.child(`/cardsState`).set([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+            resolve(0);
+        })
+    }
+
     isNextRound() {
         return new Promise(async (resolve, reject) => {
             const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);

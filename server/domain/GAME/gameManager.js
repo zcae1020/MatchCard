@@ -83,6 +83,14 @@ export class gameManager{
         })
     }
 
+    setNewGameboard(gameManagerRef) {
+        return new Promise((resolve, reject) => {
+            const gb = new gameBoard();
+            gameManagerRef.child(`/gameBoard`).set(gb);
+            resolve(0);
+        })
+    }
+
     setCombo(gameManagerRef, num) {
         return new Promise((resolve, reject) => {
             gameManagerRef.child(`/combo`).set(num);
