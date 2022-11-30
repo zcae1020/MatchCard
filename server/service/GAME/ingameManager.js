@@ -93,6 +93,22 @@ class ingameManager {
         })
     }
 
+    gameover() { // room 상태바꾸기, teamsocre return
+        return new Promise(async (resolve, reject) => {
+            const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+            roomRef.child('/state').set(0);
+            let teamscore = await gamemanager.getTeamscore(gameManagerRef);
+            
+            roomRef.child('/maxTeam').on('value', snapshot => {
+                let maxTeam = snapshot.val();
+                roomRef.child('/gameManager').set(new gameManager(maxTeam));  
+            })
+
+            resolve(teamscore);
+        })
+    }
+
     getUidByCurrentTurn(userTurn, teamTurn) {
         return new Promise(async (resolve, reject) => {
             const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
