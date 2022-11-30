@@ -3,7 +3,8 @@ import style from "../../css/Game.module.css";
 
 export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
   const [uids, setUids] = useState([]);
-  const [userName, setUserName] = useState([]);
+  // const [userName, setUserName] = useState([]);
+  const userName = ["김준하", "나주영", "홍성표"];
 
   useEffect(() => {
     if (teamInfo !== null) {
@@ -20,11 +21,20 @@ export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
 
   const click = () => {
     socket.emit("get username by uid", uids);
+    console.log("보내는 uids 배열 정보:", uids);
   };
 
   socket.on("success get username by uid", (ret) => {
-    console.log(ret);
+    console.log("받은 username:", ret);
   });
+
+  const UserInfo = (n) => {
+    if (userName.length < n) {
+      return "empty";
+    } else {
+      return userName[n - 1];
+    }
+  };
 
   return (
     <div className={class_Name}>
@@ -32,12 +42,12 @@ export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
       <table>
         <tbody>
           <tr>
-            <td>user1</td>
-            <td>user2</td>
+            <td>{UserInfo(1)}</td>
+            <td>{UserInfo(2)}</td>
           </tr>
           <tr>
-            <td>user3</td>
-            <td>user4</td>
+            <td>{UserInfo(3)}</td>
+            <td>{UserInfo(4)}</td>
           </tr>
         </tbody>
       </table>
