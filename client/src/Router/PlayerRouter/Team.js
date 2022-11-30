@@ -1,36 +1,41 @@
 import React, { useEffect, useState } from "react";
 import style from "../../css/Game.module.css";
 
-export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
+export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
   const [uids, setUids] = useState([]);
   const [userName, setUserName] = useState([]);
+  const [team, setTeam] = useState({});
   // const userName = ["김준하", "나주영", "홍성표"];
 
   useEffect(() => {
-    if (teamInfo !== null) {
-      console.log(teamInfo);
+    if (teaminfo !== null) {
+      console.log(teaminfo);
       setUids(
-        teamInfo.users.map((user) => {
+        teaminfo.users.map((user) => {
           return user.uid;
         })
       );
+      setTeam(teaminfo);
     } else {
-      console.log(teamInfo);
+      console.log(teaminfo);
     }
-  }, [teamInfo]);
+  }, [teaminfo]);
 
   const click = () => {
-    if (teamInfo === null) return;
-    socket.emit("get username by uid", uids, teamInfo.teamId);
+    if (team === null) return;
+    socket.emit("get username by uid", uids, team.teamId);
     console.log("보내는 uids 배열 정보:", uids);
-    console.log("보내는 teamId:", teamInfo.teamId);
+    console.log("보내는 teamId:", team.teamId);
   };
 
   socket.on("success get username by uid", (ret, teamId) => {
     console.log("받은 username:", ret);
-    console.log("갖고있는 teamId:", teamInfo.teamId);
+    console.log("before");
+    console.log("갖고있는 teamId:", team.teamId);
+    console.log("medium");
     console.log("받은 teamId:", teamId);
-    if (teamInfo.teamId === teamId) {
+    console.log("last");
+    if (team.teamId === teamId) {
       setUserName(ret);
       console.log("userName useState");
     }
