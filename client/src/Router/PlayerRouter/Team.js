@@ -20,14 +20,19 @@ export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
   }, [teamInfo]);
 
   const click = () => {
+    if (teamInfo === null) return;
     socket.emit("get username by uid", uids, teamInfo.teamId);
     console.log("보내는 uids 배열 정보:", uids);
+    console.log("보내는 teamId:", teamInfo.teamId);
   };
 
   socket.on("success get username by uid", (ret, teamId) => {
-    // console.log("받은 username:", ret);
+    console.log("받은 username:", ret);
+    console.log("갖고있는 teamId:", teamInfo.teamId);
+    console.log("받은 teamId:", teamId);
     if (teamInfo.teamId === teamId) {
       setUserName(ret);
+      console.log("userName useState");
     }
   });
 
