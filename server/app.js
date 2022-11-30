@@ -9,6 +9,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as path from "path";
 import { enter } from './controller/CHANNEL/enter.js';
+import { game } from './controller/GAME/game.js';
 
 const __dirname = path.resolve();
 const port = process.env.PORT || 3001;
@@ -42,6 +43,7 @@ const onConnection = (socket) => {
     crudChannel(io,socket);
     crudUser(io, socket);
     enter(io, socket);
+    game(io, socket);
 }
   
 io.on("connection", onConnection);

@@ -61,6 +61,7 @@ export const enter = (io, socket) => {
     let ret = [];
     for (let uid in uids) {
       let user = await UM.getUserByUid(uid);
+      console.log(uid);
       ret.push(user.name);
     }
 

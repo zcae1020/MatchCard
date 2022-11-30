@@ -24,12 +24,20 @@ export const game = (io, socket) => {
                     IGM.match(uid).then(teamscore=>{
                         socket.emit("success match", teamscore);
                     })
+                    //isAllMatch
                     break;
             }
 
             let isNextRound = await IGM.isNextRound();
             if(isNextRound) {
-                //next round emit, round 올리기
+                let isGameover = await IGM.isGameover();
+                if(isGameover) {
+                    IGM.gameover();
+                    socket.emit("")
+                }
+                else {
+                    IGM.nextRound();
+                }
             }
 
             socket.emit("success pick card", row, col, nextUid);

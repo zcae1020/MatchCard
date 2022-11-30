@@ -66,6 +66,7 @@ class ingameManager {
             let nextTeamTurn = (teamTurn + 1) % cntTeam;
             gameManagerRef.child('userTurn').set(0);
             gameManagerRef.child('teamTurn').set(nextTeamTurn);
+            //nextTeam이 다시 돌아온다면 round++;
             let nextUid = await this.getUidByCurrentTurn(0, nextTeamTurn);
             resolve(nextUid);
         })
@@ -93,13 +94,13 @@ class ingameManager {
         })
     }
 
-    gameover() { // room 상태바꾸기, teamsocre return
+    gameover() {
         return new Promise(async (resolve, reject) => {
             const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
             const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
             roomRef.child('/state').set(0);
             let teamscore = await gamemanager.getTeamscore(gameManagerRef);
-            
+
             roomRef.child('/maxTeam').on('value', snapshot => {
                 let maxTeam = snapshot.val();
                 roomRef.child('/gameManager').set(new gameManager(maxTeam));  
@@ -125,7 +126,7 @@ class ingameManager {
         gamemanager.setCombo(gameManagerRef, num);
     }
 
-    match(uid) {
+    match(uid) { // match 되었다고 check하는 것 추가
         return new Promise((resolve, reject) => {
             TM.getTeamIdByUid(uid).then(async teamId => {
                 const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
