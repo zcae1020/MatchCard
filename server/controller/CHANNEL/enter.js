@@ -56,19 +56,19 @@ export const enter = (io, socket) => {
     });
   };
 
-  const getUsernameByUid = async (uids) => {
+  const getUsernameByUid = async (uids, teamId) => {
     let ret = [];
     for (let idx in uids) {
       let user = await UM.getUserByUid(uids[idx]);
       ret.push(user.name);
     }
 
-    io.to(socketRoom).emit("success get username by uid", ret);
+    io.to(socketRoom).emit("success get username by uid", ret, teamId);
   };
 
   const ready = (uid) => {
     GAM.ready(uid).then((location) => {
-      channelNamespace.to(socketRoom).emit("success ready", location);
+      io.to(socketRoom).emit("success ready", location);
       if (GAM.isAllReady()) {
         GAM.start().then((gamemanager) => {
           channelRef.child(`/${channelId}/rooms`).on("value", (snapshot) => {

@@ -32,11 +32,14 @@ export const game = (io, socket) => {
             if(isNextRound) {
                 let isGameover = await IGM.isGameover();
                 if(isGameover) {
-                    IGM.gameover();
-                    socket.emit("")
+                    IGM.gameover().then(teamscore =>{
+                        socket.emit("gameover", teamscore);
+                    });
                 }
                 else {
-                    IGM.nextRound();
+                    IGM.nextRound().then(round=>{
+                        socket.emit("new round", round);
+                    })
                 }
             }
 
