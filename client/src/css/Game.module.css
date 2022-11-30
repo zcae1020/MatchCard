@@ -197,3 +197,7 @@ td {
   border-color: #858585;
   background-color: #ababab;
 }
+
+.turn_user {
+  border-color: cyan;
+}
