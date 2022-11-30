@@ -22,20 +22,13 @@ class gameManager {
         return new Promise(async (resolve, reject) => {
             const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
             const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
-            let maxTeam = await getMaxTeam();
-            roomRef.child('/gameManager/maxTeam').set(maxTeam);
+            let cntTeam = await getCntTeam();
+            roomRef.child('/gameManager/cntTeam').set(cntTeam);
             teamsRef.on(snapshot => {
                 roomRef.child('/gameManager/teams').set(snapshot.val());  
             })
 
-            let arr = [];
-            for(let i=0;i<maxTeam;i++) {
-                arr.push(0);
-            }
-
             roomRef.child('state').set(1);
-
-            roomRef.child('/gameManager/teamscore').set(arr);
 
             roomRef.child('/gameManager').on(snapshot => {
                 resolve(snapshot.val());
@@ -43,11 +36,18 @@ class gameManager {
         })
     }
 
-    getMaxTeam() {
+    getCntTeam() {
         return new Promise((resolve, reject) => {
             const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
-            roomRef.on(async snapshot=> {
-                resolve(await snapshot.val().maxTeam)
+            roomRef.child('teams').on(async snapshot=> {
+                let teams = snapshot.val();
+                let cntTeam = 0;
+                for(let idx in teams) {
+                    if(teams[idx]["length"] > 0) {
+                        cntTeam++;
+                    }
+                }
+                resolve(cntTeam);
             })
         })
     }

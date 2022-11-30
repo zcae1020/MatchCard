@@ -58,12 +58,12 @@ class ingameManager {
         })
     }
 
-    nextTeam() { //고쳐야함, on('value', snapshot)
+    nextTeam() {
         return new Promise(async (resolve, reject) => {
             const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
             let teamTurn = await gamemanager.getTeamTurn(gameManagerRef);
-            let nextTeamTurn = (teamTurn + 1) % maxTeam;
-            let maxTeam = await GAM.getMaxTeam();
+            let cntTeam = await GAM.getCntTeam();
+            let nextTeamTurn = (teamTurn + 1) % cntTeam;
             gameManagerRef.child('userTurn').set(0);
             gameManagerRef.child('teamTurn').set(nextTeamTurn);
             let nextUid = await this.getUidByCurrentTurn(0, nextTeamTurn);
@@ -100,7 +100,18 @@ class ingameManager {
         })
     }
 
-    isNextRound
+    isNextRound() {
+        return new Promise(async (resolve, reject) => {
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+            let teamturn = await gamemanager.getTeamTurn(gameManagerRef);
+            let userturn = await gamemanager.getUserTurn(gameManagerRef);
+            if(teamturn == 0 && userturn == 0) {
+                resolve(true);
+            }
+
+            resolve(false);
+        })
+    }
 
     #getPersonPerTeam() {
         return new Promise((resolve, reject) => {

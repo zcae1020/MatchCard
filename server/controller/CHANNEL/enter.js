@@ -72,12 +72,7 @@ export const enter = (io, socket) => {
       channelNamespace.to(socketRoom).emit("success ready", location);
       if (GAM.isAllReady()) {
         GAM.start().then((gamemanager) => {
-          channelRef
-            .child(`/${channelId}`)
-            .child(`/rooms`)
-            .on(
-              "value",
-              (snapshot) => {
+          channelRef.child(`/${channelId}/rooms`).on("value", (snapshot) => {
                 channelNamespace.emit("success room list", snapshot.val());
               },
               (errorObject) => {

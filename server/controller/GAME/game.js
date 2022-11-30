@@ -28,8 +28,8 @@ export const game = (io, socket) => {
             }
 
             let isNextRound = await IGM.isNextRound();
-            if(isNextRound == 1) {
-                //next round emit
+            if(isNextRound) {
+                //next round emit, round 올리기
             }
 
             socket.emit("success pick card", row, col, nextUid);

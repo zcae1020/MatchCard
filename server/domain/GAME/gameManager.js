@@ -10,7 +10,7 @@ export class gameManager{
     userTurn = 0 // 현재 턴을 가진 team 중 턴을 가진 팀원 순서
     teamscore = [0,0,0,0] //팀별 점수
     teams = []; //게임 시작후 확정된 team
-    maxTeam;
+    cntTeam;
     round = 1;
     combo = 1;
 
