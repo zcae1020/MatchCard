@@ -12,6 +12,7 @@ td {
   background-color: #f2f2f2;
   padding: 10px;
   width: 50%;
+  height: 50%;
   font-size: x-large;
 }
 
@@ -112,6 +113,7 @@ td {
 
 #cardTable > tbody > tr > td {
   width: 10%;
+  height: auto;
 }
 
 #cardTable > tbody > tr > td:hover {
@@ -196,4 +198,8 @@ td {
 .ready_user {
   border-color: #858585;
   background-color: #ababab;
+}
+
+.turn_user {
+  border-color: cyan;
 }

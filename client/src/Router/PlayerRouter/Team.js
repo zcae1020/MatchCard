@@ -41,9 +41,19 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
 
   const UserInfo = (n) => {
     if (userName.length < n) {
-      return "empty";
+      return "";
     } else {
       return userName[n - 1];
+    }
+  };
+
+  const turn = (n) => {
+    if (userName.length <= n) {
+      return null;
+    } else if (uids[n] === turnUid) {
+      return style.turn_user;
+    } else {
+      return null;
     }
   };
 
@@ -53,12 +63,12 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
       <table>
         <tbody>
           <tr>
-            <td className={readyState[0] === true ? style.ready_user : null}>{UserInfo(1)}</td>
-            <td className={readyState[1] === true ? style.ready_user : null}>{UserInfo(2)}</td>
+            <td className={readyState[0] === true ? style.ready_user : turn(0)}>{UserInfo(1)}</td>
+            <td className={readyState[1] === true ? style.ready_user : turn(1)}>{UserInfo(2)}</td>
           </tr>
           <tr>
-            <td className={readyState[2] === true ? style.ready_user : null}>{UserInfo(3)}</td>
-            <td className={readyState[3] === true ? style.ready_user : null}>{UserInfo(4)}</td>
+            <td className={readyState[2] === true ? style.ready_user : turn(2)}>{UserInfo(3)}</td>
+            <td className={readyState[3] === true ? style.ready_user : turn(3)}>{UserInfo(4)}</td>
           </tr>
         </tbody>
       </table>
