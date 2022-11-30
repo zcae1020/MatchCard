@@ -5,6 +5,7 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
   const [uids, setUids] = useState([]);
   const [userName, setUserName] = useState([]);
   const [team, setTeam] = useState({});
+  const [readyState, setReadyState] = useState([false, false]);
   // const userName = ["김준하", "나주영", "홍성표"];
 
   useEffect(() => {
@@ -15,18 +16,16 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
           return user.uid;
         })
       );
+      setReadyState(
+        teaminfo.users.map((user) => {
+          return user.ready;
+        })
+      );
       setTeam(teaminfo);
     } else {
       console.log(teaminfo);
     }
   }, [teaminfo]);
-
-  // const click = () => {
-  //   if (team === null) return;
-  //   socket.emit("get username by uid", uids, team.teamId);
-  //   console.log("보내는 uids 배열 정보:", uids);
-  //   console.log("보내는 teamId:", team.teamId);
-  // };
 
   useEffect(() => {
     if (team === null) return;
@@ -35,15 +34,8 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
   }, [uids, team]);
 
   socket.on("success get username by uid", (ret, teamId) => {
-    console.log("받은 username:", ret);
-    console.log("before");
-    console.log("갖고있는 teamId:", team.teamId);
-    console.log("medium");
-    console.log("받은 teamId:", teamId);
-    console.log("last");
     if (team.teamId === teamId) {
       setUserName(ret);
-      console.log("userName useState");
     }
   });
 
@@ -61,12 +53,12 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
       <table>
         <tbody>
           <tr>
-            <td>{UserInfo(1)}</td>
-            <td>{UserInfo(2)}</td>
+            <td className={readyState[0] === true ? style.ready_user : null}>{UserInfo(1)}</td>
+            <td className={readyState[1] === true ? style.ready_user : null}>{UserInfo(2)}</td>
           </tr>
           <tr>
-            <td>{UserInfo(3)}</td>
-            <td>{UserInfo(4)}</td>
+            <td className={readyState[2] === true ? style.ready_user : null}>{UserInfo(3)}</td>
+            <td className={readyState[3] === true ? style.ready_user : null}>{UserInfo(4)}</td>
           </tr>
         </tbody>
       </table>

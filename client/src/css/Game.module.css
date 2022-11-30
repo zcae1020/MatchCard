@@ -189,3 +189,8 @@ td {
   background-color: rgb(74, 111, 111);
   color: rgb(207, 207, 207);
 }
+
+.ready_user {
+  border-color: #858585;
+  background-color: #ababab;
+}
