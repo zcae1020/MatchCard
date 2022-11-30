@@ -23,10 +23,12 @@ function App() {
 
   const socket = io("http://localhost:3001");
 
-  socket.on("connected", () => {
-    setConnection(true);
-    console.log("useEffect!!!");
-  });
+  if (!connection) {
+    socket.on("connected", () => {
+      setConnection(true);
+      console.log("useEffect!!!");
+    });
+  }
 
   return (
     <BrowserRouter>
