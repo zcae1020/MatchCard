@@ -26,7 +26,8 @@ export const game = (io, socket) => {
                     })
                     //isAllMatch
                     if(await IGM.isAllMatch()) {
-                        
+                        IGM.allMatch();
+                        socket.emit("all match");
                     }
                     break;
             }
