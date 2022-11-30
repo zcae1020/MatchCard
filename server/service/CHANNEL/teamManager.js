@@ -10,8 +10,8 @@ class teamManager {
     putTeam(uid, teamId) {
         return new Promise((resolve, reject)=> {
             const teamRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
-            this.getLengthById(teamId).then((length)=>{
-                teamRef.child(`users/${length}`).set({
+            this.getLengthById(teamId).then(async (length)=>{
+                await teamRef.child(`users/${length}`).set({
                     uid: uid,
                     ready: false
                 });

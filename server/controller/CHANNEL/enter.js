@@ -42,9 +42,7 @@ export const enter = (io, socket) => {
       // 팀 배정 후, team 목록 return, channel에 있는 socket에 broadcast,
       let teamId = await TM.getOptimalTeam(channelId, roomId);
       let teams = await TM.putTeam(uid, teamId);
-      channelRef.child(`/${channelId}/rooms`).on(
-        "value",
-        (snapshot) => {
+      channelRef.child(`/${channelId}/rooms`).on("value", (snapshot) => {
           channelNamespace.emit("success room list", snapshot.val());
         },
         (errorObject) => {
@@ -57,14 +55,13 @@ export const enter = (io, socket) => {
   };
 
   const getUsernameByUid = async (uids, teamId) => {
-    socketRoom = `${currentChannel}/${currentRoom}`;
     let ret = [];
     for (let idx in uids) {
       let user = await UM.getUserByUid(uids[idx]);
       ret.push(user.name);
     }
 
-    console.log("username:",ret);
+    console.log("username:",ret, teamId);
     io.to(socketRoom).emit("success get username by uid", ret, teamId);
   };
 
