@@ -3,8 +3,8 @@ import style from "../../css/Game.module.css";
 
 export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
   const [uids, setUids] = useState([]);
-  // const [userName, setUserName] = useState([]);
-  const userName = ["김준하", "나주영", "홍성표"];
+  const [userName, setUserName] = useState([]);
+  // const userName = ["김준하", "나주영", "홍성표"];
 
   useEffect(() => {
     if (teamInfo !== null) {
@@ -20,12 +20,15 @@ export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
   }, [teamInfo]);
 
   const click = () => {
-    socket.emit("get username by uid", uids);
+    socket.emit("get username by uid", uids, teamInfo.teamId);
     console.log("보내는 uids 배열 정보:", uids);
   };
 
-  socket.on("success get username by uid", (ret) => {
-    console.log("받은 username:", ret);
+  socket.on("success get username by uid", (ret, teamId) => {
+    // console.log("받은 username:", ret);
+    if (teamInfo.teamId === teamId) {
+      setUserName(ret);
+    }
   });
 
   const UserInfo = (n) => {
