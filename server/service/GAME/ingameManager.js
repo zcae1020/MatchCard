@@ -147,7 +147,18 @@ class ingameManager {
     }
 
     isAllMatch() {
-        
+        return new Promise((resolve, reject) => {
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+            gamemanager.getCardsState(gameManagerRef).then(cardsState => {
+                for(let idx in cardsState) {
+                    if(cardsState[idx] == 0) {
+                        resolve(false);
+                    }
+                }
+
+                resolve(true);
+            })
+        }) 
     }
 
     isNextRound() {

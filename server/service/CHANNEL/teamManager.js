@@ -15,33 +15,32 @@ class teamManager {
                 teamRef.child(`users/${length}`).set({
                     uid: uid,
                     ready: false
-                }).then(a => {
-                    console.log(1);
-                    teamRef.child('length').set(length + 1);
+                })
 
-                    UM.setTeamId(uid, teamId);
+                console.log(1);
+                teamRef.child('length').set(length + 1);
 
-                    this.#getUserCnt().then(userCnt => {
-                        roomRef.child('userCnt').set(userCnt + 1);
-                    })
+                UM.setTeamId(uid, teamId);
 
-                    roomRef.child('teams').on('value', async (snapshot) => {
-                        resolve(snapshot.val());
-                    })
+                this.#getUserCnt().then(userCnt => {
+                    roomRef.child('userCnt').set(userCnt + 1);
+                })
+
+                roomRef.child('teams').on('value', async (snapshot) => {
+                    resolve(snapshot.val());
                 })
             })
         })
     }
 
     changeTeam(uid, dest) {
-        console.log(uid, dest);
         return new Promise(async (resolve, reject) => {
-            let teamId = await this.getTeamIdByUid(uid).catch(e=>console.log("e", e));
-            console.log("change");
-            //await this.takeUserOutInTeam(uid, teamId);
-            //this.putTeam(uid, dest).then(teams=>{
-             //   resolve(teams);
-            //}).catch(e=>console.log(e));
+            let teamId = await this.getTeamIdByUid(uid)
+
+            await this.takeUserOutInTeam(uid, teamId);
+            this.putTeam(uid, dest).then(teams=>{
+               resolve(teams);
+            }).catch(e=>console.log(e));
         })
     }
 
@@ -51,21 +50,23 @@ class teamManager {
             this.getLengthById(teamId).then((length)=>{
                 teamRef.child('length').set(length - 1);
 
-                console.log("take");
                 UM.setTeamId(uid, null);
 
-                teamRef.child('/users').on(snapshot => {
+                teamRef.child('/users').on('value', snapshot => {
                     let newUsers = [];
                     let users = snapshot.val();
-                    for(let user in users) {
-                        if(user.uid != uid) {
-                            newUsers.push(user);
+                    for(let idx in users) {
+                        let currentUid = users[idx].uid;
+                        if(currentUid != uid) {
+                            newUsers.push(currentUid);
                         }
                     }
-
+                    
                     teamRef.child('/users').set(newUsers);
                 })
             })
+
+            resolve(0);
         })
     }    
 
@@ -74,19 +75,14 @@ class teamManager {
             const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
             roomRef.child('/teams').on('value', (snapshot) => {
                 let teams = snapshot.val();
-                console.log(teams)
                 for(let id in teams) {
                     let users = teams[id]["users"];
-                    console.log(users);
                     for(let idx in users) {
-                        console.log(idx);
                         if(users[idx].uid == uid) {
                             resolve(id);
                         }
                     }
                 }
-
-                reject();
             })
         })
     }

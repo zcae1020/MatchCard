@@ -74,6 +74,15 @@ export class gameManager{
         })
     }
 
+    getCardsState(gameManagerRef) {
+        return new Promise((resolve, reject) => {
+            gameManagerRef.child(`/cardsState`).on('value', snapshot => {
+                let val = snapshot.val();
+                resolve(val);
+            });
+        })
+    }
+
     setCombo(gameManagerRef, num) {
         return new Promise((resolve, reject) => {
             gameManagerRef.child(`/combo`).set(num);
