@@ -16,20 +16,21 @@ class teamManager {
                     ready: false
                 });
                 teamRef.child('length').set(length + 1);
-            })
-            
-            UM.setTeamId(uid, teamId);
-            
-            let userCnt;
-            const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
-            roomRef.child('userCnt').on('value', async (snapshot) => {
-                userCnt = snapshot.val();
-            })
 
-            roomRef.child('userCnt').set(userCnt + 1);
+                UM.setTeamId(uid, teamId);
+            
+                let userCnt;
+                const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
+                roomRef.child('userCnt').on('value', async (snapshot) => {
+                    userCnt = snapshot.val();
+                })
 
-            roomRef.child('teams').on('value', async (snapshot) => {
-                resolve(await snapshot.val());
+                roomRef.child('userCnt').set(userCnt + 1);
+
+                roomRef.child('teams').on('value', async (snapshot) => {
+                    console.log(snapshot.val());
+                    resolve(snapshot.val());
+                })
             })
         })
     }
