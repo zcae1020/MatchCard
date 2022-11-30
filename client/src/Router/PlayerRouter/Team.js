@@ -9,7 +9,8 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
   // const userName = ["김준하", "나주영", "홍성표"];
 
   useEffect(() => {
-    if (teaminfo !== null) {
+    setTeam(teaminfo);
+    if (teaminfo.length !== 0) {
       console.log(teaminfo);
       setUids(
         teaminfo.users.map((user) => {
@@ -21,15 +22,16 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
           return user.ready;
         })
       );
-      setTeam(teaminfo);
     } else {
       console.log(teaminfo);
+      setUids([]);
+      setUserName([]);
     }
   }, [teaminfo]);
 
   useEffect(() => {
-    if (team === null) return;
-    if (uids === null) return;
+    if (team.length === 0) return;
+    if (uids.length === 0) return;
     socket.emit("get username by uid", uids, team.teamId);
   }, [uids, team]);
 

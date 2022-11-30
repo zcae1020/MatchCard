@@ -163,20 +163,20 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     <div className={style.gameboard}>
       <div className={style.round}>Round: {round}</div>
       <div className={style.time}>Time: {time}</div>
-      <span classname={style.team_info} onClick={() => changeTeam(0)}>
-        <Team socket={socket} class_Name={style.team_info_0} score={score[0]} turnUid={turnUid} teaminfo={roomInfo[0].length >= 1 ? roomInfo[0] : null} />
+      <span className={style.team_info} onClick={() => changeTeam(0)}>
+        <Team socket={socket} class_Name={style.team_info_0} score={score[0]} turnUid={turnUid} teaminfo={roomInfo[0]} />
       </span>
-      <span classname={style.team_info} onClick={() => changeTeam(1)}>
-        <Team socket={socket} class_Name={style.team_info_1} score={score[1]} turnUid={turnUid} teaminfo={roomInfo[1].length >= 1 ? roomInfo[1] : null} />
+      <span className={style.team_info} onClick={() => changeTeam(1)}>
+        <Team socket={socket} class_Name={style.team_info_1} score={score[1]} turnUid={turnUid} teaminfo={roomInfo[1]} />
       </span>
       {roomInfo.length >= 3 ? (
-        <span classname={style.team_info} onClick={() => changeTeam(2)}>
-          <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teaminfo={roomInfo[2].length >= 1 ? roomInfo[2] : null} />
+        <span className={style.team_info} onClick={() => changeTeam(2)}>
+          <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teaminfo={roomInfo[2]} />
         </span>
       ) : null}
       {roomInfo.length >= 4 ? (
-        <span classname={style.team_info} onClick={() => changeTeam(3)}>
-          <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teaminfo={roomInfo[3].length >= 1 ? roomInfo[3] : null} />
+        <span className={style.team_info} onClick={() => changeTeam(3)}>
+          <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teaminfo={roomInfo[3]} />
         </span>
       ) : null}
 
