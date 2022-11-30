@@ -20,12 +20,12 @@ export default function Team({ socket, class_Name, score, turnUid, teamInfo }) {
   }, [teamInfo]);
 
   const click = () => {
-    // socket.emit("get username by uid", uids);
-    console.log(uids);
+    socket.emit("get username by uid", uids);
+    console.log("보내는 uids 배열 정보:", uids);
   };
 
   socket.on("success get username by uid", (ret) => {
-    console.log(ret);
+    console.log("받은 username:", ret);
   });
 
   const UserInfo = (n) => {
