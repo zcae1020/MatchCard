@@ -62,7 +62,8 @@ class userManager {
   getUserByUid(uid){
     return new Promise((resolve, reject)=>{
       userRef.child(`${uid}`).on('value', (snapshot)=>  {
-        resolve(snapshot.val());
+        let ret = snapshot.val();
+        resolve(ret);
       }, (errorObject)=>{
         console.log('The read failed: ' + errorObject.name);
         reject(new Error());

@@ -57,11 +57,9 @@ export const enter = (io, socket) => {
   };
 
   const getUsernameByUid = async (uids) => {
-    console.log(uids);
     let ret = [];
-    for (let uid in uids) {
-      let user = await UM.getUserByUid(uid);
-      console.log("uid:", uid);
+    for (let idx in uids) {
+      let user = await UM.getUserByUid(uids[idx]);
       ret.push(user.name);
     }
 
