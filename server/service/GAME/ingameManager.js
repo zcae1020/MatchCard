@@ -66,7 +66,10 @@ class ingameManager {
             let nextTeamTurn = (teamTurn + 1) % cntTeam;
             gameManagerRef.child('userTurn').set(0);
             gameManagerRef.child('teamTurn').set(nextTeamTurn);
-            //nextTeam이 다시 돌아온다면 round++;
+            if(nextTeamTurn == 0) {
+                let round = gamemanager.getRound(gameManagerRef);
+                gameManagerRef.child('round').set(round + 1);    
+            }
             let nextUid = await this.getUidByCurrentTurn(0, nextTeamTurn);
             resolve(nextUid);
         })
@@ -76,9 +79,7 @@ class ingameManager {
         return new Promise(async (resolve, reject) => {
             const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
             let round = await gamemanager.getRound(gameManagerRef);
-            let nextRound = round + 1;
-            gameManagerRef.child('/round').set(nextRound);
-            resolve(nextRound);
+            resolve(round);
         })
     }
 
@@ -86,7 +87,7 @@ class ingameManager {
         return new Promise(async (resolve, reject) => {
             const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
             let round = await gamemanager.getRound(gameManagerRef);
-            if(round == 3) {
+            if(round == 4) {
                 resolve(true);
             }
 
