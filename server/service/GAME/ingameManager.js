@@ -111,10 +111,12 @@ class ingameManager {
         })
     }
 
-    getUidByCurrentTurn(userTurn, teamTurn) {
+    getUidByCurrentTurn() {
         return new Promise(async (resolve, reject) => {
             const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
-        
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+            let teamTurn = await gamemanager.getTeamTurn(gameManagerRef);
+            let userTurn = await gamemanager.getUserTurn(gameManagerRef);
             teamsRef.child(`/${teamTurn}/${userTurn}/users/uid`).on('value', snapshot => {
                 let uid = snapshot.val();
                 resolve(uid);
