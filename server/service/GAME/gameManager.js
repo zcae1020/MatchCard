@@ -19,21 +19,6 @@ class gameManager {
                     resolve(snapshot.val());
                 })
             })
-            
-/**
-            teamsRef.child(`/${location.teamId}/users/${location.idx}/ready`).on('value', async (snapshot) => {
-                //console.log(snapshot.val());
-                let ready = snapshot.val();
-                if(ready == false) {
-                    await teamsRef.child(`/${location.teamId}/users/${location.idx}/ready`).set(true);
-                } else {
-                    await teamsRef.child(`/${location.teamId}/users/${location.idx}/ready`).set(false);
-                }
-                teamsRef.on('value', ss => {
-                    resolve(ss.val());
-                })
-            })
-            */
         })
     }
 

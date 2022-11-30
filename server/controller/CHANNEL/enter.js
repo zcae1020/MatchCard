@@ -4,6 +4,7 @@ import { TM } from "../../service/CHANNEL/teamManager.js";
 import { UM } from "../../service/USER/userManager.js";
 import { connection } from "../../inChannel.js";
 import { GAM } from "../../service/GAME/gameManager.js";
+import { IGM } from "../../service/GAME/ingameManager.js";
 
 export const router = express.Router();
 
@@ -68,15 +69,15 @@ export const enter = (io, socket) => {
     GAM.ready(uid).then(async (teams) => {
       io.to(socketRoom).emit("success enter room", teams);
       if (await GAM.isAllReady()) {
-        GAM.start().then((gamemanager) => {
-          channelRef.child(`/${channelId}/rooms`).on("value", (snapshot) => {
+        GAM.start().then(async (gamemanager) => {
+          channelRef.child(`/${currentChannel}/rooms`).on("value", (snapshot) => {
                 channelNamespace.emit("success room list", snapshot.val());
               },
               (errorObject) => {
                 console.log(errorObject);
               }
             );
-          io.to(socketRoom).emit("start game", gamemanager);
+          io.to(socketRoom).emit("start game", await IGM.getUidByCurrentTurn());
         });
       }
     });
