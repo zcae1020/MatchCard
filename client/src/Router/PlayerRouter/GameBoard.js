@@ -32,6 +32,12 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     setRoomInfo(roomInfo);
   });
 
+  socket.on("start game", (player) => {
+    setTurnUid(player);
+    if (uid === player) setMyturn(true);
+    else setMyturn(false);
+  });
+
   //선택한 카드가 뒤집힘
   socket.on("success pick card", (row, column, cardNum, player) => {
     setTurnUid(player); //현재 누구 턴인지. 해당하는 사람의 uid를 저장. 해당 유저에 표시해놓기 위함
@@ -126,6 +132,10 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     socket.emit("ready", uid);
   };
 
+  const changeTeam = (n) => {
+    socket.emit("change team", uid, n);
+  };
+
   //카드테이블을 관리
   const CardTable = () => {
     return (
@@ -153,10 +163,18 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     <div className={style.gameboard}>
       <div className={style.round}>Round: {round}</div>
       <div className={style.time}>Time: {time}</div>
-      <Team socket={socket} class_Name={style.team_info_0} score={score[0]} turnUid={turnUid} teaminfo={roomInfo[0].length >= 1 ? roomInfo[0] : null} />
-      <Team socket={socket} class_Name={style.team_info_1} score={score[1]} turnUid={turnUid} teaminfo={roomInfo[1].length >= 1 ? roomInfo[1] : null} />
-      <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teaminfo={roomInfo[2].length >= 1 ? roomInfo[2] : null} />
-      <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teaminfo={roomInfo[3].length >= 1 ? roomInfo[3] : null} />
+      <span classname={style.team_info} onClick={() => changeTeam(0)}>
+        <Team socket={socket} class_Name={style.team_info_0} score={score[0]} turnUid={turnUid} teaminfo={roomInfo[0].length >= 1 ? roomInfo[0] : null} />
+      </span>
+      <span classname={style.team_info} onClick={() => changeTeam(1)}>
+        <Team socket={socket} class_Name={style.team_info_1} score={score[1]} turnUid={turnUid} teaminfo={roomInfo[1].length >= 1 ? roomInfo[1] : null} />
+      </span>
+      <span classname={style.team_info} onClick={() => changeTeam(2)}>
+        <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teaminfo={roomInfo[2].length >= 1 ? roomInfo[2] : null} />
+      </span>
+      <span classname={style.team_info} onClick={() => changeTeam(3)}>
+        <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teaminfo={roomInfo[3].length >= 1 ? roomInfo[3] : null} />
+      </span>
       <section className={style.memory_game}>
         <CardTable />
       </section>
