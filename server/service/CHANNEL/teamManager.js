@@ -10,75 +10,92 @@ class teamManager {
     putTeam(uid, teamId) {
         return new Promise((resolve, reject)=> {
             const teamRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
-            this.getLengthById(teamId).then(async (length)=>{
-                await teamRef.child(`users/${length}`).set({
+            const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
+            this.getLengthById(teamId).then((length)=>{
+                teamRef.child(`users/${length}`).set({
                     uid: uid,
                     ready: false
-                });
-                teamRef.child('length').set(length + 1);
+                }).then(a => {
+                    console.log(1);
+                    teamRef.child('length').set(length + 1);
 
-                UM.setTeamId(uid, teamId);
-            
-                let userCnt;
-                const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
-                roomRef.child('userCnt').on('value', async (snapshot) => {
-                    userCnt = snapshot.val();
-                })
+                    UM.setTeamId(uid, teamId);
 
-                roomRef.child('userCnt').set(userCnt + 1);
+                    this.#getUserCnt().then(userCnt => {
+                        roomRef.child('userCnt').set(userCnt + 1);
+                    })
 
-                roomRef.child('teams').on('value', async (snapshot) => {
-                    resolve(snapshot.val());
+                    roomRef.child('teams').on('value', async (snapshot) => {
+                        resolve(snapshot.val());
+                    })
                 })
             })
         })
     }
 
-    async changeTeam(uid, dest) {
+    changeTeam(uid, dest) {
+        console.log(uid, dest);
         return new Promise(async (resolve, reject) => {
-            let teamId = await this.getTeamIdByUid(uid);
-            this.takeUserOutInTeam(uid, teamId);
-            this.putTeam(uid, dest).then(teams=>{
-                resolve(teams);
-            })
+            let teamId = await this.getTeamIdByUid(uid).catch(e=>console.log("e", e));
+            console.log("change");
+            //await this.takeUserOutInTeam(uid, teamId);
+            //this.putTeam(uid, dest).then(teams=>{
+             //   resolve(teams);
+            //}).catch(e=>console.log(e));
         })
     }
 
     takeUserOutInTeam(uid, teamId) {
-        const teamRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
-        this.getLengthById(teamId).then((length)=>{
-            teamRef.child('length').set(length - 1);
-        })
-        
-        UM.setTeamId(uid, null);
+        return new Promise((resolve, reject) => {
+            const teamRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
+            this.getLengthById(teamId).then((length)=>{
+                teamRef.child('length').set(length - 1);
 
-        teamRef.child('/users').on(snapshot => {
-            let newUsers = [];
-            let users = snapshot.val();
-            for(let user in users) {
-                if(user.uid != uid) {
-                    newUsers.push(user);
-                }
-            }
+                console.log("take");
+                UM.setTeamId(uid, null);
 
-            teamRef.child('/users').set(newUsers);
+                teamRef.child('/users').on(snapshot => {
+                    let newUsers = [];
+                    let users = snapshot.val();
+                    for(let user in users) {
+                        if(user.uid != uid) {
+                            newUsers.push(user);
+                        }
+                    }
+
+                    teamRef.child('/users').set(newUsers);
+                })
+            })
         })
     }    
 
     getTeamIdByUid(uid) {
         return new Promise((resolve, reject) => {
             const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
-            roomRef.child('teams').on('value', (snapshot) => {
+            roomRef.child('/teams').on('value', (snapshot) => {
                 let teams = snapshot.val();
+                console.log(teams)
                 for(let id in teams) {
-                    for(let user in teams[id]["users"]) {
-                        if(user.uid == uid) {
+                    let users = teams[id]["users"];
+                    console.log(users);
+                    for(let idx in users) {
+                        console.log(idx);
+                        if(users[idx].uid == uid) {
                             resolve(id);
                         }
                     }
                 }
 
                 reject();
+            })
+        })
+    }
+
+    #getUserCnt() {
+        const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
+        return new Promise((resolve, reject) => {
+            roomRef.child('userCnt').on('value', (snapshot) => {
+                resolve(snapshot.val());
             })
         })
     }

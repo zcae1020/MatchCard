@@ -18,11 +18,10 @@ export const enter = (io, socket) => {
     channelNamespace = io.of(`/${channelId}`);
     currentChannel = channelId;
 
-    channelRef.child(`/${channelId}/rooms`).on(
-      "value",
-      async (snapshot) => {
+    channelRef.child(`/${channelId}/rooms`).on("value", async (snapshot) => {
         //console.log(sanpshot, snapshot.val());
-        socket.emit("success room list", await snapshot.val());
+        console.log("cc");
+        socket.emit("success room list", snapshot.val());
         UM.setChannelId(uid, channelId);
         connection(channelNamespace);
       },
@@ -84,9 +83,10 @@ export const enter = (io, socket) => {
   };
 
   const changeTeam = (uid, teamId) => {
+    console.log(uid, teamId);
     TM.changeTeam(uid, teamId).then((teams) => {
       io.to(socketRoom).emit("success enter room", teams);
-    });
+    })
   };
 
   socket.on("ready", ready);
