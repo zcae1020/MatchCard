@@ -61,14 +61,13 @@ export const enter = (io, socket) => {
       ret.push(user.name);
     }
 
-    console.log("username:",ret, teamId);
     io.to(socketRoom).emit("success get username by uid", ret, teamId);
   };
 
   const ready = (uid) => {
-    GAM.ready(uid).then((location) => {
-      io.to(socketRoom).emit("success ready", location);
-      if (GAM.isAllReady()) {
+    GAM.ready(uid).then(async (teams) => {
+      io.to(socketRoom).emit("success enter room", teams);
+      if (await GAM.isAllReady()) {
         GAM.start().then((gamemanager) => {
           channelRef.child(`/${channelId}/rooms`).on("value", (snapshot) => {
                 channelNamespace.emit("success room list", snapshot.val());

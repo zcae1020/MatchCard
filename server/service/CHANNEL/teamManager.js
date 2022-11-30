@@ -28,7 +28,6 @@ class teamManager {
                 roomRef.child('userCnt').set(userCnt + 1);
 
                 roomRef.child('teams').on('value', async (snapshot) => {
-                    console.log(snapshot.val());
                     resolve(snapshot.val());
                 })
             })
