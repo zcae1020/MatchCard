@@ -41,7 +41,7 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
 
   const UserInfo = (n) => {
     if (userName.length < n) {
-      return "empty";
+      return "";
     } else {
       return userName[n - 1];
     }

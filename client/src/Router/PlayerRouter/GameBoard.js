@@ -6,10 +6,10 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   const rowIndex = [0, 1, 2, 3];
   const columnIndex = [0, 1, 2, 3, 4, 5, 6, 7];
   const [cards, setCards] = useState([
-    ["back", "back", "back", "back", "back", "back", "back", "back"],
-    ["back", "back", "back", "back", "back", "back", "back", "back"],
-    ["back", "back", "back", "back", "back", "back", "back", "back"],
-    ["back", "back", "back", "back", "back", "back", "back", "back"],
+    ["", "", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", "", ""],
   ]);
   const [firstCard, setFirstCard] = useState([]);
   const [secondCard, setSecondCard] = useState([]);
@@ -80,7 +80,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
       setCards(
         cards.map((cardRow, rowI) => {
           return cardRow.map((cardColumn, columnI) => {
-            return (firstCard[0] == rowI && firstCard[1] == columnI) || (secondCard[0] == rowI && secondCard[1] == columnI) ? "back" : cardColumn;
+            return (firstCard[0] == rowI && firstCard[1] == columnI) || (secondCard[0] == rowI && secondCard[1] == columnI) ? "" : cardColumn;
           });
         })
       );
@@ -111,7 +111,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   //카드 클릭 시 수행되는 함수
   const cardClick = (row, column) => {
     if (!myturn) return; //내 턴이 아니라면 함수 종료. 즉 카드 클릭이 안됨. 처음에 false로 선언해서 서버 없이 테스트해보려면 위에서 true로 바꾸어야함
-    if (cards[row][column] !== "back") return; //이미 뒤집혀있는 카드를 클릭한 경우 함수 종료
+    if (cards[row][column] !== "") return; //이미 뒤집혀있는 카드를 클릭한 경우 함수 종료
     console.log(row, column);
 
     //이거는 당장 확인용으로 넣어놓은 것. 서버와 연동하면 아래 코드는 주석처리 해야함
@@ -169,12 +169,17 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
       <span classname={style.team_info} onClick={() => changeTeam(1)}>
         <Team socket={socket} class_Name={style.team_info_1} score={score[1]} turnUid={turnUid} teaminfo={roomInfo[1].length >= 1 ? roomInfo[1] : null} />
       </span>
-      <span classname={style.team_info} onClick={() => changeTeam(2)}>
-        <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teaminfo={roomInfo[2].length >= 1 ? roomInfo[2] : null} />
-      </span>
-      <span classname={style.team_info} onClick={() => changeTeam(3)}>
-        <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teaminfo={roomInfo[3].length >= 1 ? roomInfo[3] : null} />
-      </span>
+      {roomInfo.length >= 3 ? (
+        <span classname={style.team_info} onClick={() => changeTeam(2)}>
+          <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teaminfo={roomInfo[2].length >= 1 ? roomInfo[2] : null} />
+        </span>
+      ) : null}
+      {roomInfo.length >= 4 ? (
+        <span classname={style.team_info} onClick={() => changeTeam(3)}>
+          <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teaminfo={roomInfo[3].length >= 1 ? roomInfo[3] : null} />
+        </span>
+      ) : null}
+
       <section className={style.memory_game}>
         <CardTable />
       </section>
