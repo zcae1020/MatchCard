@@ -59,12 +59,14 @@ td {
   background-color: #ffd7de;
   left: 0px;
   top: 0px;
+  cursor: pointer;
 }
 .team_info_1 {
   border: 4px solid #ffb662;
   background-color: #fff2d7;
   right: 0px;
   top: 0px;
+  cursor: pointer;
 }
 
 .team_info_2 {
@@ -72,6 +74,7 @@ td {
   background-color: #e0ffd7;
   left: 0px;
   bottom: 0px;
+  cursor: pointer;
 }
 
 .team_info_3 {
@@ -79,7 +82,9 @@ td {
   background-color: #d7f7ff;
   right: 0px;
   bottom: 0px;
+  cursor: pointer;
 }
+
 .score {
   width: 100%;
   height: 20%;
