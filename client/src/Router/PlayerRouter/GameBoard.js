@@ -123,6 +123,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
 
   const getReady = () => {
     setReady(true);
+    socket.emit("ready", uid);
   };
 
   //카드테이블을 관리
