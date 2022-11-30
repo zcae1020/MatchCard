@@ -21,7 +21,7 @@ export const game = (io, socket) => {
                     break;
                 case 1: // 매칭 o
                 // teamscore combo에 맞게 설정
-                    IGM.match(uid).then(teamscore=>{
+                    IGM.match(row, col, uid).then(teamscore=>{
                         socket.emit("success match", teamscore);
                     })
                     //isAllMatch

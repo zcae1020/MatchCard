@@ -127,12 +127,16 @@ class ingameManager {
         gamemanager.setCombo(gameManagerRef, num);
     }
 
-    match(uid) { // match 되었다고 check하는 것 추가
+    match(row, col, uid) { // match 되었다고 check하는 것 추가
         return new Promise((resolve, reject) => {
             TM.getTeamIdByUid(uid).then(async teamId => {
                 const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
                 await gamemanager.plusTeamscore(gameManagerRef, teamId)
-                await gamemanager.plusCombo(gameManagerRef); // gameManger에서 resolve를 해줘야 넘어오나..??ㄴ
+                await gamemanager.plusCombo(gameManagerRef); // gameManger에서 resolve를 해줘야 넘어오나..??
+
+                let cardId = await this.#getCardIdByCardLocation(row, col);
+                gameManagerRef.child(`/cardsState/${cardId}`).set(1);
+
                 gamemanager.getTeamscore(gameManagerRef).then(teamscore => {
                     resolve(teamscore);
                 })
