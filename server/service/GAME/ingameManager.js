@@ -144,6 +144,10 @@ class ingameManager {
         })
     }
 
+    isAllMatch() {
+        
+    }
+
     isNextRound() {
         return new Promise(async (resolve, reject) => {
             const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);

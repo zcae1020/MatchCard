@@ -25,6 +25,9 @@ export const game = (io, socket) => {
                         socket.emit("success match", teamscore);
                     })
                     //isAllMatch
+                    if(await IGM.isAllMatch()) {
+                        
+                    }
                     break;
             }
 

@@ -57,12 +57,14 @@ export const enter = (io, socket) => {
   };
 
   const getUsernameByUid = async (uids, teamId) => {
+    socketRoom = `${currentChannel}/${currentRoom}`;
     let ret = [];
     for (let idx in uids) {
       let user = await UM.getUserByUid(uids[idx]);
       ret.push(user.name);
     }
 
+    console.log("username:",ret);
     io.to(socketRoom).emit("success get username by uid", ret, teamId);
   };
 
