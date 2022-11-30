@@ -71,6 +71,16 @@ class ingameManager {
         })
     }
 
+    nextRound() {
+        return new Promise(async (resolve, reject) => {
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManger`);
+            let round = await gamemanager.getRound(gameManagerRef);
+            let nextRound = round + 1;
+            gameManagerRef.child('/round').set(nextRound);
+            resolve(nextRound);
+        })
+    }
+
     getUidByCurrentTurn(userTurn, teamTurn) {
         return new Promise(async (resolve, reject) => {
             const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);

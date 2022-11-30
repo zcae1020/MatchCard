@@ -30,6 +30,15 @@ export class gameManager{
         }
     }
 
+    getGameManger(gameManagerRef) {
+        return new Promise((resolve, reject) => {
+            gameManagerRef.on('value', snapshot => {
+                let gamemanager = snapshot.val();
+                resolve(gamemanager);
+            })
+        })
+    }
+
     getUserTurn(gameManagerRef) {
         return new Promise((resolve, reject) => {
             gameManagerRef.on('value', snapshot => {
@@ -44,6 +53,14 @@ export class gameManager{
             gameManagerRef.on('value', snapshot => {
                 let teamTurn = snapshot.val()["teamTurn"];
                 resolve(teamTurn);
+            })
+        })
+    }
+
+    getRound(gameManagerRef) {
+        return new Promise((resolve, reject) => {
+            this.getGameManger(gameManagerRef).then(gamemanager => {
+                resolve(gamemanager.round);
             })
         })
     }
