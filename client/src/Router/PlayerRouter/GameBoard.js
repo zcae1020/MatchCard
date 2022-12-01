@@ -135,7 +135,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     // );
 
     //서버로 row와 column을 보냄
-    socket.emit("pick card", row, column);
+    socket.emit("pick card", row, column, uid);
     setMyturn(false);
   };
 
