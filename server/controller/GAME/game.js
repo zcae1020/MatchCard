@@ -48,6 +48,7 @@ export const game = (io, socket) => {
                 // teamscore combo에 맞게 설정
                     console.log("match");
                     IGM.match(row, col, uid).then(teamscore=>{
+                        console.log("emit match", teamscore);
                         io.to(socketRoom).emit("success match", teamscore);
                     })
                     //isAllMatch

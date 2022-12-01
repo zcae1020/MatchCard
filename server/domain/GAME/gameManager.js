@@ -105,6 +105,7 @@ export class gameManager{
     setCombo(gameManagerRef, num) {
         return new Promise((resolve, reject) => {
             gameManagerRef.child(`/combo`).set(num);
+            resolve(0);
         })
     }
 
@@ -112,6 +113,7 @@ export class gameManager{
         return new Promise((resolve, reject) => {
             this.getCombo(gameManagerRef).then(combo => {
                 gameManagerRef.child(`/combo`).set(combo + 1);
+                resolve(0);
             })
         })
     }
@@ -131,6 +133,7 @@ export class gameManager{
                 let combo = await this.getCombo(gameManagerRef);
                 teamscore[teamId]+=combo;
                 gameManagerRef.child(`teamscore`).set(teamscore);
+                resolve(0);
             })
         })
     }
