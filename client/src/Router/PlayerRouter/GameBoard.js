@@ -14,11 +14,11 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   const [firstCard, setFirstCard] = useState([]);
   const [secondCard, setSecondCard] = useState([]);
   const [round, setRound] = useState(1);
-  const [time, setTime] = useState(0);
+  // const [time, setTime] = useState(0);
   const [score, setScore] = useState([0, 0, 0, 0]);
   const [myturn, setMyturn] = useState(false); //내 턴인지 확인
   const [turnUid, setTurnUid] = useState("");
-  const [playing, setPlaying] = useState(true); //ture면 modal창 안나옴
+  const [playing, setPlaying] = useState(false); //ture면 modal창 안나옴
   const [roomInfo, setRoomInfo] = useState([{ length: 0 }, { length: 0 }, { length: 0 }, { length: 0 }]);
   const [ready, setReady] = useState(false);
   const [gamestart, setGamestart] = useState(false);
@@ -203,7 +203,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
       <div className={playing ? style.black_bg_none : style.black_bg}></div>
       <div className={playing ? style.modal_wrap_none : style.modal_wrap}>
         <div className={style.modal_close}>
-          <a href="" onClick={offClick}>
+          <a href="#" onClick={offClick}>
             close
           </a>
         </div>
@@ -218,6 +218,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
           <br />
           Team3 score: {score[3]}
           <br />
+          <button className={style.restart}>다시하기</button>
         </div>
       </div>
     </div>

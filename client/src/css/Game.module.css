@@ -203,3 +203,18 @@ td {
 .turn_user {
   border-color: cyan;
 }
+
+.restart {
+  position: absolute;
+  bottom: 4%;
+  /* width: 25%; */
+  height: fit-content;
+  border-radius: 8px;
+  background-color: rgb(132, 233, 233);
+  font: inherit;
+  font-size: small;
+  color: rgb(44, 98, 148);
+  cursor: pointer;
+  padding: 5px 15px;
+  line-height: normal;
+}
