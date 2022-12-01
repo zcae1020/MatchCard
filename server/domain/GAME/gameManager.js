@@ -17,17 +17,6 @@ export class gameManager{
     constructor(maxTeam){
         this.maxTeam = maxTeam;
         this.gameBoard = new gameBoard();
-
-        //for(let i=0;i<maxTeam;i++)
-        //   this.teamscore.push(0);
-
-        for(let i=0;i<this.gameBoard.row;i++){
-            let a=[];
-            for(let j=0;j<this.gameBoard.col;j++){
-                a.push(0);
-            }
-            this.cardsState.push(a);
-        }
     }
 
     getGameManger(gameManagerRef) {

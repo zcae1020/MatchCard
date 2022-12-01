@@ -10,11 +10,10 @@ const db = getDatabase();
 export const game = (io, socket) => {
     const pickCard = async (row, col, uid) => {
         let cardId = await IGM.getCardIdByCardLocation(row, col);
-        console.log("pickcard:", row, col);
+        console.log("pickcard");
         let socketRoom = `${currentChannel}/${currentRoom}`;
 
         IGM.pickCard(io, socket, row, col).then(async res=>{
-            console.log("pickcard done");
             let nextUid = await IGM.nextTurn();
 
             switch(res) {
@@ -47,20 +46,21 @@ export const game = (io, socket) => {
                 case 1: // 매칭 o
                 // teamscore combo에 맞게 설정
                     console.log("match");
-                    IGM.match(row, col, uid).then(teamscore=>{
+                    IGM.match(row, col, uid).then(async teamscore=>{
                         console.log("emit match", teamscore);
                         io.to(socketRoom).emit("success match", teamscore);
+
+                        let isAllMatch = await IGM.isAllMatch();
+                        if(isAllMatch) {
+                            console.log("all match");
+                            IGM.allMatch();
+                            io.to(socketRoom).emit("all match");
+                        }
                     })
                     //isAllMatch
-                    if(await IGM.isAllMatch()) {
-                        console.log("all match");
-                        IGM.allMatch();
-                        io.to(socketRoom).emit("all match");
-                    }
                     break;
             }
 
-            console.log("success pick card", cardId, nextUid);
             io.to(socketRoom).emit("success pick card", row, col, cardId, nextUid);
         })
     }
