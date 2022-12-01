@@ -8,14 +8,15 @@ export const router = express.Router();
 const db = getDatabase();
 
 export const game = (io, socket) => {
-    const pickCard = async (row, col) => {
+    const pickCard = async (row, col, uid) => {
         let cardId = await IGM.getCardIdByCardLocation(row, col);
         console.log("pickcard:", row, col);
         let socketRoom = `${currentChannel}/${currentRoom}`;
 
         IGM.pickCard(io, socket, row, col).then(async res=>{
+            console.log("pickcard done");
             let nextUid = await IGM.nextTurn();
-            
+
             switch(res) {
                 case -1: // 기존 카드 존재 x
                     break;
@@ -46,7 +47,7 @@ export const game = (io, socket) => {
                 case 1: // 매칭 o
                 // teamscore combo에 맞게 설정
                     console.log("match");
-                    IGM.match(row, col).then(teamscore=>{
+                    IGM.match(row, col, uid).then(teamscore=>{
                         io.to(socketRoom).emit("success match", teamscore);
                     })
                     //isAllMatch
