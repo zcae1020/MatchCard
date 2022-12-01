@@ -6,10 +6,10 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   const rowIndex = [0, 1, 2, 3];
   const columnIndex = [0, 1, 2, 3, 4, 5, 6, 7];
   const [cards, setCards] = useState([
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
+    [16, 16, 16, 16, 16, 16, 16, 16],
+    [16, 16, 16, 16, 16, 16, 16, 16],
+    [16, 16, 16, 16, 16, 16, 16, 16],
+    [16, 16, 16, 16, 16, 16, 16, 16],
   ]);
   const [firstCard, setFirstCard] = useState([]);
   const [secondCard, setSecondCard] = useState([]);
@@ -78,7 +78,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
       setCards(
         cards.map((cardRow, rowI) => {
           return cardRow.map((cardColumn, columnI) => {
-            return (firstCard[0] == rowI && firstCard[1] == columnI) || (secondCard[0] == rowI && secondCard[1] == columnI) ? "" : cardColumn;
+            return (firstCard[0] == rowI && firstCard[1] == columnI) || (secondCard[0] == rowI && secondCard[1] == columnI) ? 16 : cardColumn;
           });
         })
       );
@@ -108,17 +108,17 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
 
   socket.on("all match", () => {
     setCards([
-      ["", "", "", "", "", "", "", ""],
-      ["", "", "", "", "", "", "", ""],
-      ["", "", "", "", "", "", "", ""],
-      ["", "", "", "", "", "", "", ""],
+      [16, 16, 16, 16, 16, 16, 16, 16],
+      [16, 16, 16, 16, 16, 16, 16, 16],
+      [16, 16, 16, 16, 16, 16, 16, 16],
+      [16, 16, 16, 16, 16, 16, 16, 16],
     ]);
   });
 
   //카드 클릭 시 수행되는 함수
   const cardClick = (row, column) => {
     if (!myturn) return; //내 턴이 아니라면 함수 종료. 즉 카드 클릭이 안됨. 처음에 false로 선언해서 서버 없이 테스트해보려면 위에서 true로 바꾸어야함
-    if (cards[row][column] !== "") return; //이미 뒤집혀있는 카드를 클릭한 경우 함수 종료
+    if (cards[row][column] !== 16) return; //이미 뒤집혀있는 카드를 클릭한 경우 함수 종료
     console.log(row, column);
 
     //이거는 당장 확인용으로 넣어놓은 것. 서버와 연동하면 아래 코드는 주석처리 해야함
@@ -146,10 +146,10 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
 
   const restart = () => {
     setCards([
-      ["", "", "", "", "", "", "", ""],
-      ["", "", "", "", "", "", "", ""],
-      ["", "", "", "", "", "", "", ""],
-      ["", "", "", "", "", "", "", ""],
+      [16, 16, 16, 16, 16, 16, 16, 16],
+      [16, 16, 16, 16, 16, 16, 16, 16],
+      [16, 16, 16, 16, 16, 16, 16, 16],
+      [16, 16, 16, 16, 16, 16, 16, 16],
     ]);
     setFirstCard([]);
     setSecondCard([]);
@@ -172,8 +172,17 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
               <tr key={row}>
                 {columnIndex.map((column) => {
                   return (
-                    <td key={column} onClick={() => cardClick(row, column)}>
-                      {cards[row][column]}
+                    <td
+                      key={column}
+                      onClick={() => cardClick(row, column)}
+                      // style={{
+                      //   backgroundImage: `url(client/public/assets/img/${cards[row][column]}.png)`,
+                      //   backgroundRepeat: "no-repeat",
+                      //   backgroundSize: "contain",
+                      // }}
+                    >
+                      <img src={require(`../../../public/assets/img/${cards[row][column]}.png`)} width="65px" />
+                      {/* {cards[row][column]} */}
                     </td>
                   );
                 })}
