@@ -66,14 +66,10 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   });
 
   //매치가 성공하면 팀 스코어 올림
-  socket.on("success match", (teamscore, team) => {
+  socket.on("success match", (teamscore) => {
     setFirstCard([]);
     setSecondCard([]);
-    setScore(
-      score.map((item, index) => {
-        return index === team ? teamscore : item;
-      })
-    );
+    setScore(teamscore);
   });
 
   //매치 실패 시 1.5초 후 카드 원래대로 되돌리기
