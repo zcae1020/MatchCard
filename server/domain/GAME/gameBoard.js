@@ -5,27 +5,22 @@ function getRandomInt(min, max) {
 }
 
 export class gameBoard{
-    time = 2 // 1인당 제한시간 2초
+    //time = 2 // 1인당 제한시간 2초
     row = 4
     col = 8
     cards = [] //4x8 카드 묶음
 
     constructor(){
 
-        /*cards.push([0,0,1,1,2,2,3,3])
-        cards.push([4,4,5,5,6,6,7,7])
-        cards.push([0,0,1,1,2,2,3,3])
-        cards.push([0,0,1,1,2,2,3,3])
-        */
-        this.cards = [
+        /*this.cards = [
             [0,0,1,1,2,2,3,3],
             [4,4,5,5,6,6,7,7],
             [8,8,9,9,10,10,11,11],
             [12,12,13,13,14,14,15,15]
-        ];
+        ];*/
 
 
-        //this.generateCards(this.row, this.col);
+        this.generateCards(this.row, this.col);
     }
 
     generateCards(row, col){
