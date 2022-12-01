@@ -144,6 +144,24 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     socket.emit("change team", uid, n);
   };
 
+  const restart = () => {
+    setCards([
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+    ]);
+    setFirstCard([]);
+    setSecondCard([]);
+    setRound(1);
+    setScore([0, 0, 0, 0]);
+    setMyturn(false);
+    setTurnUid("");
+    setPlaying(true);
+    setReady(false);
+    setGamestart(false);
+  };
+
   //카드테이블을 관리
   const CardTable = () => {
     return (
@@ -218,7 +236,9 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
           <br />
           Team3 score: {score[3]}
           <br />
-          <button className={style.restart}>다시하기</button>
+          <button className={style.restart} onClick={restart}>
+            다시하기
+          </button>
         </div>
       </div>
     </div>
