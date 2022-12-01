@@ -201,7 +201,7 @@ td {
 }
 
 .turn_user {
-  border-color: cyan;
+  border-color: rgb(0, 203, 203);
 }
 
 .restart {

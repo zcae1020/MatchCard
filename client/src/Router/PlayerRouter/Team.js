@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import style from "../../css/Game.module.css";
 
-export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
+export default function Team({ socket, class_Name, score, turnUid, teaminfo, gamestart }) {
   const [uids, setUids] = useState([]);
   const [userName, setUserName] = useState([]);
   const [team, setTeam] = useState({});
   const [readyState, setReadyState] = useState([false, false]);
+  const [playing, setPlaying] = useState(false);
+  const [turnid, setTurnid] = useState("");
   // const userName = ["김준하", "나주영", "홍성표"];
 
   useEffect(() => {
@@ -30,6 +32,18 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
   }, [teaminfo]);
 
   useEffect(() => {
+    setPlaying(gamestart);
+    console.log(gamestart);
+    if (gamestart) {
+      setReadyState([false, false]);
+    }
+  }, [gamestart]);
+  useEffect(() => {
+    setTurnid(turnUid);
+    console.log(turnUid);
+  }, [turnUid]);
+
+  useEffect(() => {
     if (team.length === 0) return;
     if (uids.length === 0) return;
     socket.emit("get username by uid", uids, team.teamId);
@@ -52,9 +66,11 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
   const turn = (n) => {
     if (userName.length <= n) {
       return null;
-    } else if (uids[n] === turnUid) {
+    } else if (uids[n] === turnid) {
       console.log("myturn");
       return style.turn_user;
+    } else if (playing === true) {
+      return null;
     } else {
       return null;
     }

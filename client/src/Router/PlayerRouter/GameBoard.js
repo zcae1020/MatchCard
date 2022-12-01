@@ -18,7 +18,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   const [score, setScore] = useState([0, 0, 0, 0]);
   const [myturn, setMyturn] = useState(false); //내 턴인지 확인
   const [turnUid, setTurnUid] = useState("");
-  const [playing, setPlaying] = useState(false); //ture면 modal창 안나옴
+  const [playing, setPlaying] = useState(true); //ture면 modal창 안나옴
   const [roomInfo, setRoomInfo] = useState([{ length: 0 }, { length: 0 }, { length: 0 }, { length: 0 }]);
   const [ready, setReady] = useState(false);
   const [gamestart, setGamestart] = useState(false);
@@ -189,19 +189,19 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     <div className={style.gameboard}>
       <div className={style.round}>Round: {round}</div>
       <span className={style.team_info} onClick={() => changeTeam(0)}>
-        <Team socket={socket} class_Name={style.team_info_0} score={score[0]} turnUid={turnUid} teaminfo={roomInfo[0]} />
+        <Team socket={socket} class_Name={style.team_info_0} score={score[0]} turnUid={turnUid} teaminfo={roomInfo[0]} gamestart={gamestart} />
       </span>
       <span className={style.team_info} onClick={() => changeTeam(1)}>
-        <Team socket={socket} class_Name={style.team_info_1} score={score[1]} turnUid={turnUid} teaminfo={roomInfo[1]} />
+        <Team socket={socket} class_Name={style.team_info_1} score={score[1]} turnUid={turnUid} teaminfo={roomInfo[1]} gamestart={gamestart} />
       </span>
       {roomInfo.length >= 3 ? (
         <span className={style.team_info} onClick={() => changeTeam(2)}>
-          <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teaminfo={roomInfo[2]} />
+          <Team socket={socket} class_Name={style.team_info_2} score={score[2]} turnUid={turnUid} teaminfo={roomInfo[2]} gamestart={gamestart} />
         </span>
       ) : null}
       {roomInfo.length >= 4 ? (
         <span className={style.team_info} onClick={() => changeTeam(3)}>
-          <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teaminfo={roomInfo[3]} />
+          <Team socket={socket} class_Name={style.team_info_3} score={score[3]} turnUid={turnUid} teaminfo={roomInfo[3]} gamestart={gamestart} />
         </span>
       ) : null}
 
