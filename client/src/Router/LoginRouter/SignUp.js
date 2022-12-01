@@ -104,10 +104,10 @@ function SignUp({ userType, socket }) {
     else if (e.target.id === "textfield-password") setPassword(e.target.value);
     else if (e.target.id === "textfield-group") setGroup(e.target.value);
     else setRepeatedPassword(e.target.value);
-    console.log(email);
-    console.log(password);
-    console.log(userName);
-    console.log(group);
+    // console.log(email);
+    // console.log(password);
+    // console.log(userName);
+    // console.log(group);
   };
 
   const onClick = (e) => {
