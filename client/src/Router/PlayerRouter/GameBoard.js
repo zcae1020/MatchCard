@@ -21,6 +21,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   const [playing, setPlaying] = useState(true); //ture면 modal창 안나옴
   const [roomInfo, setRoomInfo] = useState([{ length: 0 }, { length: 0 }, { length: 0 }, { length: 0 }]);
   const [ready, setReady] = useState(false);
+  const [gamestart, setGamestart] = useState(false);
 
   useEffect(() => {
     console.log(channelid, roomid);
@@ -33,6 +34,7 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   });
 
   socket.on("start game", (player) => {
+    setGamestart(true);
     setTurnUid(player);
     if (uid === player) setMyturn(true);
     else setMyturn(false);
@@ -108,6 +110,15 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     setTime(time);
   });
 
+  socket.on("all match", () => {
+    setCards([
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", ""],
+    ]);
+  });
+
   //카드 클릭 시 수행되는 함수
   const cardClick = (row, column) => {
     if (!myturn) return; //내 턴이 아니라면 함수 종료. 즉 카드 클릭이 안됨. 처음에 false로 선언해서 서버 없이 테스트해보려면 위에서 true로 바꾸어야함
@@ -115,13 +126,13 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
     console.log(row, column);
 
     //이거는 당장 확인용으로 넣어놓은 것. 서버와 연동하면 아래 코드는 주석처리 해야함
-    setCards(
-      cards.map((cardRow, rowI) => {
-        return cardRow.map((cardColumn, columnI) => {
-          return row === rowI && column === columnI ? 1 : cardColumn;
-        });
-      })
-    );
+    // setCards(
+    //   cards.map((cardRow, rowI) => {
+    //     return cardRow.map((cardColumn, columnI) => {
+    //       return row === rowI && column === columnI ? 1 : cardColumn;
+    //     });
+    //   })
+    // );
 
     //서버로 row와 column을 보냄
     socket.emit("pick card", row, column);
@@ -184,9 +195,13 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
         <CardTable />
       </section>
 
-      <button className={ready === true ? style.ready : style.getready} onClick={getReady}>
-        {ready === true ? "준비완료" : "준비"}
-      </button>
+      {gamestart ? (
+        <></>
+      ) : (
+        <button className={ready === true ? style.ready : style.getready} onClick={getReady}>
+          {ready === true ? "준비완료" : "준비"}
+        </button>
+      )}
 
       {/* playing 상태를 확인하고 modal의 display를 결정. 적용되는 css가 달라짐 */}
       <div className={playing ? style.black_bg_none : style.black_bg}></div>

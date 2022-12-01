@@ -113,7 +113,7 @@ td {
 
 #cardTable > tbody > tr > td {
   width: 10%;
-  height: auto;
+  height: 10%;
 }
 
 #cardTable > tbody > tr > td:hover {
