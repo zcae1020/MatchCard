@@ -13,9 +13,10 @@ export const game = (io, socket) => {
         let socketRoom = `${currentChannel}/${currentRoom}`;
 
         IGM.pickCard(io, socket, row, col).then(async res=>{
-            socket.join(socketRoom);
+            console.log("aaaaaaaaaaaaa");
             let nextUid = await IGM.nextTurn();
-            
+            let cardId = await IGM.getCardIdByCardLocation(row, col);
+            console.log("bbbbbbbb", cardId);
             switch(res) {
                 case -1: // 기존 카드 존재 x
                     break;
@@ -24,16 +25,19 @@ export const game = (io, socket) => {
                     let res = await IGM.nextTeam();
                     let isNextRound = res.isNextRound;
                     nextUid = res.nextUid;
+                    console.log("fail");
                     io.to(socketRoom).emit("fail match");
 
                     if(isNextRound) {
                         let isGameover = await IGM.isGameover();
                         if(isGameover) {
+                            console.log("gameover");
                             IGM.gameover().then(teamscore =>{
                                 io.to(socketRoom).emit("gameover", teamscore);
                             });
                         }
                         else {
+                            console.log("next round");
                             IGM.nextRound().then(round=>{
                                 io.to(socketRoom).emit("new round", round);
                             })
@@ -42,20 +46,21 @@ export const game = (io, socket) => {
                     break;
                 case 1: // 매칭 o
                 // teamscore combo에 맞게 설정
+                    console.log("match");
                     IGM.match(row, col).then(teamscore=>{
                         io.to(socketRoom).emit("success match", teamscore);
                     })
                     //isAllMatch
                     if(await IGM.isAllMatch()) {
+                        console.log("all match");
                         IGM.allMatch();
                         io.to(socketRoom).emit("all match");
                     }
                     break;
             }
 
-            IGM.getCardIdByCardLocation(row, col).then(cardId => {
-                io.to(socketRoom).emit("success pick card", row, col, cardId, nextUid);
-            })
+            console.log("success pick card", cardId, nextUid);
+            io.to(socketRoom).emit("success pick card", row, col, cardId, nextUid);
         })
     }
 

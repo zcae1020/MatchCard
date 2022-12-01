@@ -203,8 +203,9 @@ class ingameManager {
     getCardIdByCardLocation(row, col) {
         return new Promise((resolve, reject) => {
             const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
-            roomRef.child(`/gameManager/gameboard/${row}/${col}`).on('value', snapshot=>{
-                resolve(snapshot.val());
+            roomRef.child(`/gameManager/gameBoard/cards/${row}/${col}`).on('value', snapshot=>{
+                let cardId = snapshot.val();
+                resolve(cardId);
             })
         })
     }
