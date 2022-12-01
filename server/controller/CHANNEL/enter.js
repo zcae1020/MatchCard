@@ -65,9 +65,11 @@ export const enter = (io, socket) => {
   };
 
   const ready = (uid) => {
+    console.log("ready");
     GAM.ready(uid).then(async (teams) => {
       io.to(socketRoom).emit("success enter room", teams);
       if (await GAM.isAllReady()) {
+        console.log("Start");
         GAM.start().then(async (gamemanager) => {
           channelRef.child(`/${currentChannel}/rooms`).on("value", (snapshot) => {
                 channelNamespace.emit("success room list", snapshot.val());
@@ -76,6 +78,7 @@ export const enter = (io, socket) => {
                 console.log(errorObject);
               }
             );
+          console.log("start emit");
           io.to(socketRoom).emit("start game", await IGM.getUidByCurrentTurn());
         });
       }
@@ -83,9 +86,8 @@ export const enter = (io, socket) => {
   };
 
   const changeTeam = (uid, teamId) => {
-    console.log(uid, teamId);
+    console.log("change team");
     TM.changeTeam(uid, teamId).then((teams) => {
-      console.log(teams);
       io.to(socketRoom).emit("success enter room", teams);
     })
   };

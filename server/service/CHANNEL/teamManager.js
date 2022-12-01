@@ -17,7 +17,6 @@ class teamManager {
                     ready: false
                 })
 
-                console.log(1);
                 teamRef.child('length').set(length + 1);
 
                 UM.setTeamId(uid, teamId);
@@ -47,7 +46,7 @@ class teamManager {
     takeUserOutInTeam(uid, teamId) {
         return new Promise((resolve, reject) => {
             const teamRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
-            const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
+            const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}`);
             this.#getUserCnt().then(userCnt => {
                 roomRef.child('userCnt').set(userCnt - 1);
             })

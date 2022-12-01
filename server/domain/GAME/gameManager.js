@@ -15,7 +15,7 @@ export class gameManager{
     combo = 1;
 
     constructor(maxTeam){
-        maxTeam = maxTeam;
+        this.maxTeam = maxTeam;
         this.gameBoard = new gameBoard();
 
         //for(let i=0;i<maxTeam;i++)
@@ -82,6 +82,8 @@ export class gameManager{
             });
         })
     }
+
+
 
     setNewGameboard(gameManagerRef) {
         return new Promise((resolve, reject) => {
