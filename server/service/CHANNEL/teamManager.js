@@ -47,7 +47,12 @@ class teamManager {
     takeUserOutInTeam(uid, teamId) {
         return new Promise((resolve, reject) => {
             const teamRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
+            const roomRef = channelRef.child(`${currentChannel}/rooms/${currentRoom}/teams/${teamId}`);
+            this.#getUserCnt().then(userCnt => {
+                roomRef.child('userCnt').set(userCnt - 1);
+            })
             this.getLengthById(teamId).then((length)=>{
+
                 teamRef.child('length').set(length - 1);
 
                 UM.setTeamId(uid, null);
@@ -58,11 +63,18 @@ class teamManager {
                     for(let idx in users) {
                         let currentUid = users[idx].uid;
                         if(currentUid != uid) {
-                            newUsers.push(currentUid);
+                            newUsers.push({
+                                uid:currentUid,
+                                ready: false
+                            });
                         }
                     }
                     
-                    teamRef.child('/users').set(newUsers);
+                    if(newUsers.length > 0){
+                        teamRef.child('/users').set(newUsers);
+                    } else {
+                        teamRef.child('/users').set(null);
+                    }
                 })
             })
 

@@ -13,7 +13,7 @@ const db = getDatabase();
 const gamemanager = new gameManager(0);
 
 class ingameManager {
-    pickCard(row, col) {
+    pickCard(io, socket, row, col) { // interval 추가
         return new Promise((resolve, reject) => {
             const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
             roomRef.child('/gameManager').on('value', snapshot => {

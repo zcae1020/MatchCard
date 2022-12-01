@@ -1,6 +1,7 @@
 import express from 'express'
 import {getDatabase} from 'firebase-admin/database';
 import { IGM } from '../../service/GAME/ingameManager.js';
+import { currentChannel, currentRoom } from '../CHANNEL/enter.js';
  
 export const router = express.Router();
 
@@ -8,7 +9,9 @@ const db = getDatabase();
 
 export const game = (io, socket) => {
     const pickCard = (row, col, uid) => {
-        IGM.pickCard(row, col).then(async res=>{
+        let socketRoom = `${currentChannel}/${currentRoom}`;
+
+        IGM.pickCard(io, socket, row, col).then(async res=>{
             let nextUid = await IGM.nextTurn();
             
             switch(res) {
@@ -17,17 +20,17 @@ export const game = (io, socket) => {
                 case 0: // 매칭 x
                     IGM.setCombo(1);
                     nextUid = await IGM.nextTeam();
-                    socket.emit("fail match");
+                    io.to(socketRoom).emit("fail match");
                     break;
                 case 1: // 매칭 o
                 // teamscore combo에 맞게 설정
                     IGM.match(row, col, uid).then(teamscore=>{
-                        socket.emit("success match", teamscore);
+                        io.to(socketRoom).emit("success match", teamscore);
                     })
                     //isAllMatch
                     if(await IGM.isAllMatch()) {
                         IGM.allMatch();
-                        socket.emit("all match");
+                        io.to(socketRoom).emit("all match");
                     }
                     break;
             }
@@ -37,17 +40,17 @@ export const game = (io, socket) => {
                 let isGameover = await IGM.isGameover();
                 if(isGameover) {
                     IGM.gameover().then(teamscore =>{
-                        socket.emit("gameover", teamscore);
+                        io.to(socketRoom).emit("gameover", teamscore);
                     });
                 }
                 else {
                     IGM.nextRound().then(round=>{
-                        socket.emit("new round", round);
+                        io.to(socketRoom).emit("new round", round);
                     })
                 }
             }
 
-            socket.emit("success pick card", row, col, nextUid);
+            io.to(socketRoom).emit("success pick card", row, col, nextUid);
         })
     }
 
