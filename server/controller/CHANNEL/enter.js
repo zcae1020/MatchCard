@@ -78,7 +78,6 @@ export const enter = (io, socket) => {
                 console.log(errorObject);
               }
             );
-          console.log("start emit");
           io.to(socketRoom).emit("start game", await IGM.getUidByCurrentTurn());
         });
       }

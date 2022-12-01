@@ -47,7 +47,6 @@ class ingameManager {
         return new Promise(async (resolve, reject) => {
             const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManager`);
             let personPerTeam = await this.#getPersonPerTeam();
-            console.log("personperteam",personPerTeam);
             gameManagerRef.on('value', async snapshot => {
                 let userTurn = snapshot.val()["userTurn"];
                 let nextUserTurn = (userTurn + 1) % personPerTeam;

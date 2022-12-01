@@ -13,7 +13,6 @@ export const game = (io, socket) => {
         let socketRoom = `${currentChannel}/${currentRoom}`;
 
         IGM.pickCard(io, socket, row, col).then(async res=>{
-            console.log("pickcard done");
             socket.join(socketRoom);
             let nextUid = await IGM.nextTurn();
             

@@ -95,15 +95,21 @@ class userManager {
   }
 
   setChannelId(uid, channelId) {
-    userRef.child(`${uid}/currentLocation`).update({channelId: channelId});
+    if(uid != null) {
+      userRef.child(`${uid}/currentLocation`).update({channelId: channelId});
+    }
   }
 
   setRoomId(uid, roomId) {
-    userRef.child(`${uid}/currentLocation`).update({roomId: roomId});
+    if(uid != null) {
+      userRef.child(`${uid}/currentLocation`).update({roomId: roomId});
+    }
   }
 
   setTeamId(uid, teamId) {
-    userRef.child(`${uid}/currentLocation`).update({teamId: teamId});
+    if(uid != null) {
+      userRef.child(`${uid}/currentLocation`).update({teamId: teamId});
+    }
   } 
 
   delCurrentLocation(uid) {
