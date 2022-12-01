@@ -8,10 +8,13 @@ export const router = express.Router();
 const db = getDatabase();
 
 export const game = (io, socket) => {
-    const pickCard = (row, col, uid) => {
+    const pickCard = (row, col) => {
+        console.log("pickcard:", row, col);
         let socketRoom = `${currentChannel}/${currentRoom}`;
 
         IGM.pickCard(io, socket, row, col).then(async res=>{
+            console.log("pickcard done");
+            socket.join(socketRoom);
             let nextUid = await IGM.nextTurn();
             
             switch(res) {
@@ -19,12 +22,28 @@ export const game = (io, socket) => {
                     break;
                 case 0: // 매칭 x
                     IGM.setCombo(1);
-                    nextUid = await IGM.nextTeam();
+                    let res = await IGM.nextTeam();
+                    let isNextRound = res.isNextRound;
+                    nextUid = res.nextUid;
                     io.to(socketRoom).emit("fail match");
+
+                    if(isNextRound) {
+                        let isGameover = await IGM.isGameover();
+                        if(isGameover) {
+                            IGM.gameover().then(teamscore =>{
+                                io.to(socketRoom).emit("gameover", teamscore);
+                            });
+                        }
+                        else {
+                            IGM.nextRound().then(round=>{
+                                io.to(socketRoom).emit("new round", round);
+                            })
+                        }
+                    }
                     break;
                 case 1: // 매칭 o
                 // teamscore combo에 맞게 설정
-                    IGM.match(row, col, uid).then(teamscore=>{
+                    IGM.match(row, col).then(teamscore=>{
                         io.to(socketRoom).emit("success match", teamscore);
                     })
                     //isAllMatch
@@ -35,21 +54,7 @@ export const game = (io, socket) => {
                     break;
             }
 
-            let isNextRound = await IGM.isNextRound();
-            if(isNextRound) {
-                let isGameover = await IGM.isGameover();
-                if(isGameover) {
-                    IGM.gameover().then(teamscore =>{
-                        io.to(socketRoom).emit("gameover", teamscore);
-                    });
-                }
-                else {
-                    IGM.nextRound().then(round=>{
-                        io.to(socketRoom).emit("new round", round);
-                    })
-                }
-            }
-
+            console.log("nextUid:",row, col, nextUid);
             io.to(socketRoom).emit("success pick card", row, col, nextUid);
         })
     }

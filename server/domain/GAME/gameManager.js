@@ -5,7 +5,7 @@ export class gameManager{
     //coupledCards = [] // 짝 맞춰진 카드 id
     cardsState = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] // 0: 짝이 안맞춰짐, 1: 짝이 맞춰짐
     
-    pick = 0 //현재 턴을 가진 team에서 뽑은 카드 위치, 2개가 뽑히면 짝이 맞는지 안맞는지 판별 후 리턴
+    pick; //현재 턴을 가진 team에서 뽑은 카드 위치, 2개가 뽑히면 짝이 맞는지 안맞는지 판별 후 리턴
     teamTurn = 0 // 현재 턴을 가진 team num
     userTurn = 0 // 현재 턴을 가진 team 중 턴을 가진 팀원 순서
     teamscore = [0,0,0,0] //팀별 점수
