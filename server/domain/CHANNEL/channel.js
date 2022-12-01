@@ -6,7 +6,6 @@ export class channel {
         this.maxRoom=maxRoom;
         this.maxTeam=maxTeam;
         this.groupId=groupId;
-        this.conn=[];
         this.initRoom();
     }
 
