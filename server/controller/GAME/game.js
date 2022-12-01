@@ -53,8 +53,9 @@ export const game = (io, socket) => {
                     break;
             }
 
-            console.log("nextUid:",row, col, nextUid);
-            io.to(socketRoom).emit("success pick card", row, col, nextUid);
+            IGM.getCardIdByCardLocation(row, col).then(cardId => {
+                io.to(socketRoom).emit("success pick card", row, col, cardId, nextUid);
+            })
         })
     }
 
