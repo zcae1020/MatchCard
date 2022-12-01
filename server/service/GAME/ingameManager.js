@@ -27,8 +27,8 @@ class ingameManager {
                 else {
                     roomRef.child('/gameManager/pick').on('value', async snapshot => {
                         let pick = snapshot.val();
-                        let c1 = await this.#getCardIdByCardLocation(pick.row, pick.col);
-                        let c2 = await this.#getCardIdByCardLocation(row, col);
+                        let c1 = await this.getCardIdByCardLocation(pick.row, pick.col);
+                        let c2 = await this.getCardIdByCardLocation(row, col);
 
                         roomRef.child('/gameManager/pick').set(null);
 
@@ -142,7 +142,7 @@ class ingameManager {
                 await gamemanager.plusTeamscore(gameManagerRef, teamId)
                 await gamemanager.plusCombo(gameManagerRef); // gameManager에서 resolve를 해줘야 넘어오나..??
 
-                let cardId = await this.#getCardIdByCardLocation(row, col);
+                let cardId = await this.getCardIdByCardLocation(row, col);
                 gameManagerRef.child(`/cardsState/${cardId}`).set(1);
 
                 gamemanager.getTeamscore(gameManagerRef).then(teamscore => {
