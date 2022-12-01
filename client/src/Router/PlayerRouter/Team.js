@@ -53,6 +53,7 @@ export default function Team({ socket, class_Name, score, turnUid, teaminfo }) {
     if (userName.length <= n) {
       return null;
     } else if (uids[n] === turnUid) {
+      console.log("myturn");
       return style.turn_user;
     } else {
       return null;

@@ -106,9 +106,9 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   });
 
   //시간
-  socket.on("count time", (time) => {
-    setTime(time);
-  });
+  // socket.on("count time", (time) => {
+  //   setTime(time);
+  // });
 
   socket.on("all match", () => {
     setCards([
@@ -174,7 +174,6 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
   return (
     <div className={style.gameboard}>
       <div className={style.round}>Round: {round}</div>
-      <div className={style.time}>Time: {time}</div>
       <span className={style.team_info} onClick={() => changeTeam(0)}>
         <Team socket={socket} class_Name={style.team_info_0} score={score[0]} turnUid={turnUid} teaminfo={roomInfo[0]} />
       </span>
