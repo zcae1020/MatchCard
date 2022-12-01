@@ -8,15 +8,14 @@ export const router = express.Router();
 const db = getDatabase();
 
 export const game = (io, socket) => {
-    const pickCard = (row, col) => {
+    const pickCard = async (row, col) => {
+        let cardId = await IGM.getCardIdByCardLocation(row, col);
         console.log("pickcard:", row, col);
         let socketRoom = `${currentChannel}/${currentRoom}`;
 
         IGM.pickCard(io, socket, row, col).then(async res=>{
-            console.log("aaaaaaaaaaaaa");
             let nextUid = await IGM.nextTurn();
-            let cardId = await IGM.getCardIdByCardLocation(row, col);
-            console.log("bbbbbbbb", cardId);
+            
             switch(res) {
                 case -1: // 기존 카드 존재 x
                     break;

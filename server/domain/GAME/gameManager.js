@@ -74,6 +74,15 @@ export class gameManager{
         })
     }
 
+    getPick(gameManagerRef) {
+        return new Promise((resolve, reject) => {
+            gameManagerRef.child(`/pick`).on('value', snapshot => {
+                let pick = snapshot.val();
+                resolve(pick);
+            });
+        })
+    }
+
     getCardsState(gameManagerRef) {
         return new Promise((resolve, reject) => {
             gameManagerRef.child(`/cardsState`).on('value', snapshot => {

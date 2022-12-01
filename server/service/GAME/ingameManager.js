@@ -13,11 +13,12 @@ const db = getDatabase();
 const gamemanager = new gameManager(0);
 
 class ingameManager {
-    pickCard(io, socket, row, col) { // interval 추가
+    async pickCard(io, socket, row, col) { // interval 추가
         return new Promise((resolve, reject) => {
             const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
-            roomRef.child('/gameManager').on('value', snapshot => {
-                if(snapshot.val()['pick'] == null) {
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManager`);
+            gamemanager.getPick(gameManagerRef).then(async pick=>{
+                if(pick == null) {
                     roomRef.child('/gameManager/pick').set({
                         row: row,
                         col: col
@@ -25,19 +26,16 @@ class ingameManager {
                     resolve(-1);
                 }
                 else {
-                    roomRef.child('/gameManager/pick').on('value', async snapshot => {
-                        let pick = snapshot.val();
-                        let c1 = await this.getCardIdByCardLocation(pick.row, pick.col);
-                        let c2 = await this.getCardIdByCardLocation(row, col);
+                    let c = await this.getCardIdByCardLocation(pick.row, pick.col);
+                    let curCardId = await this.getCardIdByCardLocation(row, col);
 
-                        roomRef.child('/gameManager/pick').set(null);
+                    roomRef.child('/gameManager/pick').set(null);
 
-                        if(c1 == c2) {
-                            resolve(1);
-                        }
+                    if(c == curCardId) {
+                        resolve(1);
+                    }
 
-                        resolve(0);
-                    })
+                    resolve(0);
                 }
             })
         })
@@ -191,21 +189,21 @@ class ingameManager {
     }
     */
 
+    getCardIdByCardLocation(row, col) {
+        return new Promise((resolve, reject) => {
+            const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManager`);
+            gameManagerRef.child(`/gameBoard/cards/${row}/${col}`).on('value', snapshot=>{
+                let cardId = snapshot.val();
+                resolve(cardId);
+            })
+        })
+    }
+
     #getPersonPerTeam() {
         return new Promise((resolve, reject) => {
             const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);
             teamsRef.child('/0/length').on('value', async snapshot => {
                 resolve(await snapshot.val());
-            })
-        })
-    }
-
-    getCardIdByCardLocation(row, col) {
-        return new Promise((resolve, reject) => {
-            const roomRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}`);
-            roomRef.child(`/gameManager/gameBoard/cards/${row}/${col}`).on('value', snapshot=>{
-                let cardId = snapshot.val();
-                resolve(cardId);
             })
         })
     }
