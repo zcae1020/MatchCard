@@ -108,7 +108,8 @@ class ingameManager {
 
             roomRef.child('/maxTeam').on('value', snapshot => {
                 let maxTeam = snapshot.val();
-                roomRef.child('/gameManager').set(new gameManager(maxTeam));  
+
+                roomRef.child('/gameManager').set(JSON.parse(JSON.stringify(new gameManager(maxTeam))));  
             })
 
             resolve(teamscore);
@@ -133,7 +134,7 @@ class ingameManager {
         gamemanager.setCombo(gameManagerRef, num);
     }
 
-    match(row, col) { // match 되었다고 check하는 것 추가
+    match(row, col, uid) { // match 되었다고 check하는 것 추가
         return new Promise((resolve, reject) => {
             TM.getTeamIdByUid(uid).then(async teamId => {
                 const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManager`);
