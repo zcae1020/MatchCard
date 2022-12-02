@@ -11,6 +11,7 @@ const db = getDatabase();
 //const teamsRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/teams`);   
 
 const gamemanager = new gameManager(0);
+const MAX_ROUND = 5;
 
 class ingameManager {
     async pickCard(io, socket, row, col) { // interval 추가
@@ -91,7 +92,7 @@ class ingameManager {
         return new Promise(async (resolve, reject) => {
             const gameManagerRef = db.ref(`channel/${currentChannel}/rooms/${currentRoom}/gameManager`);
             let round = await gamemanager.getRound(gameManagerRef);
-            if(round == 4) {
+            if(round == MAX_ROUND + 1) {
                 resolve(true);
             }
 
