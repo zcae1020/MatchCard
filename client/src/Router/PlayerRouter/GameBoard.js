@@ -237,13 +237,13 @@ export default function GameBoard({ socket, uid, channelid, roomid }) {
         <div className={style.modal_content}>
           SCORE
           <br />
-          Team0 score: {score[0]}
+          Team1 score: {score[0]}
           <br />
-          Team1 score: {score[1]}
+          Team2 score: {score[1]}
           <br />
-          Team2 score: {score[2]}
+          Team3 score: {score[2]}
           <br />
-          Team3 score: {score[3]}
+          Team4 score: {score[3]}
           <br />
           <button className={style.restart} onClick={restart}>
             다시하기
