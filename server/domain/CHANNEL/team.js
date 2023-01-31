@@ -1,8 +1,8 @@
-export class team{
-    constructor(teamId){
+export class team {
+    constructor(teamId) {
         this.teamId = teamId;
         this.length = 0;
-        this.users=[];
+        this.users = [];
         /**
          * users에 담기는 object
          * {

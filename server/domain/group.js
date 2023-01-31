@@ -1,8 +1,8 @@
-export class group{
-    channels=[];
-    users=[];
+export class group {
+    channels = [];
+    users = [];
 
-    constructor(groupId, name){
+    constructor(groupId, name) {
         this.groupId = groupId;
         this.name = name;
     }

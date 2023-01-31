@@ -14,86 +14,92 @@ const channelRef = db.ref("channel");
 export let currentChannel, currentRoom, socketRoom, channelNamespace;
 
 export const enter = (io, socket) => {
-  const enterChannel = (channelId, uid) => {
-    channelNamespace = io.of(`/${channelId}`);
-    currentChannel = channelId;
+    const enterChannel = (channelId, uid) => {
+        channelNamespace = io.of(`/${channelId}`);
+        currentChannel = channelId;
 
-    channelRef.child(`/${channelId}/rooms`).on("value", async (snapshot) => {
-        //console.log(snapshot.val());
-        socket.emit("success room list", snapshot.val());
-        UM.setChannelId(uid, channelId);
-      },
-      (errorObject) => {
-        console.log(errorObject);
-      }
-    );
-
-    connection(channelNamespace);
-  };
-
-  const enterRoom = (roomId, channelId, uid) => {
-    return new Promise(async (resolve, reject) => {
-      console.log("enter room:", roomId, channelId, uid);
-      channelNamespace = io.of(`/${channelId}`);
-      currentRoom = roomId;
-      socketRoom = `${currentChannel}/${currentRoom}`;
-      socket.join(socketRoom);
-      UM.setRoomId(uid, roomId);
-      // 팀 배정 후, team 목록 return, channel에 있는 socket에 broadcast,
-      let teamId = await TM.getOptimalTeam(channelId, roomId);
-      let teams = await TM.putTeam(uid, teamId);
-      channelRef.child(`/${channelId}/rooms`).on("value", (snapshot) => {
-          channelNamespace.emit("success room list", snapshot.val());
-        },
-        (errorObject) => {
-          console.log(errorObject);
-        }
-      );
-      //room으로 뿌리기
-      io.to(socketRoom).emit("success enter room", teams);
-    });
-  };
-
-  const getUsernameByUid = async (uids, teamId) => {
-    let ret = [];
-    for (let idx in uids) {
-      let user = await UM.getUserByUid(uids[idx]);
-      ret.push(user.name);
-    }
-
-    io.to(socketRoom).emit("success get username by uid", ret, teamId);
-  };
-
-  const ready = (uid) => {
-    console.log("ready");
-    GAM.ready(uid).then(async (teams) => {
-      io.to(socketRoom).emit("success enter room", teams);
-      if (await GAM.isAllReady()) {
-        console.log("Start");
-        GAM.start().then(async (gamemanager) => {
-          channelRef.child(`/${currentChannel}/rooms`).on("value", (snapshot) => {
-                channelNamespace.emit("success room list", snapshot.val());
-              },
-              (errorObject) => {
+        channelRef.child(`/${channelId}/rooms`).on(
+            "value",
+            async (snapshot) => {
+                //console.log(snapshot.val());
+                socket.emit("success room list", snapshot.val());
+                UM.setChannelId(uid, channelId);
+            },
+            (errorObject) => {
                 console.log(errorObject);
-              }
+            }
+        );
+
+        connection(channelNamespace);
+    };
+
+    const enterRoom = (roomId, channelId, uid) => {
+        return new Promise(async (resolve, reject) => {
+            console.log("enter room:", roomId, channelId, uid);
+            channelNamespace = io.of(`/${channelId}`);
+            currentRoom = roomId;
+            socketRoom = `${currentChannel}/${currentRoom}`;
+            socket.join(socketRoom);
+            UM.setRoomId(uid, roomId);
+            // 팀 배정 후, team 목록 return, channel에 있는 socket에 broadcast,
+            let teamId = await TM.getOptimalTeam(channelId, roomId);
+            let teams = await TM.putTeam(uid, teamId);
+            channelRef.child(`/${channelId}/rooms`).on(
+                "value",
+                (snapshot) => {
+                    channelNamespace.emit("success room list", snapshot.val());
+                },
+                (errorObject) => {
+                    console.log(errorObject);
+                }
             );
-          io.to(socketRoom).emit("start game", await IGM.getUidByCurrentTurn());
+            //room으로 뿌리기
+            io.to(socketRoom).emit("success enter room", teams);
         });
-      }
-    });
-  };
+    };
 
-  const changeTeam = (uid, teamId) => {
-    console.log("change team");
-    TM.changeTeam(uid, teamId).then((teams) => {
-      io.to(socketRoom).emit("success enter room", teams);
-    })
-  };
+    const getUsernameByUid = async (uids, teamId) => {
+        let ret = [];
+        for (let idx in uids) {
+            let user = await UM.getUserByUid(uids[idx]);
+            ret.push(user.name);
+        }
 
-  socket.on("ready", ready);
-  socket.on("room list", enterChannel);
-  socket.on("enter room", enterRoom);
-  socket.on("get username by uid", getUsernameByUid);
-  socket.on("change team", changeTeam);
+        io.to(socketRoom).emit("success get username by uid", ret, teamId);
+    };
+
+    const ready = (uid) => {
+        console.log("ready");
+        GAM.ready(uid).then(async (teams) => {
+            io.to(socketRoom).emit("success enter room", teams);
+            if (await GAM.isAllReady()) {
+                console.log("Start");
+                GAM.start().then(async (gamemanager) => {
+                    channelRef.child(`/${currentChannel}/rooms`).on(
+                        "value",
+                        (snapshot) => {
+                            channelNamespace.emit("success room list", snapshot.val());
+                        },
+                        (errorObject) => {
+                            console.log(errorObject);
+                        }
+                    );
+                    io.to(socketRoom).emit("start game", await IGM.getUidByCurrentTurn());
+                });
+            }
+        });
+    };
+
+    const changeTeam = (uid, teamId) => {
+        console.log("change team");
+        TM.changeTeam(uid, teamId).then((teams) => {
+            io.to(socketRoom).emit("success enter room", teams);
+        });
+    };
+
+    socket.on("ready", ready);
+    socket.on("room list", enterChannel);
+    socket.on("enter room", enterRoom);
+    socket.on("get username by uid", getUsernameByUid);
+    socket.on("change team", changeTeam);
 };

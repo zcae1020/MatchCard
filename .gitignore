@@ -9,3 +9,4 @@ client/node_modules/
 server/node_modules
 server/test.js
 server/config/serviceAccount.js
+frontMatchCard/

@@ -1,4 +1,4 @@
-import * as auth from 'firebase-admin/auth';
+import * as auth from "firebase-admin/auth";
 import * as firebase from "../config/firebase-config.js";
 
 // export function decodeToken(req, res, next){
@@ -12,11 +12,13 @@ import * as firebase from "../config/firebase-config.js";
 //     })
 // }
 
-export function decodeToken(token){
-    auth.getAuth().verifyIdToken(token).then(()=>{
-        return 0;
-    })
-    .catch((error)=>{
-        return 1;
-    })
+export function decodeToken(token) {
+    auth.getAuth()
+        .verifyIdToken(token)
+        .then(() => {
+            return 0;
+        })
+        .catch((error) => {
+            return 1;
+        });
 }
