@@ -12,16 +12,14 @@ import { enter } from './controller/CHANNEL/enter.js';
 import { game } from './controller/GAME/game.js';
 
 const __dirname = path.resolve();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4000;
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"],
-        allowedHeaders: ["my-custom-header"],
-        credentials: true
+        origin: "http://27.96.130.21:3000",
+	methods: ["GET", "POST"],
     }
 });
 

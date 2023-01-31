@@ -21,7 +21,9 @@ function App() {
   const [channelid, setChannelid] = useState("");
   const [roomid, setRoomid] = useState("");
 
-  const socket = io("http://localhost:3001");
+  const socket = io("http://27.96.130.21:4000/", {
+	cors: { origin: '*' }  
+  });
 
   if (!connection) {
     socket.on("connected", () => {
